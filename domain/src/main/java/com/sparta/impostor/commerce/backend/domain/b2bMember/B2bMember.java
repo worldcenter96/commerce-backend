@@ -1,4 +1,4 @@
-package com.sparta.domain.b2bMember;
+package com.sparta.impostor.commerce.backend.domain.b2bMember;
 
 
 import jakarta.persistence.*;

@@ -1,4 +1,4 @@
-package com.sparta.domain.adminMember;
+package com.sparta.impostor.commerce.backend.domain.adminMember;
 
 import com.sparta.common.Timestamped;
 import jakarta.persistence.*;
