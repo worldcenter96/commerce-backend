@@ -1,0 +1,5 @@
+rootProject.name = 'impostor-commerce-backend'
+include 'b2c'
+include 'b2b'
+include 'admin'
+include 'domain'
