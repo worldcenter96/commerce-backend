@@ -1,4 +1,4 @@
-package com.sparta.impostor.commerce.backend.domain.b2bMember;
+package com.sparta.domain.b2bMember;
 
 public enum ApproveStatus {
     PENDING,

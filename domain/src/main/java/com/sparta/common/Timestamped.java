@@ -1,4 +1,4 @@
-package com.sparta.impostor.commerce.backend.common;
+package com.sparta.common;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

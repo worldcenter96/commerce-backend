@@ -1,6 +1,6 @@
-package com.sparta.impostor.commerce.backend.domain.adminMember;
+package com.sparta.domain.adminMember;
 
-import com.sparta.impostor.commerce.backend.common.Timestamped;
+import com.sparta.common.Timestamped;
 import jakarta.persistence.*;
 import lombok.Getter;
 
