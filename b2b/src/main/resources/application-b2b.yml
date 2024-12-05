@@ -1,0 +1,5 @@
+spring:
+  profiles:
+    active: b2b-prod
+    include:
+      - core
