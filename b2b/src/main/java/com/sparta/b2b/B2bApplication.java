@@ -8,6 +8,7 @@ public class B2bApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(B2bApplication.class, args);
+
 	}
 
 }
