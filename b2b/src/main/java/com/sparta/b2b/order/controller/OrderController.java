@@ -1,14 +1,14 @@
 package com.sparta.b2b.order.controller;
 
+import com.sparta.b2b.order.dto.request.DeliveryStatusRequest;
 import com.sparta.b2b.order.dto.response.OrderPageResponse;
+import com.sparta.b2b.order.dto.response.OrderResponse;
 import com.sparta.b2b.order.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -26,6 +26,15 @@ public class OrderController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(orderService.retrieveOrderList(page, size, sortBy, orderBy));
+    }
+
+    @PatchMapping("/{id}/deliverystatus")
+    public ResponseEntity<OrderResponse> updateDeliveryStatus(@PathVariable Long id,
+                                                              @RequestBody @Valid DeliveryStatusRequest request) {
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(orderService.updateDeliveryStatus(id, request));
     }
 
 }

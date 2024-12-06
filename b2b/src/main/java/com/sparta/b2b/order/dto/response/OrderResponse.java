@@ -7,6 +7,7 @@ import com.sparta.impostor.commerce.backend.domain.order.enums.OrderStatus;
 import java.time.LocalDateTime;
 
 public record OrderResponse(
+        Long id,
         String name,
         String trackingNumber,
         OrderStatus orderStatus,
@@ -21,6 +22,7 @@ public record OrderResponse(
 
     public static OrderResponse from(Order order) {
         return new OrderResponse(
+                order.getId(),
                 order.getName(),
                 order.getTrackingNumber(),
                 order.getOrderStatus(),
@@ -33,4 +35,6 @@ public record OrderResponse(
                 order.getModifiedAt()
         );
     }
+
+
 }
