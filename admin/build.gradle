@@ -8,6 +8,5 @@ tasks.jar {
 }
 
 dependencies {
-    implementation project(':domain')
-}
+  implementation project(':domain')
 tasks.register("prepareKotlinBuildScriptModel"){}
