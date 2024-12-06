@@ -46,4 +46,9 @@ public class Order extends Timestamped {
     private Product product;
 
 
+    public Order update(String trackingNumber) {
+        this.trackingNumber = trackingNumber;
+        this.deliveryStatus = DeliveryStatus.IN_TRANSIT;
+        return this;
+    }
 }
