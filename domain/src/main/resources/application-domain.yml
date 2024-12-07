@@ -1,7 +1,4 @@
 spring:
-  config:
-    activate:
-      on-profile: domain
   jpa:
     hibernate:
       ddl-auto: update
@@ -13,4 +10,5 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/impostor
-    username: root
+    username: ${db.username}
+    password: ${db.password}
