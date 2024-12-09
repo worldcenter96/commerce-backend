@@ -5,6 +5,7 @@ import com.sparta.impostor.commerce.backend.domain.product.entity.Product;
 import com.sparta.impostor.commerce.backend.domain.product.enums.Category;
 import com.sparta.impostor.commerce.backend.domain.product.enums.ProductStatus;
 import com.sparta.impostor.commerce.backend.domain.product.repository.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +14,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.Optional;
 
@@ -57,7 +59,7 @@ class ProductServiceUnitTest {
     }
 
     @Test
-    @DisplayName("없는 상품 단건 조회 실패 시 - 404 예외 발생")
+    @DisplayName("없는 상품 단건 조회 실패 테스트 - EntityNotFoundException 예외 발생")
     public void retrieveFailTest1 () {
         // given
         Long invalidId = 999L;
@@ -65,15 +67,15 @@ class ProductServiceUnitTest {
 
         // when & then
         assertThatThrownBy(() -> productService.retrieveProduct(invalidId))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("404 - 상품을 찾지 못하였습니다.");
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessage("상품을 찾지 못하였습니다.");
 
         verify(productRepository, times(1)).findById(invalidId);
     }
 
     @ParameterizedTest
     @EnumSource(value = ProductStatus.class, names = {"OFF_SALE", "PENDING"})
-    @DisplayName("단건 조회할 수 없는 상품 상태 테스트 - OFF_SALE 및 PENDING")
+    @DisplayName("단건 조회할 수 없는 상품 상태 실패 테스트 - AccessDeniedException 예외 발생")
     public void retrieveFailTest2 (ProductStatus status) {
         // given
         Long id = 1L;
@@ -91,7 +93,7 @@ class ProductServiceUnitTest {
 
         // when & then
         assertThatThrownBy(() -> productService.retrieveProduct(id))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("403 - 해당 상품은 조회할 수 없습니다.");
+                .isInstanceOf(AccessDeniedException.class)
+                .hasMessage("해당 상품은 조회할 수 없습니다.");
     }
 }
