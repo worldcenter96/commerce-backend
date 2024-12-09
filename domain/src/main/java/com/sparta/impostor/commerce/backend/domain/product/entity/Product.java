@@ -8,7 +8,7 @@ import lombok.*;
 
 @Entity
 @Getter
-@Builder
+@Builder// 수정
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Product extends Timestamped {
