@@ -3,6 +3,7 @@ package com.sparta.b2b.product.controller;
 import com.sparta.b2b.product.dto.request.ProductCreateRequest;
 import com.sparta.b2b.product.dto.response.ProductCreateResponse;
 import com.sparta.b2b.product.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class ProductController {
 
 	@PostMapping()
 	public ResponseEntity<ProductCreateResponse> createProduct(
-		@RequestBody ProductCreateRequest request
+		@RequestBody @Valid ProductCreateRequest request
 	) {
 		return ResponseEntity
 			.status(HttpStatus.CREATED)
