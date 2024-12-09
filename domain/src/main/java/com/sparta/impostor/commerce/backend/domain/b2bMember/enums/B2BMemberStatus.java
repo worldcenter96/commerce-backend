@@ -1,7 +1,7 @@
 package com.sparta.impostor.commerce.backend.domain.b2bMember.enums;
 
-public enum ApproveStatus {
+public enum B2BMemberStatus {
     PENDING,
-    REJECTED,
-    APPROVED
+    INACTIVE,
+    ACTIVE
 }

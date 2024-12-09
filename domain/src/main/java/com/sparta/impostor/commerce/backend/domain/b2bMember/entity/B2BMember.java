@@ -2,7 +2,7 @@ package com.sparta.impostor.commerce.backend.domain.b2bMember.entity;
 
 
 import com.sparta.impostor.commerce.backend.common.baseentity.Timestamped;
-import com.sparta.impostor.commerce.backend.domain.b2bMember.enums.ApproveStatus;
+import com.sparta.impostor.commerce.backend.domain.b2bMember.enums.B2BMemberStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -25,5 +25,5 @@ public class B2BMember extends Timestamped {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ApproveStatus approveStatus;
+    private B2BMemberStatus b2bMemberStatus;
 }

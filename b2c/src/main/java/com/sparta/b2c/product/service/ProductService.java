@@ -3,6 +3,7 @@ package com.sparta.b2c.product.service;
 import com.sparta.b2c.product.dto.response.ProductResponse;
 import com.sparta.impostor.commerce.backend.domain.product.entity.Product;
 import com.sparta.impostor.commerce.backend.domain.product.repository.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ public class ProductService {
 
     public ProductResponse retrieveProduct(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("404 - 상품을 찾지 못하였습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("상품을 찾지 못하였습니다."));
         return new ProductResponse(
                 product.getId(),
                 product.getName(),
