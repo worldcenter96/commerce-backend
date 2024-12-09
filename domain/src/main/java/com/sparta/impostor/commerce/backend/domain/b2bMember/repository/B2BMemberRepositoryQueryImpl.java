@@ -11,13 +11,13 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class B2BMemberRepositoryCustomImpl extends QuerydslRepositorySupport implements B2BMemberRepositoryCustom {
+public class B2BMemberRepositoryQueryImpl extends QuerydslRepositorySupport implements B2BMemberRepositoryQuery {
 
     @Autowired
     private JPAQueryFactory jpaQueryFactory;
     QB2BMember b2bMember = QB2BMember.b2BMember;
 
-    public B2BMemberRepositoryCustomImpl() {
+    public B2BMemberRepositoryQueryImpl() {
         super(B2BMember.class);
     }
 

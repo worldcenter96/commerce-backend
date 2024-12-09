@@ -4,7 +4,7 @@ import com.sparta.impostor.commerce.backend.domain.b2bMember.entity.B2BMember;
 
 import java.util.Optional;
 
-public interface B2BMemberRepositoryCustom {
+public interface B2BMemberRepositoryQuery {
 
     Optional<B2BMember> findByEmail(String email);
 }
