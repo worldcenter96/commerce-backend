@@ -1,48 +1,51 @@
 package com.sparta.admin.member.service;
 
-import com.sparta.admin.member.dto.response.B2BMemberPageResponse;
 import com.sparta.admin.member.dto.response.B2BMemberResponse;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.entity.B2BMember;
+import com.sparta.impostor.commerce.backend.domain.b2bMember.enums.B2BMemberStatus;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.repository.B2BMemberRepository;
 import java.util.List;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class B2BSearchService {
 
-  private B2BMemberRepository b2bMemberRepository;
+  private final B2BMemberRepository b2bMemberRepository;
 
-  public B2BMemberPageResponse getB2BMembers(
-      int page,
-      int size,
-      String sortBy,
-      String orderBy) {
-
-    // 정렬 방향 설정
-    Sort.Direction direction = orderBy.equalsIgnoreCase(
-        "desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
-
-    // 페이지 요청 및 정렬 처리
-    Page<B2BMember> b2BMemberPage = b2bMemberRepository.findAll(
-        PageRequest.of(page - 1, size, Sort.by(direction, sortBy))
-    );
-
-    // B2BMember를 B2BMemberResponse로 변환
-    List<B2BMemberResponse> members = b2BMemberPage.stream()
+  // B2B 회원 조회 (페이지네이션, 정렬 적용)
+  public Page<B2BMemberResponse> getB2BMembers(PageRequest pageRequest) {
+    Page<B2BMember> b2bMemberPage = b2bMemberRepository.findAll(pageRequest);
+    List<B2BMemberResponse> responses = b2bMemberPage.getContent().stream()
         .map(B2BMemberResponse::from)
-        .collect(Collectors.toList());
+        .toList();
 
-    return new B2BMemberPageResponse(
-        members,
-        b2BMemberPage.getNumber() + 1, // 현재 페이즈 (1-based index)
-        b2BMemberPage.getSize(),
-        sortBy, // 정렬 기준
-        orderBy, // 정렬 순서
-        b2BMemberPage.getTotalPages()
-    );
+    return b2bMemberPage.map(
+        B2BMemberResponse::from); // Page<B2BMemberResponse> 반환
+
+  }
+
+  // 특정 status 애 해당하는 B2B 회원 조회 (예: INACTIVE)
+  public Page<B2BMemberResponse> getB2BMembersByStatus(B2BMemberStatus status,
+      PageRequest pageRequest) {
+    Page<B2BMember> b2BMemberPage = b2bMemberRepository.findByB2BMemberStatus(status, pageRequest);
+
+    return b2BMemberPage.map(B2BMemberResponse::from);
+  }
+
+  // B2B 회원 상태 업데이트
+  public B2BMember updateMemberStatus(Long b2bMemberId, B2BMemberStatus newStatus) {
+    B2BMember b2bMember = b2bMemberRepository.findById(b2bMemberId)
+        .orElseThrow(() -> new RuntimeException("B2B Member Not Found"));
+
+    B2BMember updatedB2BMember = b2bMember.changeStatus(newStatus);
+
+    return b2bMemberRepository.save(updatedB2BMember);
+  }
+
+  public void updateB2BMemberStatus(Long b2bMemberId, B2BMemberStatus status) {
   }
 }
