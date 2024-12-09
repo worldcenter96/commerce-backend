@@ -3,3 +3,17 @@ spring:
     active: core-prod
     include:
       - domain
+  session:
+    redis:
+      flush-mode: on_save
+      namespace: imposter:session
+  data:
+    redis:
+      password: Password@1234
+      host: 127.0.0.1
+      port: 6379
+server:
+  servlet:
+    session:
+      cookie:
+        name: JSESSIONID
