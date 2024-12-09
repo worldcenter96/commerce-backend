@@ -43,9 +43,10 @@ public class B2BSearchController {
   }
 
 
-  // 미승인 사용자 리스트 조회 (status = INACTIVE)
-  @GetMapping("/INACTIVE")
-  public Page<B2BMemberResponse> getInactiveB2BMembers(
+  // 특정 상태를 가진 B2B 회원 조회 (status: ACTIVE, INACTIVE, PENDING)
+  @GetMapping("/status/{status}")
+  public Page<B2BMemberResponse> getB2BMembersByStatus(
+      @PathVariable B2BMemberStatus status,
       @RequestParam(defaultValue = "1") int page,
       @RequestParam(defaultValue = "10") int size,
       @RequestParam(defaultValue = "id") String sortBy,
@@ -54,13 +55,13 @@ public class B2BSearchController {
     // 정렬 방향 결정
     Sort.Direction direction =
         orderBy.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
-    // PageRequest 객체 생성
+
     PageRequest pageRequest = PageRequest.of(
         page - 1,
         size,
         Sort.by(direction, sortBy));
 
-    return b2BSearchService.getB2BMembers(pageRequest);
+    return b2BSearchService.getB2BMembersByStatus(status, pageRequest);
   }
 
   // 판매자 권한 변경 (ACTIVE,INACTIVE)
