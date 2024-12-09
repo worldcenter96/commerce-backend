@@ -1,5 +1,7 @@
 package com.sparta.admin.member.controller;
 
+import com.sparta.admin.member.dto.request.B2BMemberStatusRequest;
+import com.sparta.admin.member.dto.response.B2BMemberPageResponse;
 import com.sparta.admin.member.dto.response.B2BMemberResponse;
 import com.sparta.admin.member.service.B2BSearchService;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.enums.B2BMemberStatus;
@@ -20,11 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class B2BSearchController {
 
-  private final B2BSearchService b2BSearchService;
+  private final B2BSearchService b2bSearchService;
 
   // B2B 회원 전체 조회
   @GetMapping
-  public Page<B2BMemberResponse> getB2BMembers(
+  public B2BMemberPageResponse getB2BMembers(
       @RequestParam(defaultValue = "1") int page,
       @RequestParam(defaultValue = "10") int size,
       @RequestParam(defaultValue = "id") String sortBy,
@@ -39,13 +41,17 @@ public class B2BSearchController {
         size,
         Sort.by(direction, sortBy));
 
-    return b2BSearchService.getB2BMembers(pageRequest);
+    // B2B 회원 전체 조회
+    Page<B2BMemberResponse> b2bMemberPage = b2bSearchService.getB2BMembers(pageRequest);
+
+    // Page객체를 B2BMemberPageResponse로 변환하여 반환
+    return new B2BMemberPageResponse(b2bMemberPage);
   }
 
 
   // 특정 상태를 가진 B2B 회원 조회 (status: ACTIVE, INACTIVE, PENDING)
   @GetMapping("/status/{status}")
-  public Page<B2BMemberResponse> getB2BMembersByStatus(
+  public B2BMemberPageResponse getB2BMembersByStatus(
       @PathVariable B2BMemberStatus status,
       @RequestParam(defaultValue = "1") int page,
       @RequestParam(defaultValue = "10") int size,
@@ -61,14 +67,22 @@ public class B2BSearchController {
         size,
         Sort.by(direction, sortBy));
 
-    return b2BSearchService.getB2BMembersByStatus(status, pageRequest);
+    // 특정 상태에 해당하는 B2B 회원 조회
+    Page<B2BMemberResponse> b2bMemberPage = b2bSearchService.getB2BMembersByStatus(status,
+        pageRequest);
+
+    return new B2BMemberPageResponse(b2bMemberPage);
   }
 
   // 판매자 권한 변경 (ACTIVE,INACTIVE)
   @PatchMapping("/{b2bMemberId}/status")
   public void updateB2BMemberStatus(
       @PathVariable Long b2bMemberId,
-      @RequestBody B2BMemberStatus status) {
-    b2BSearchService.updateB2BMemberStatus(b2bMemberId, status);
+      @RequestBody B2BMemberStatusRequest statusRequest) {
+
+    if (statusRequest == null || statusRequest.getStatus() == null) {
+      throw new IllegalArgumentException("잘못된 상태 값입니다.");
+    }
+    b2bSearchService.updateB2BMemberStatus(b2bMemberId, statusRequest.getStatus());
   }
 }
