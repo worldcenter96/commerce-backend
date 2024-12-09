@@ -29,8 +29,8 @@ public class ProductService {
 			throw new IllegalStateException("승인된 멤버만 상품을 등록할 수 있습니다.");
 		}
 
-		Product product = productRepository.save(request.toEntity());
+		Product saveedProduct = productRepository.save(request.from());
 
-		return ProductCreateResponse.from(product);
+		return ProductCreateResponse.from(saveedProduct);
 	}
 }

@@ -8,9 +8,7 @@ import lombok.*;
 
 @Entity
 @Getter
-@Builder// 수정
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class Product extends Timestamped {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,4 +37,15 @@ public class Product extends Timestamped {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Category.SubCategory subCategory;
+
+    public Product(String name, String description, int stockQuantity, int price, ProductStatus status, Category category, Category.SubCategory subCategory) {
+        this.name = name;
+        this.description = description;
+        this.stockQuantity = stockQuantity;
+        this.price = price;
+        this.status = status;
+        this.category = category;
+        this.subCategory = subCategory;
+    }
+
 }
