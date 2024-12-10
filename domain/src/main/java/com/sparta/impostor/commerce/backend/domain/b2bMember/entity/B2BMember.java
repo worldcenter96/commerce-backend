@@ -39,4 +39,11 @@ public class B2BMember extends Timestamped {
     public static B2BMember createMember(String email, String password, String name) {
         return new B2BMember(email, password, name, B2BMemberStatus.PENDING);
     }
+
+    public B2BMember changeStatus(B2BMemberStatus newStatus) {
+        return new B2BMember(email,password,name,newStatus);
+    }
+
+    public void setB2BMeberStatus(B2BMemberStatus newStatus) {
+    }
 }
