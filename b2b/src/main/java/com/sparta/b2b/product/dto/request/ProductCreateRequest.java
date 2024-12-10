@@ -9,12 +9,12 @@ import jakarta.validation.constraints.*;
 public record ProductCreateRequest(
 	@NotNull
 	@NotBlank
-	@Size(min = 2, max = 100, message = "이름은 2자 이상, 50자 이하로 입력해야 합니다.")
+	@Size(min = 2, max = 50, message = "이름은 2자 이상, 50자 이하로 입력해야 합니다.")
 	String name,
 
 	@NotNull
 	@NotBlank
-	@Size(max = 500, message = "설명은 500자 이하로 입력해야 합니다.")
+	@Size(max = 250, message = "설명은 250자 이하로 입력해야 합니다.")
 	String description,
 
 	@NotNull
