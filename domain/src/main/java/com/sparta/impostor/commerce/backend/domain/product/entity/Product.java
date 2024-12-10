@@ -1,6 +1,7 @@
 package com.sparta.impostor.commerce.backend.domain.product.entity;
 
 import com.sparta.impostor.commerce.backend.common.baseentity.Timestamped;
+import com.sparta.impostor.commerce.backend.domain.b2bMember.entity.B2BMember;
 import com.sparta.impostor.commerce.backend.domain.product.enums.Category;
 import com.sparta.impostor.commerce.backend.domain.product.enums.ProductStatus;
 import jakarta.persistence.*;
@@ -37,6 +38,10 @@ public class Product extends Timestamped {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Category.SubCategory subCategory;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private B2BMember member;
 
     private Product(String name, String description, int stockQuantity, int price, ProductStatus status, Category category, Category.SubCategory subCategory) {
         this.name = name;

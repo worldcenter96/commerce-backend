@@ -3,14 +3,12 @@ package com.sparta.b2b.product.controller;
 import com.sparta.b2b.product.dto.request.ProductCreateRequest;
 import com.sparta.b2b.product.dto.response.ProductCreateResponse;
 import com.sparta.b2b.product.service.ProductService;
+import com.sparta.impostor.commerce.backend.domain.product.entity.Product;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,4 +26,12 @@ public class ProductController {
 			.body(productService.createProduct(1L, request));// test용 member, 로그인기능 완료시 수정
 	}
 
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteProduct(
+		@PathVariable Long id
+	) {
+		productService.deleteProduct(1L, id);
+		return ResponseEntity
+			.status(HttpStatus.NO_CONTENT).build();
+	}
 }
