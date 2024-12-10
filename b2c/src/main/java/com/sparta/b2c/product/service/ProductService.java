@@ -1,11 +1,18 @@
 package com.sparta.b2c.product.service;
 
+import com.sparta.b2c.product.dto.request.ProductSearchRequest;
+import com.sparta.b2c.product.dto.response.PageProductResponse;
 import com.sparta.b2c.product.dto.response.ProductResponse;
 import com.sparta.impostor.commerce.backend.domain.product.entity.Product;
+import com.sparta.impostor.commerce.backend.domain.product.enums.Category;
 import com.sparta.impostor.commerce.backend.domain.product.enums.ProductStatus;
 import com.sparta.impostor.commerce.backend.domain.product.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +35,14 @@ public class ProductService {
         }
 
         return ProductResponse.from(product);
+    }
+
+    public PageProductResponse searchProducts(ProductSearchRequest reqDto) {
+        Sort.Direction direction = "ASC".equalsIgnoreCase(reqDto.orderBy()) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, reqDto.sortBy());
+        Pageable pageable = PageRequest.of(reqDto.page() - 1, reqDto.size(), sort);
+        Page<Product> products = productRepository.searchProductsWithFilters(reqDto.keyword(), ProductStatus.ON_SALE, reqDto.category(), reqDto.subCategory(), pageable);
+
+        return PageProductResponse.from(products);
     }
 }
