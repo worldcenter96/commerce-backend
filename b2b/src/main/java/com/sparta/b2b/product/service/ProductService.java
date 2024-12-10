@@ -34,11 +34,15 @@ public class ProductService {
 
 	public void deleteProduct(Long userId, Long id) {
 
-		B2BMember member = b2bMemberRepository.findById(1l)
+		B2BMember member = b2bMemberRepository.findById(userId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 ID를 가진 멤버가 존재하지 않습니다."));
+
 		if (member.getB2BMemberStatus() != B2BMemberStatus.ACTIVE) {
-			throw new IllegalStateException("승인된 멤버만 삭제 할 수 있습니다.");
+			throw new IllegalStateException("승인된 멤버만 삭제할 수 있습니다.");
 		}
+		Product product = productRepository.findById(id)
+			.orElseThrow(() -> new IllegalArgumentException("해당 제품을 찾을 수 없습니다."));
+		
 		productRepository.deleteById(id);
 	}
 }
