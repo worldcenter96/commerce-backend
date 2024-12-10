@@ -20,21 +20,21 @@ public class ProductService {
 	private final ProductRepository productRepository;
 	private final B2BMemberRepository b2bMemberRepository;
 
-	public ProductCreateResponse createProduct(Long userId, ProductCreateRequest request) {
+	public ProductCreateResponse createProduct(Long memberId, ProductCreateRequest request) {
 
 		B2BMember member = b2bMemberRepository.findById(1l)
 			.orElseThrow(() -> new IllegalArgumentException("해당 ID를 가진 멤버가 존재하지 않습니다."));
+
 		if (member.getB2BMemberStatus() != B2BMemberStatus.ACTIVE) {
 			throw new IllegalStateException("승인된 멤버만 상품 등록 할 수 있습니다.");
 		}
-
 		Product saveedProduct = productRepository.save(request.toEntity());
 		return ProductCreateResponse.from(saveedProduct);
 	}
 
-	public void deleteProduct(Long userId, Long id) {
+	public void deleteProduct(Long memberId, Long id) {
 
-		B2BMember member = b2bMemberRepository.findById(userId)
+		B2BMember member = b2bMemberRepository.findById(memberId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 ID를 가진 멤버가 존재하지 않습니다."));
 
 		if (member.getB2BMemberStatus() != B2BMemberStatus.ACTIVE) {
@@ -42,7 +42,10 @@ public class ProductService {
 		}
 		Product product = productRepository.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("해당 제품을 찾을 수 없습니다."));
-		
+
+		if (product.getMember().getId() != member.getId()) {
+			throw new IllegalStateException("본인이 등록한 상품만 삭제할 수 있습니다.");
+		}
 		productRepository.deleteById(id);
 	}
 }
