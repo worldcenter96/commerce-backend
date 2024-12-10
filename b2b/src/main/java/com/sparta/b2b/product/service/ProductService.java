@@ -7,6 +7,7 @@ import com.sparta.impostor.commerce.backend.domain.b2bMember.enums.B2BMemberStat
 import com.sparta.impostor.commerce.backend.domain.b2bMember.repository.B2BMemberRepository;
 import com.sparta.impostor.commerce.backend.domain.product.entity.Product;
 import com.sparta.impostor.commerce.backend.domain.product.repository.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +23,8 @@ public class ProductService {
 
 	public ProductCreateResponse createProduct(Long memberId, ProductCreateRequest request) {
 
-		B2BMember member = b2bMemberRepository.findById(1l)
-			.orElseThrow(() -> new IllegalArgumentException("해당 ID를 가진 멤버가 존재하지 않습니다."));
+		B2BMember member = b2bMemberRepository.findById(memberId)
+			.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 멤버가 존재하지 않습니다."));
 
 		if (member.getB2BMemberStatus() != B2BMemberStatus.ACTIVE) {
 			throw new IllegalStateException("승인된 멤버만 상품 등록 할 수 있습니다.");
@@ -35,7 +36,7 @@ public class ProductService {
 	public void deleteProduct(Long memberId, Long id) {
 
 		B2BMember member = b2bMemberRepository.findById(memberId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 ID를 가진 멤버가 존재하지 않습니다."));
+			.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 멤버가 존재하지 않습니다."));
 
 		if (member.getB2BMemberStatus() != B2BMemberStatus.ACTIVE) {
 			throw new IllegalStateException("승인된 멤버만 삭제할 수 있습니다.");
@@ -44,7 +45,7 @@ public class ProductService {
 			.orElseThrow(() -> new IllegalArgumentException("해당 제품을 찾을 수 없습니다."));
 
 		if (product.getMember().getId() != member.getId()) {
-			throw new IllegalStateException("본인이 등록한 상품만 삭제할 수 있습니다.");
+			throw new EntityNotFoundException("본인이 등록한 상품만 삭제할 수 있습니다.");
 		}
 		productRepository.deleteById(id);
 	}
