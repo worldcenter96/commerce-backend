@@ -31,8 +31,8 @@ public record ProductCreateRequest(
 	@NotNull
 	Category.SubCategory subCategory
 ) {
-	public Product from() {
-		return new Product(
+	public Product toEntity() {
+		return Product.createProduct(
 			this.name,
 			this.description,
 			this.stockQuantity,
