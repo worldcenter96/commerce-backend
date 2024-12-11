@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 
-@SpringBootApplication(scanBasePackages = {"com.sparta.impostor.commerce.backend", "com.sparta.b2b"}, exclude = { SecurityAutoConfiguration.class })
+@SpringBootApplication(scanBasePackages = {"com.sparta"})
 public class B2bApplication {
 
 	public static void main(String[] args) {

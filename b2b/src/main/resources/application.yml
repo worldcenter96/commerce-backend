@@ -4,3 +4,11 @@ spring:
     include:
       - domain
       - common
+management:
+  endpoint:
+    beans:
+      enabled: true  # 특정 엔드포인트 활성화
+  endpoints:
+    web:
+      exposure:
+        include: beans  # beans 엔드포인트를 공개

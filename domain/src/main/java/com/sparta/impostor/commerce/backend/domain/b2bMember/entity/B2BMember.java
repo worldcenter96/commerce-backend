@@ -4,12 +4,13 @@ package com.sparta.impostor.commerce.backend.domain.b2bMember.entity;
 import com.sparta.impostor.commerce.backend.common.baseentity.Timestamped;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.enums.B2BMemberStatus;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class B2BMember extends Timestamped {
 
     @Id
