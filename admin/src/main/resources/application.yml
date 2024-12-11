@@ -3,3 +3,4 @@ spring:
     active: core-prod
     include:
       - domain
+      - common
