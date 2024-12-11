@@ -3,7 +3,7 @@ package com.sparta.b2b.member.controller;
 import com.sparta.b2b.member.dto.request.LoginRequest;
 import com.sparta.b2b.member.dto.request.SignupRequest;
 import com.sparta.b2b.member.dto.response.SignupResponse;
-import com.sparta.b2b.member.service.MemberAuthService;
+import com.sparta.b2b.member.service.B2BMemberAuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -18,16 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/b2b-members")
 @RequiredArgsConstructor
-public class MemberController {
+public class B2BMemberController {
 
-    private final MemberAuthService memberAuthService;
+    private final B2BMemberAuthService b2BMemberAuthService;
 
     @PostMapping("/signup")
     public ResponseEntity<SignupResponse> signup(@RequestBody @Valid SignupRequest request) {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(memberAuthService.signup(request));
+                .body(b2BMemberAuthService.signup(request));
 
     }
 
@@ -35,7 +35,7 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity<ResponseCookie> login(@RequestBody @Valid LoginRequest request) {
 
-        ResponseCookie cookie = memberAuthService.login(request);
+        ResponseCookie cookie = b2BMemberAuthService.login(request);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
