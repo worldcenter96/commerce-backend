@@ -25,6 +25,7 @@ public class AdminMemberAuthService {
     private final AdminMemberRepository adminMemberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final RedisTemplate<String, MemberSession> redisTemplate;
+    private static final String SESSION_NAME = "ADMIN_SESSION";
 
     public SignupResponse signup(SignupRequest request) {
 
@@ -43,6 +44,7 @@ public class AdminMemberAuthService {
     }
 
     public ResponseCookie login(LoginRequest request) {
+
         String email = request.email();
         String rawPassword = request.password();
 
@@ -54,10 +56,11 @@ public class AdminMemberAuthService {
         }
 
         String sessionId = new StandardSessionIdGenerator().generateSessionId();
-        redisTemplate.opsForValue().set(sessionId, new MemberSession(member.getId()), 30L, TimeUnit.MINUTES);
+        String sessionKey = SESSION_NAME + ":" + sessionId;
+        redisTemplate.opsForValue().set(sessionKey, new MemberSession(member.getId()), 30L, TimeUnit.MINUTES);
 
         return ResponseCookie
-                .from("SESSION", sessionId)
+                .from(SESSION_NAME, sessionId)
                 .path("/")
                 .httpOnly(true)
                 .maxAge(1800)
