@@ -13,7 +13,7 @@ public record OrderResponse(
         OrderStatus orderStatus,
         DeliveryStatus deliveryStatus,
         Long totalPrice,
-        Long quantity,
+        Integer quantity,
         String b2cMemberName,
         Long b2bMemberId,
         String productName,
