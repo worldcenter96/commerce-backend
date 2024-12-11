@@ -45,6 +45,6 @@ public class B2BMember extends Timestamped {
         return new B2BMember(email,password,name,newStatus);
     }
 
-    public void setB2BMeberStatus(B2BMemberStatus newStatus) {
+    public void setB2BMemberStatus(B2BMemberStatus newStatus) {
     }
 }
