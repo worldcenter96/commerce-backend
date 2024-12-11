@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class MemberAuthService {
+public class B2BMemberAuthService {
 
     private final B2BMemberRepository b2BMemberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
