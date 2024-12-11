@@ -3,8 +3,8 @@ package com.sparta.b2c.product.service;
 import com.sparta.b2c.product.dto.request.ProductSearchRequest;
 import com.sparta.b2c.product.dto.response.PageProductResponse;
 import com.sparta.b2c.product.dto.response.ProductResponse;
+import com.sparta.impostor.commerce.backend.common.exception.ForbiddenAccessException;
 import com.sparta.impostor.commerce.backend.domain.product.entity.Product;
-import com.sparta.impostor.commerce.backend.domain.product.enums.Category;
 import com.sparta.impostor.commerce.backend.domain.product.enums.ProductStatus;
 import com.sparta.impostor.commerce.backend.domain.product.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -13,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +30,7 @@ public class ProductService {
                 ProductStatus.OFF_SALE,
                 ProductStatus.PENDING
         ).contains(product.getStatus())) {
-            throw new AccessDeniedException("해당 상품은 조회할 수 없습니다.");
+            throw new ForbiddenAccessException("해당 상품은 조회할 수 없습니다.");
         }
 
         return ProductResponse.from(product);

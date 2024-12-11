@@ -22,12 +22,13 @@ public class B2CSearchService {
     // status 파라미터에 따라 필터링
     if (status != null) {
       // 상태에 맞는 회원들만 조회
-      b2cMembers = b2cMemberRepository.findByB2CMemberStatus(status, pageRequest);
+//      b2cMembers = b2cMemberRepository.findByB2CMemberStatus(status, pageRequest);
     } else {
       // 상태가 주어지지 않으면, 모든 회원 조회
       b2cMembers = b2cMemberRepository.findAll(pageRequest);
     }
 
-    return new B2CMemberPageResponse(b2cMembers);
+//    return new B2CMemberPageResponse(b2cMembers);
+    return null;
   }
 }

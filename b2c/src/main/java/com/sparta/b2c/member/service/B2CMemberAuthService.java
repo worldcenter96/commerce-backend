@@ -1,13 +1,21 @@
 package com.sparta.b2c.member.service;
 
+import com.sparta.b2c.member.dto.request.LoginRequest;
 import com.sparta.b2c.member.dto.request.SignupRequest;
 import com.sparta.b2c.member.dto.response.SignupResponse;
+import com.sparta.common.dto.MemberSession;
 import com.sparta.impostor.commerce.backend.domain.b2cMember.entity.B2CMember;
 import com.sparta.impostor.commerce.backend.domain.b2cMember.repository.B2CMemberRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.util.StandardSessionIdGenerator;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +24,7 @@ public class B2CMemberAuthService {
 
     private final B2CMemberRepository b2CMemberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final RedisTemplate<String, MemberSession> redisTemplate;
 
     public SignupResponse signup(SignupRequest request) {
 
@@ -31,5 +40,28 @@ public class B2CMemberAuthService {
         b2CMemberRepository.save(createMember);
 
         return SignupResponse.from(createMember);
+    }
+
+    public ResponseCookie login(LoginRequest request) {
+
+        String email = request.email();
+        String rawPassword = request.password();
+
+        B2CMember member = b2CMemberRepository.findByEmail(email).orElseThrow(() ->
+                new EntityNotFoundException("회원정보가 존재하지 않습니다."));
+
+        if (!passwordEncoder.matches(rawPassword, member.getPassword())) {
+            throw new IllegalArgumentException("패스워드가 일치하지 않습니다.");
+        }
+
+        String sessionId = new StandardSessionIdGenerator().generateSessionId();
+        redisTemplate.opsForValue().set(sessionId, new MemberSession(member.getId()), 30L, TimeUnit.MINUTES);
+
+        return ResponseCookie
+                .from("SESSION", sessionId)
+                .path("/")
+                .httpOnly(true)
+                .maxAge(1800)
+                .build();
     }
 }
