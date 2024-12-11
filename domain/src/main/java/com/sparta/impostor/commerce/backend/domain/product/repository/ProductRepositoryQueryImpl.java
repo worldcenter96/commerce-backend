@@ -6,10 +6,12 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.sparta.impostor.commerce.backend.domain.order.entity.QOrders;
 import com.sparta.impostor.commerce.backend.domain.product.entity.Product;
 import com.sparta.impostor.commerce.backend.domain.product.entity.QProduct;
 import com.sparta.impostor.commerce.backend.domain.product.enums.Category;
@@ -22,6 +24,7 @@ import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
@@ -29,7 +32,6 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
     @Autowired
     private JPAQueryFactory jpaQueryFactory;
     QProduct product = QProduct.product;
-
 
 
     @Override
@@ -61,8 +63,50 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
                 .fetch();
 
 
-        long count = countQuery.select(product.count())
-                .fetchOne();
+        long count = Optional.ofNullable(countQuery.select(product.count())
+                .fetchOne()).orElse(0L);
+        return new PageImpl<>(productList, pageable, count);
+    }
+
+    @Override
+    public Page<Product> retrieveRelatedProducts(ProductStatus productStatus, Category.SubCategory subCategory, Pageable pageable) {
+        /*
+        예상 메인 쿼리
+        SELECT p.id, COUNT(o.product_id) AS order_count
+        FROM product p
+        LEFT JOIN ORDERS o
+        ON p.id = o.product_id
+        WHERE p.status = 'ON_SALE'
+        AND p.sub_category = 'TOP'
+        GROUP BY p.id
+        ORDER BY order_count DESC, p.price ASC
+         */
+        QOrders orders = QOrders.orders;
+
+        BooleanExpression whereClause = product.status.eq(productStatus)
+                .and(subCategory != Category.SubCategory.DEFAULT ? product.subCategory.eq(subCategory) : null);
+
+        OrderSpecifier<?>[] orderSpecifiers = {
+                orders.product.id.count().desc(),
+                product.price.asc()
+        };
+
+        List<Product> productList = jpaQueryFactory.select(product)
+                .from(product)
+                .leftJoin(orders).on(product.eq(orders.product))
+                .where(whereClause)
+                .groupBy(product.id)
+                .orderBy(orderSpecifiers)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long count = Optional.ofNullable(jpaQueryFactory.select(product.id.countDistinct())
+                .from(product)
+                .leftJoin(orders).on(product.eq(orders.product))
+                .where(whereClause)
+                .fetchOne()).orElse(0L);
+
         return new PageImpl<>(productList, pageable, count);
     }
 
