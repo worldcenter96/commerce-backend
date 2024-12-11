@@ -10,5 +10,4 @@ tasks.jar {
 dependencies {
     implementation project(':domain')
 }
-
 tasks.register("prepareKotlinBuildScriptModel"){}
