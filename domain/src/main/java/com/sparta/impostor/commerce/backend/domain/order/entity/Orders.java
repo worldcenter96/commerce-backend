@@ -11,9 +11,8 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = "orders")
 @NoArgsConstructor
-public class Order extends Timestamped {
+public class Orders extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +42,7 @@ public class Order extends Timestamped {
     @JoinColumn(name = "b2cmember_id")
     private B2CMember b2CMember;
 
+
     @Column(nullable = false)
     private Long b2BMemberId;
 
@@ -51,13 +51,13 @@ public class Order extends Timestamped {
     private Product product;
 
 
-    public Order update(String trackingNumber) {
+    public Orders update(String trackingNumber) {
         this.trackingNumber = trackingNumber;
         this.deliveryStatus = DeliveryStatus.IN_TRANSIT;
         return this;
     }
 
-    private Order(String name, int quantity, Long totalPrice, OrderStatus orderStatus, DeliveryStatus deliveryStatus, String trackingNumber, Product product, B2CMember b2CMember, Long b2BMemberId) {
+    private Orders(String name, int quantity, Long totalPrice, OrderStatus orderStatus, DeliveryStatus deliveryStatus, String trackingNumber, Product product, B2CMember b2CMember, Long b2BMemberId) {
         this.name = name;
         this.quantity = quantity;
         this.totalPrice = totalPrice;
@@ -69,8 +69,8 @@ public class Order extends Timestamped {
         this.b2BMemberId = b2BMemberId;
     }
 
-    public static Order create(String name, int quantity, Long totalPrice, OrderStatus orderStatus, DeliveryStatus deliveryStatus, String trackingNumber, Product product, B2CMember b2CMember, Long b2BMemberId) {
-        return new Order(name, quantity, totalPrice, orderStatus, deliveryStatus, trackingNumber, product, b2CMember, b2BMemberId);
+    public static Orders create(String name, int quantity, Long totalPrice, OrderStatus orderStatus, DeliveryStatus deliveryStatus, String trackingNumber, Product product, B2CMember b2CMember, Long b2BMemberId) {
+        return new Orders(name, quantity, totalPrice, orderStatus, deliveryStatus, trackingNumber, product, b2CMember, b2BMemberId);
     }
 
 }
