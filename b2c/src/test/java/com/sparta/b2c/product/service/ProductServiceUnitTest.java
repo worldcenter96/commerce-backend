@@ -1,6 +1,7 @@
 package com.sparta.b2c.product.service;
 
 import com.sparta.b2c.product.dto.response.ProductResponse;
+import com.sparta.impostor.commerce.backend.common.exception.ForbiddenAccessException;
 import com.sparta.impostor.commerce.backend.domain.product.entity.Product;
 import com.sparta.impostor.commerce.backend.domain.product.enums.Category;
 import com.sparta.impostor.commerce.backend.domain.product.enums.ProductStatus;
@@ -14,7 +15,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 
@@ -32,20 +33,21 @@ class ProductServiceUnitTest {
     private ProductService productService;
 
     @Test
-    @DisplayName("E2C_Member 상품 단건 조회 성공 시")
+    @DisplayName("B2C Member 상품 단건 조회 성공 시")
     public void retrieveProductSuccessTest1 () {
         // given
+        //
         Long id = 1L;
-        Product product = Product.builder()
-                .id(id)
-                .name("Sample001")
-                .description("상품설명")
-                .stockQuantity(100)
-                .price(10000)
-                .status(ProductStatus.ON_SALE)
-                .category(Category.TOP)
-                .subCategory(Category.SubCategory.T_SHIRT)
-                .build();
+        Product product = Product.createProduct(
+                "Sample001",
+                "상품 설명",
+                100,
+                10000,
+                ProductStatus.ON_SALE,
+                Category.TOP,
+                Category.SubCategory.T_SHIRT
+                );
+        ReflectionTestUtils.setField(product, "id", id);
         when(productRepository.findById(id)).thenReturn(Optional.of(product));
 
         // when
@@ -75,25 +77,26 @@ class ProductServiceUnitTest {
 
     @ParameterizedTest
     @EnumSource(value = ProductStatus.class, names = {"OFF_SALE", "PENDING"})
-    @DisplayName("단건 조회할 수 없는 상품 상태 실패 테스트 - AccessDeniedException 예외 발생")
+    @DisplayName("단건 조회할 수 없는 상품 상태 실패 테스트 - ForbiddenAccessException 예외 발생")
     public void retrieveFailTest2 (ProductStatus status) {
         // given
         Long id = 1L;
-        Product product = Product.builder()
-                .id(id)
-                .name("Sample001")
-                .description("상품설명")
-                .stockQuantity(100)
-                .price(10000)
-                .status(status)
-                .category(Category.TOP)
-                .subCategory(Category.SubCategory.T_SHIRT)
-                .build();
+        Product product = Product.createProduct(
+                "Sample001",
+                "상품 설명",
+                100,
+                10000,
+                status,
+                Category.TOP,
+                Category.SubCategory.T_SHIRT
+        );
+        ReflectionTestUtils.setField(product, "id", id);
+
         when(productRepository.findById(id)).thenReturn(Optional.of(product));
 
         // when & then
         assertThatThrownBy(() -> productService.retrieveProduct(id))
-                .isInstanceOf(AccessDeniedException.class)
+                .isInstanceOf(ForbiddenAccessException.class)
                 .hasMessage("해당 상품은 조회할 수 없습니다.");
     }
 }
