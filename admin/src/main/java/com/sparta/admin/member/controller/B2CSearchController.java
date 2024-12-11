@@ -6,6 +6,7 @@ import com.sparta.admin.member.service.B2CSearchService;
 import com.sparta.impostor.commerce.backend.domain.b2cMember.enums.B2CMemberStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,23 +27,11 @@ public class B2CSearchController {
 
     request.setDefaults();
 
-    // DTO 에서 값 추출
-    int page = request.getPage() - 1;
-    int size = request.getSize();
-    String sortBy = request.getSortBy();
-    String orderBy = request.getOrderBy();
-    B2CMemberStatus status = request.getStatus();
+      // Pageable 생성
+      Sort.Direction direction = request.getOrderBy().equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
 
-    {
-      Sort.Direction direction =
-          orderBy.equalsIgnoreCase("desc") ? Direction.DESC : Sort.Direction.ASC;
+      Pageable pageable = PageRequest.of(request.getPage() -1, request.getSize(), Sort.by(direction, request.getSortBy()));
 
-      PageRequest pageRequest = PageRequest.of(
-          page,
-          size,
-          Sort.by(direction, sortBy));
-
-      return b2cSearchService.getB2CMembers(status, pageRequest);
+      return b2cSearchService.getB2CMembers(request.getStatus(), pageable);
     }
   }
-}
