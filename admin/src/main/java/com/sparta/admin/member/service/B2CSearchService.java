@@ -22,7 +22,7 @@ public class B2CSearchService {
     // status 파라미터에 따라 필터링
     if (status != null) {
       // 상태에 맞는 회원들만 조회
-      b2cMembers = b2cMemberRepository.findByB2CMemberStatus(status, pageable);
+      b2cMembers = b2cMemberRepository.findByB2cMemberStatus(status, pageable);
     } else {
       // 상태가 주어지지 않으면, 모든 회원 조회
       b2cMembers = b2cMemberRepository.findAll(pageable);

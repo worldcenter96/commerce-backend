@@ -5,7 +5,6 @@ import com.sparta.impostor.commerce.backend.domain.b2bMember.entity.B2BMember;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.enums.B2BMemberStatus;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.repository.B2BMemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -42,7 +41,7 @@ public class B2BSearchService {
     B2BMember b2bMember = b2bMemberRepository.findById(b2bMemberId)
         .orElseThrow(() -> new IllegalArgumentException("B2B 회원을 찾을 수 없습니다."));
   // 상태 변경
-   b2bMember.setB2BMeberStatus(newStatus);
+   b2bMember.setB2BMemberStatus(newStatus);
 
     return b2bMemberRepository.save(b2bMember);
   }

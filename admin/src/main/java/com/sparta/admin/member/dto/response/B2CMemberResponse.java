@@ -15,7 +15,7 @@ public record B2CMemberResponse(
         member.getId(),
         member.getEmail(),
         member.getName(),
-        member.getB2CMemberStatus()
+        member.getB2cMemberStatus()
     );
   }
 

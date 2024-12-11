@@ -25,17 +25,11 @@ public class B2CMember extends Timestamped {
   @Column(nullable = false, length = 20)
   private String name;
 
+  @Getter
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
   private B2CMemberStatus b2cMemberStatus; // PENDING, ACTIVE, INACTIVE
 
-
-  public B2CMember(String email, String password, String name, B2CMemberStatus b2CMemberStatus) {
-    this.email = email;
-    this.password = password;
-    this.name = name;
-    this.b2cMemberStatus = b2CMemberStatus;
-  }
 
   public static B2CMember createMember(String email, String password, String name) {
     B2CMember member = new B2CMember();
@@ -45,12 +39,14 @@ public class B2CMember extends Timestamped {
     return member;
   }
 
-  public B2CMemberStatus getStatus() {
-    return b2cMemberStatus;
-  }
-
+  // 상태 변경 메서드
   public void changeStatus(B2CMemberStatus Status) {
     this.b2cMemberStatus = Status;
+  }
+
+  // 명시적 추가
+  public B2CMemberStatus getStatus() {
+    return this.b2cMemberStatus;
   }
 
 }
