@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface ProductRepositoryQuery {
 
     Page<Product> searchProductsWithFilters(String keyword, ProductStatus productStatus, Category category, Category.SubCategory subCategory, Pageable pageable);
+    Page<Product> retrieveRelatedProducts(ProductStatus productStatus, Category.SubCategory subCategory, Pageable pageable);
 }
