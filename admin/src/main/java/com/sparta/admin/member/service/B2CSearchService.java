@@ -6,7 +6,6 @@ import com.sparta.impostor.commerce.backend.domain.b2cMember.enums.B2CMemberStat
 import com.sparta.impostor.commerce.backend.domain.b2cMember.repository.B2CMemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 

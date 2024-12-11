@@ -10,6 +10,7 @@ public interface B2CMemberRepository extends JpaRepository<B2CMember, Long>, B2C
 
   // 모든 B2C 회원 조회 (전체 조회)
   Page<B2CMember> findAll(Pageable pageable);
+
   // 상태에 맞는 B2C 회원 조회
   Page<B2CMember> findByB2CMemberStatus(B2CMemberStatus status, Pageable pageable);
 

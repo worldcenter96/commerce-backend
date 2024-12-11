@@ -3,12 +3,10 @@ package com.sparta.admin.member.controller;
 import com.sparta.admin.member.dto.request.B2CMemberSearchRequest;
 import com.sparta.admin.member.dto.response.B2CMemberPageResponse;
 import com.sparta.admin.member.service.B2CSearchService;
-import com.sparta.impostor.commerce.backend.domain.b2cMember.enums.B2CMemberStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,11 +25,13 @@ public class B2CSearchController {
 
     request.setDefaults();
 
-      // Pageable 생성
-      Sort.Direction direction = request.getOrderBy().equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+    // Pageable 생성
+    Sort.Direction direction =
+        request.getOrderBy().equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
 
-      Pageable pageable = PageRequest.of(request.getPage() -1, request.getSize(), Sort.by(direction, request.getSortBy()));
+    Pageable pageable = PageRequest.of(request.getPage() - 1, request.getSize(),
+        Sort.by(direction, request.getSortBy()));
 
-      return b2cSearchService.getB2CMembers(request.getStatus(), pageable);
-    }
+    return b2cSearchService.getB2CMembers(request.getStatus(), pageable);
   }
+}
