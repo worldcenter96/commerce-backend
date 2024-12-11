@@ -1,0 +1,11 @@
+spring:
+  session:
+
+    redis:
+      flush-mode: on_save
+      namespace: imposter:session
+  data:
+    redis:
+      host: 127.0.0.1
+      password: Password@1234
+      port: 6379
