@@ -1,6 +1,7 @@
 package com.sparta.b2c.product.service;
 
 import com.sparta.b2c.product.dto.request.ProductSearchRequest;
+import com.sparta.b2c.product.dto.request.RelatedProductRetrieveRequest;
 import com.sparta.b2c.product.dto.response.PageProductResponse;
 import com.sparta.b2c.product.dto.response.ProductResponse;
 import com.sparta.impostor.commerce.backend.common.exception.ForbiddenAccessException;
@@ -41,6 +42,13 @@ public class ProductService {
         Sort sort = Sort.by(direction, reqDto.sortBy());
         Pageable pageable = PageRequest.of(reqDto.page() - 1, reqDto.size(), sort);
         Page<Product> products = productRepository.searchProductsWithFilters(reqDto.keyword(), ProductStatus.ON_SALE, reqDto.category(), reqDto.subCategory(), pageable);
+
+        return PageProductResponse.from(products);
+    }
+
+    public PageProductResponse retrieveRelatedProducts(RelatedProductRetrieveRequest reqDto) {
+        Pageable pageable = PageRequest.of(reqDto.page() - 1, reqDto.size());
+        Page<Product> products = productRepository.retrieveRelatedProducts(ProductStatus.ON_SALE, reqDto.subCategory(), pageable);
 
         return PageProductResponse.from(products);
     }

@@ -1,6 +1,7 @@
 package com.sparta.b2c.product.controller;
 
 import com.sparta.b2c.product.dto.request.ProductSearchRequest;
+import com.sparta.b2c.product.dto.request.RelatedProductRetrieveRequest;
 import com.sparta.b2c.product.dto.response.PageProductResponse;
 import com.sparta.b2c.product.dto.response.ProductResponse;
 import com.sparta.b2c.product.service.ProductService;
@@ -40,10 +41,10 @@ public class ProductController {
             @RequestParam(defaultValue = "DEFAULT") Category.SubCategory subCategory
     ) {
 
-        ProductSearchRequest request = new ProductSearchRequest(page, size, keyword, orderBy, sortBy, category, subCategory);
+        ProductSearchRequest reqDto = new ProductSearchRequest(page, size, keyword, orderBy, sortBy, category, subCategory);
 
         // Validation 추가 수동 검증
-        Set<ConstraintViolation<ProductSearchRequest>> violations = validator.validate(request);
+        Set<ConstraintViolation<ProductSearchRequest>> violations = validator.validate(reqDto);
         violations.stream()
                 .map(ConstraintViolation::getMessage)
                 .findFirst()  // 첫 번째 violation만 처리
@@ -53,6 +54,28 @@ public class ProductController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(productService.searchProducts(request));
+                .body(productService.searchProducts(reqDto));
+    }
+
+    @GetMapping("/related-products")
+    public ResponseEntity<PageProductResponse> retrieveRelatedProducts(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "DEFAULT") Category.SubCategory subCategory
+    ) {
+        RelatedProductRetrieveRequest reqDto = new RelatedProductRetrieveRequest(page, size, subCategory);
+
+        // Validation 추가 수동 검증
+        Set<ConstraintViolation<RelatedProductRetrieveRequest>> violations = validator.validate(reqDto);
+        violations.stream()
+                .map(ConstraintViolation::getMessage)
+                .findFirst()  // 첫 번째 violation만 처리
+                .ifPresent(message -> {
+                    throw new IllegalArgumentException(message);
+                });
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productService.retrieveRelatedProducts(reqDto));
     }
 }
