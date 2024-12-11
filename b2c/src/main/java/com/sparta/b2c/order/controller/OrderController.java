@@ -19,6 +19,7 @@ public class OrderController {
     @PostMapping()
     public ResponseEntity<OrderResponse>createOrder(@Valid @RequestBody OrderRequest orderRequest) {
 
+        // b2c 로그인 구현 후 로그인 값 변경 예정
         OrderResponse orderResponse = orderService.createOrder(1L, orderRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(orderResponse);
     }
