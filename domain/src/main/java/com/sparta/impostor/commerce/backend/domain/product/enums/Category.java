@@ -7,6 +7,7 @@ import lombok.Getter;
  */
 @Getter
 public enum Category {
+    DEFAULT(SubCategory.DEFAULT_SUBCATEGORIES),
     TOP(SubCategory.TOP_SUBCATEGORIES),
     BOTTOM(SubCategory.BOTTOM_SUBCATEGORIES),
     OUTERWEAR(SubCategory.OUTERWEAR_SUBCATEGORIES),
@@ -23,11 +24,15 @@ public enum Category {
 
     @Getter
     public enum SubCategory {
-        T_SHIRT, SHIRT, KNIT,
+        DEFAULT, T_SHIRT, SHIRT, KNIT,
         JEANS, SLACKS, SHORTS,
         COATS, JACKETS, PARKAS, CARDIGANS,
         HAT, BELT, GLOVES,
         SNEAKERS, BOOTS, DRESS_SHOES;
+
+        public static final SubCategory[] DEFAULT_SUBCATEGORIES = {
+                DEFAULT
+        };
 
         public static final SubCategory[] TOP_SUBCATEGORIES = {
                 T_SHIRT,
@@ -59,5 +64,6 @@ public enum Category {
                 BOOTS,
                 DRESS_SHOES
         };
+
     }
 }
