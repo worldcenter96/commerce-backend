@@ -3,8 +3,9 @@ package com.sparta.b2b.order.service;
 import com.sparta.b2b.order.dto.request.DeliveryStatusRequest;
 import com.sparta.b2b.order.dto.response.OrderPageResponse;
 import com.sparta.b2b.order.dto.response.OrderResponse;
-import com.sparta.impostor.commerce.backend.domain.order.entity.Order;
+import com.sparta.impostor.commerce.backend.domain.order.entity.Orders;
 import com.sparta.impostor.commerce.backend.domain.order.repository.OrderRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,33 +21,33 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    public OrderPageResponse retrieveOrderList(int page, int size, String sortBy, String orderBy) {
+    public OrderPageResponse retrieveOrderList(int page, int size, String sortBy, String orderBy, Long memberId) {
 
-        Pageable pageable = null;
+        Sort.Direction direction =
+                orderBy.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
 
-        if (orderBy.equals("DESC")) {
-            pageable = PageRequest.of(page-1, size, Sort.by(Sort.Direction.DESC, sortBy));
-        } else if (orderBy.equals("ASC")) {
-            pageable = PageRequest.of(page-1, size, Sort.by(Sort.Direction.ASC, sortBy));
+        Pageable pageable = PageRequest.of(page-1, size, Sort.by(direction, sortBy));
+
+        Page<Orders> orders = orderRepository.findAllByMemberId(pageable, memberId);
+        if (orders == null) {
+            throw new EntityNotFoundException("조회된 주문 내역이 없습니다.");
         }
-
-        Page<Order> orders = orderRepository.findAll(pageable);
 
         return new OrderPageResponse(orders);
     }
 
     @Transactional
-    public OrderResponse updateDeliveryStatus(Long id, DeliveryStatusRequest request) {
+    public OrderResponse updateDeliveryStatus(Long id, DeliveryStatusRequest request, Long memberId) {
 
         String trackingNumber = request.trackingNumber();
 
-        Order order = orderRepository.findById(id).orElseThrow(() ->
-                new NullPointerException("주문이 존재하지 않습니다.")
+        Orders order = orderRepository.findByIdANDMemberId(id, memberId).orElseThrow(() ->
+                new EntityNotFoundException("조회된 주문 내역이 없습니다. 본인의 상품인지 다시 한번 확인해주세요")
         );
 
-        Order updatedOrder = order.update(trackingNumber);
+        Orders updatedOrders = order.update(trackingNumber);
 
-        return OrderResponse.from(updatedOrder);
+        return OrderResponse.from(updatedOrders);
 
     }
 }

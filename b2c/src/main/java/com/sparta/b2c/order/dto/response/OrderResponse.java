@@ -1,6 +1,6 @@
 package com.sparta.b2c.order.dto.response;
 
-import com.sparta.impostor.commerce.backend.domain.order.entity.Order;
+import com.sparta.impostor.commerce.backend.domain.order.entity.Orders;
 import com.sparta.impostor.commerce.backend.domain.order.enums.DeliveryStatus;
 import com.sparta.impostor.commerce.backend.domain.order.enums.OrderStatus;
 
@@ -18,7 +18,7 @@ public record OrderResponse(
         LocalDateTime modifiedAt
 ) {
 
-    public static OrderResponse from(Order order) {
+    public static OrderResponse from(Orders order) {
         return new OrderResponse(
           order.getId(),
           order.getName(),

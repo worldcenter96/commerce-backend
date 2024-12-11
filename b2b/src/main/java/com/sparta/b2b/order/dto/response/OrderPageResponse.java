@@ -1,6 +1,6 @@
 package com.sparta.b2b.order.dto.response;
 
-import com.sparta.impostor.commerce.backend.domain.order.entity.Order;
+import com.sparta.impostor.commerce.backend.domain.order.entity.Orders;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
 
@@ -14,7 +14,7 @@ public class OrderPageResponse {
     private Long totalElements;
 
 
-    public OrderPageResponse(Page<Order> orders) {
+    public OrderPageResponse(Page<Orders> orders) {
         this.orderResponseList = orders.map(OrderResponse::from).stream().toList();
         this.totalPages = orders.getTotalPages();
         this.totalElements = orders.getTotalElements();
