@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/b2c-members")
+@RequestMapping("/api/admin/b2c-members")
 @RequiredArgsConstructor
 public class B2CSearchController {
 

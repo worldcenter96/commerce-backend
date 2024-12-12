@@ -3,7 +3,6 @@ package com.sparta.impostor.commerce.backend.domain.b2cMember.entity;
 import com.sparta.impostor.commerce.backend.common.baseentity.Timestamped;
 import com.sparta.impostor.commerce.backend.domain.b2cMember.enums.B2CMemberStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -40,8 +39,9 @@ public class B2CMember extends Timestamped {
   }
 
   // 상태 변경 메서드
-  public void changeStatus(B2CMemberStatus Status) {
-    this.b2cMemberStatus = Status;
+  public B2CMember changeStatus(B2CMemberStatus status) {
+    this.b2cMemberStatus = status;
+    return this;
   }
 
   // 명시적 추가
