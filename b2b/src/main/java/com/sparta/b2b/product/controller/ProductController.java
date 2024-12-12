@@ -28,7 +28,6 @@ public class ProductController {
 	public ResponseEntity<ProductCreateResponse> createProduct(
 		@RequestBody @Valid ProductCreateRequest request,
 		@LoginMember(role = Role.B2B) MemberSession memberSession
-
 	) {
 		return ResponseEntity
 			.status(HttpStatus.CREATED)

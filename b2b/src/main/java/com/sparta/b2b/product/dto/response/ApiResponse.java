@@ -22,6 +22,5 @@ public class ApiResponse {
 	@AllArgsConstructor
 	public static class ImageInfo {
 		private String url;
-		private String value;
 	}
 }
