@@ -1,82 +1,72 @@
 package com.sparta.admin.member.controller;
 
-import com.sparta.admin.member.dto.request.B2BMemberStatusRequest;
 import com.sparta.admin.member.dto.response.B2BMemberPageResponse;
-import com.sparta.admin.member.dto.response.B2BMemberResponse;
 import com.sparta.admin.member.service.B2BSearchService;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.enums.B2BMemberStatus;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/b2b-members")
+@RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class B2BSearchController {
 
   private final B2BSearchService b2bSearchService;
 
-  // B2B 회원 전체 조회
-  @GetMapping
-  public B2BMemberPageResponse getB2BMembers(
-      @RequestParam(defaultValue = "1") int page,
-      @RequestParam(defaultValue = "10") int size,
-      @RequestParam(defaultValue = "id") String sortBy,
-      @RequestParam(defaultValue = "asc") String orderBy
+  /**
+   * B2B 회원 전체 조회
+   *
+   * @param page    현재 페이지 (기본값 1)
+   * @param size    페이지 당 사이즈 (기본값 10)
+   * @param sortBy  정렬 기준 (기본값 id)
+   * @param orderBy 정렬 방향 (기본값 asc)
+   * @return B2B 회원 목록
+   */
+
+  @GetMapping("/b2b-members")
+  public ResponseEntity<B2BMemberPageResponse> getB2BMembers(
+      @RequestParam(required = false, defaultValue = "1") int page,
+      @RequestParam(required = false, defaultValue = "10") int size,
+      @RequestParam(required = false, defaultValue = "id") String sortBy,
+      @RequestParam(required = false, defaultValue = "asc") String orderBy
   ) {
-    // 정렬 방향 결정
-    Sort.Direction direction =
-        orderBy.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
-
-    PageRequest pageRequest = PageRequest.of(
-        page - 1,
-        size,
-        Sort.by(direction, sortBy));
-
-    // B2B 회원 전체 조회
-    Page<B2BMemberResponse> b2bMemberPage = b2bSearchService.getB2BMembers(pageRequest);
-
-    // Page객체를 B2BMemberPageResponse로 변환하여 반환
-    return new B2BMemberPageResponse(b2bMemberPage);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(b2bSearchService.getB2BMembers(page, size, sortBy, orderBy));
   }
 
 
-  // 특정 상태를 가진 B2B 회원 조회 (status: ACTIVE, INACTIVE, PENDING)
-  @GetMapping("/status/{status}")
-  public B2BMemberPageResponse getB2BMembersByStatus(
-      @PathVariable B2BMemberStatus status,
-      @RequestParam(defaultValue = "1") int page,
-      @RequestParam(defaultValue = "10") int size,
-      @RequestParam(defaultValue = "id") String sortBy,
-      @RequestParam(defaultValue = "asc") String orderBy
+  /**
+   * 특정 상태를 가진 B2B 회원 조회 (status: ACTIVE, INACTIVE, PENDING)
+   *
+   * @param status  B2B 회원 상태 (ACTIVE, INACTIVE, PENDING)
+   * @param page    현재 페이지 (기본값 1)
+   * @param size    페이지 당 사이즈 (기본값 10)
+   * @param sortBy  정렬 기준 (기본값 id)
+   * @param orderBy 정렬 방향 (기본값 asc)
+   * @return 특정 상태의 B2B 회원 목록
+   */
+
+  @GetMapping("/b2b-members/status/{status}")
+  public ResponseEntity<B2BMemberPageResponse> getB2BMembersByStatus(
+      @PathVariable String status,
+      @RequestParam(required = false, defaultValue = "1") int page,
+      @RequestParam(required = false, defaultValue = "10") int size,
+      @RequestParam(required = false, defaultValue = "id") String sortBy,
+      @RequestParam(required = false, defaultValue = "asc") String orderBy
   ) {
-    // 정렬 방향 결정
-    Sort.Direction direction =
-        orderBy.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
 
-    PageRequest pageRequest = PageRequest.of(
-        page - 1,
-        size,
-        Sort.by(direction, sortBy));
+    B2BMemberStatus b2bMemberStatus = B2BMemberStatus.valueOf(status.toUpperCase());
 
-    // 특정 상태에 해당하는 B2B 회원 조회
-    Page<B2BMemberResponse> b2bMemberPage = b2bSearchService.getB2BMembersByStatus(status,
-        pageRequest);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(b2bSearchService.getB2BMembersByStatus(page, size, sortBy, orderBy, b2bMemberStatus));
 
-    return new B2BMemberPageResponse(b2bMemberPage);
   }
 
-  // 판매자 권한 변경 (ACTIVE,INACTIVE)
-  @PatchMapping("/{b2bMemberId}/status")
-  public void updateB2BMemberStatus(
-      @PathVariable Long b2bMemberId,
-      @RequestBody B2BMemberStatusRequest statusRequest) {
-
-    if (statusRequest == null || statusRequest.getStatus() == null) {
-      throw new IllegalArgumentException("잘못된 상태 값입니다.");
-    }
-    b2bSearchService.updateB2BMemberStatus(b2bMemberId, statusRequest.getStatus());
-  }
 }

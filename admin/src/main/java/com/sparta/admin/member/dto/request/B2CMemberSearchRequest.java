@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 @Getter
 public class B2CMemberSearchRequest {
 
-  private int page;
-  private int size;
-  private String sortBy;
-  private String orderBy;
+  private int page = 1;
+  private int size = 10;
+  private String sortBy = "id";
+  private String orderBy = "asc";
   private B2CMemberStatus status;
 
 
