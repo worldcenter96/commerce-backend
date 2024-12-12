@@ -4,7 +4,10 @@ import com.sparta.b2b.member.dto.request.LoginRequest;
 import com.sparta.b2b.member.dto.request.SignupRequest;
 import com.sparta.b2b.member.dto.response.SignupResponse;
 import com.sparta.common.dto.MemberSession;
+import com.sparta.impostor.commerce.backend.common.exception.AuthenticationFailedException;
+import com.sparta.impostor.commerce.backend.common.exception.ForbiddenAccessException;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.entity.B2BMember;
+import com.sparta.impostor.commerce.backend.domain.b2bMember.enums.B2BMemberStatus;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.repository.B2BMemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +56,11 @@ public class B2BMemberAuthService {
                 new EntityNotFoundException("회원정보가 존재하지 않습니다."));
 
         if (!passwordEncoder.matches(rawPassword, member.getPassword())) {
-            throw new IllegalArgumentException("패스워드가 일치하지 않습니다.");
+            throw new AuthenticationFailedException("패스워드가 일치하지 않습니다.");
+        }
+
+        if (member.getB2BMemberStatus() == B2BMemberStatus.INACTIVE) {
+            throw new ForbiddenAccessException("비활성화된 사용자 입니다. 관리자에게 연락해주세요.");
         }
 
         String sessionId = new StandardSessionIdGenerator().generateSessionId();
