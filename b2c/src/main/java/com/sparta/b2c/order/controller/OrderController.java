@@ -32,7 +32,7 @@ public class OrderController {
     }
 
     @CheckAuth(role = Role.B2C)
-    @GetMapping()
+    @GetMapping("/list")
     public ResponseEntity<PageOrderResponse>searchOrderList(@RequestParam(defaultValue = "1") int page,
                                                             @RequestParam(defaultValue = "10") int size,
                                                             @RequestParam(required = false, defaultValue = "modifiedAt") String sortBy,
