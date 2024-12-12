@@ -3,6 +3,8 @@ package com.sparta.admin.member.controller;
 import com.sparta.admin.member.dto.request.B2CStatusRequest;
 import com.sparta.admin.member.dto.response.B2CStatusResponse;
 import com.sparta.admin.member.service.B2CStatusService;
+import com.sparta.common.annotation.CheckAuth;
+import com.sparta.common.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ public class B2CStatusController {
 
   private final B2CStatusService b2cStatusService;
 
+  @CheckAuth(role = Role.ADMIN)
   @PatchMapping("/b2c/{memberId}/update-status")
   public ResponseEntity<B2CStatusResponse> b2CStatusResponseResponseEntity(
       @PathVariable Long memberId,

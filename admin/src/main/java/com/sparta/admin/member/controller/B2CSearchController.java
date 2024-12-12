@@ -3,6 +3,8 @@ package com.sparta.admin.member.controller;
 import com.sparta.admin.member.dto.request.B2CMemberSearchRequest;
 import com.sparta.admin.member.dto.response.B2CMemberPageResponse;
 import com.sparta.admin.member.service.B2CSearchService;
+import com.sparta.common.annotation.CheckAuth;
+import com.sparta.common.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +22,7 @@ public class B2CSearchController {
   private final B2CSearchService b2cSearchService;
 
   // B2C 회원 전체 조회
+  @CheckAuth(role = Role.ADMIN)
   @GetMapping
   public B2CMemberPageResponse getB2CMembers(@ModelAttribute B2CMemberSearchRequest request) {
 
