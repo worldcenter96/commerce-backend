@@ -1,5 +1,6 @@
 package com.sparta.b2b.product.dto.request;
 
+import com.sparta.impostor.commerce.backend.domain.b2bMember.entity.B2BMember;
 import com.sparta.impostor.commerce.backend.domain.product.entity.Product;
 import com.sparta.impostor.commerce.backend.domain.product.enums.Category;
 import com.sparta.impostor.commerce.backend.domain.product.enums.ProductStatus;
@@ -31,7 +32,7 @@ public record ProductCreateRequest(
 	@NotNull
 	Category.SubCategory subCategory
 ) {
-	public Product toEntity() {
+	public Product toEntity(B2BMember member) {
 		return Product.createProduct(
 			this.name,
 			this.description,
@@ -39,7 +40,8 @@ public record ProductCreateRequest(
 			this.price,
 			ProductStatus.PENDING,
 			this.category,
-			this.subCategory
+			this.subCategory,
+			member
 		);
 	}
 }

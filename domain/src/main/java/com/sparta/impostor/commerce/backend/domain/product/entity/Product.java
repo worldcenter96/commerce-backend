@@ -43,7 +43,7 @@ public class Product extends Timestamped {
     @JoinColumn(name = "member_id")
     private B2BMember member;
 
-    private Product(String name, String description, int stockQuantity, int price, ProductStatus status, Category category, Category.SubCategory subCategory) {
+    private Product(String name, String description, int stockQuantity, int price, ProductStatus status, Category category, Category.SubCategory subCategory, B2BMember member) {
         this.name = name;
         this.description = description;
         this.stockQuantity = stockQuantity;
@@ -51,10 +51,11 @@ public class Product extends Timestamped {
         this.status = status;
         this.category = category;
         this.subCategory = subCategory;
+        this.member = member;
     }
 
-    public static Product createProduct (String name, String description, int stockQuantity, int price, ProductStatus status, Category category, Category.SubCategory subCategory) {
-        return new Product(name, description, stockQuantity, price, status, category, subCategory);
+    public static Product createProduct (String name, String description, int stockQuantity, int price, ProductStatus status, Category category, Category.SubCategory subCategory, B2BMember member) {
+        return new Product(name, description, stockQuantity, price, status, category, subCategory, member);
     }
 
 }
