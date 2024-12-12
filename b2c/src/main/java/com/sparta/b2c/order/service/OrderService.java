@@ -1,6 +1,7 @@
 package com.sparta.b2c.order.service;
 
 import com.sparta.b2c.order.dto.request.OrderRequest;
+import com.sparta.b2c.order.dto.request.OrderStatusRequest;
 import com.sparta.b2c.order.dto.response.OrderResponse;
 import com.sparta.b2c.order.dto.response.PageOrderResponse;
 import com.sparta.common.dto.MemberSession;
@@ -85,4 +86,25 @@ public class OrderService {
 
         return OrderResponse.from(orders);
     }
+
+    @Transactional
+    public OrderResponse refundOrder(long id, OrderStatusRequest request, Long memberId) {
+
+        String orderStatus = request.orderStatus();
+
+        Orders orders = orderRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("해당 주문을 찾지 못했습니다."));
+
+        if(!orders.getB2CMember().getId().equals(memberId)) {
+            throw new ForbiddenAccessException("본인의 주문만 환불 요청 할 수 있습니다.");
+        }
+
+        if (!OrderStatus.REFUND_REQUEST.name().equals(orderStatus)) {
+            throw new IllegalArgumentException("REFUND_REQUEST가 아닌 다른 값으로 변경할 권한이 없습니다.");
+        }
+
+        orders.updateOrderStatus(OrderStatus.REFUND_REQUEST);
+        return OrderResponse.from(orders);
+    }
+
 }
