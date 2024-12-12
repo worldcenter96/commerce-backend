@@ -35,6 +35,7 @@ public class B2CMember extends Timestamped {
     member.email = email;
     member.password = password;
     member.name = name;
+    member.b2cMemberStatus = B2CMemberStatus.ACTIVE;
     return member;
   }
 
