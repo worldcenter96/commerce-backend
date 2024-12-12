@@ -43,6 +43,12 @@ public class B2BMember extends Timestamped {
     this.b2bMemberStatus = b2BMemberStatus;
   }
 
+  // 상태 변경 메서드
+  public B2BMember changeStatus(B2BMemberStatus status) {
+    this.b2bMemberStatus = status;
+    return this;
+  }
+
   public static B2BMember createMember(String email, String password, String name) {
     return new B2BMember(email, password, name, B2BMemberStatus.PENDING);
   }
