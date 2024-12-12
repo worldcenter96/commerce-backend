@@ -24,7 +24,7 @@ public class OrderController {
     @CheckAuth(role = Role.B2C)
     @PostMapping()
     public ResponseEntity<OrderResponse>createOrder(@Valid @RequestBody OrderRequest orderRequest,
-                                                    @LoginMember(role = Role.B2B) MemberSession memberSession) {
+                                                    @LoginMember(role = Role.B2C) MemberSession memberSession) {
 
         // b2c 로그인 구현 후 로그인 값 변경 예정
         OrderResponse orderResponse = orderService.createOrder(memberSession.memberId(), orderRequest);
@@ -32,14 +32,14 @@ public class OrderController {
     }
 
     @CheckAuth(role = Role.B2C)
-    @GetMapping("/list")
+    @GetMapping()
     public ResponseEntity<PageOrderResponse>searchOrderList(@RequestParam(defaultValue = "1") int page,
                                                             @RequestParam(defaultValue = "10") int size,
                                                             @RequestParam(required = false, defaultValue = "modifiedAt") String sortBy,
                                                             @RequestParam(required = false, defaultValue = "DESC") String orderBy,
                                                             @LoginMember(role = Role.B2C) MemberSession memberSession) {
 
-        return ResponseEntity.status(HttpStatus.OK).body(orderService.searchOrderList(page, size, sortBy, orderBy, memberSession.memberId()));
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.searchOrderList(page, size, orderBy, sortBy, memberSession.memberId()));
 
     }
 }

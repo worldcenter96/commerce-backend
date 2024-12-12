@@ -64,7 +64,11 @@ public class OrderService {
     }
 
     public PageOrderResponse searchOrderList(int page, int size, String orderBy,String sortBy, Long memberId) {
-        Pageable pageable = PageRequest.of(page - 1, size, Sort.by(Sort.Direction.fromString(orderBy), sortBy));
+        Sort.Direction direction = "ASC".equalsIgnoreCase(orderBy) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+        Pageable pageable = PageRequest.of(page - 1, size, sort);
+
+
         Page<Orders> orderPage = orderRepository.findAllByB2CMemberId(memberId, pageable);
 
         return PageOrderResponse.from(orderPage);
