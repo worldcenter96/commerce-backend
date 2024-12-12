@@ -45,7 +45,7 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
 
         String sessionId = sessionUtil.getSessionIdFromCookies(request, cookieName);
         if (sessionId != null) {
-            return redisTemplate.opsForValue().get(cookieName + ":" + sessionId);
+            return redisTemplate.opsForValue().get(sessionId);
         }
 
         return null;

@@ -3,7 +3,7 @@ package com.sparta.b2c.member.service;
 import com.sparta.b2c.member.dto.request.LoginRequest;
 import com.sparta.b2c.member.dto.request.SignupRequest;
 import com.sparta.b2c.member.dto.response.SignupResponse;
-import com.sparta.common.dto.MemberSession;
+import com.sparta.common.utils.SessionUtil;
 import com.sparta.impostor.commerce.backend.common.exception.AuthenticationFailedException;
 import com.sparta.impostor.commerce.backend.common.exception.ForbiddenAccessException;
 import com.sparta.impostor.commerce.backend.domain.b2cMember.entity.B2CMember;
@@ -11,14 +11,10 @@ import com.sparta.impostor.commerce.backend.domain.b2cMember.enums.B2CMemberStat
 import com.sparta.impostor.commerce.backend.domain.b2cMember.repository.B2CMemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.util.StandardSessionIdGenerator;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +23,7 @@ public class B2CMemberAuthService {
 
     private final B2CMemberRepository b2CMemberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final RedisTemplate<String, MemberSession> redisTemplate;
+    private final SessionUtil sessionUtil;
     private static final String SESSION_NAME = "B2C_SESSION";
 
     public SignupResponse signup(SignupRequest request) {
@@ -62,9 +58,7 @@ public class B2CMemberAuthService {
             throw new ForbiddenAccessException("비활성화된 사용자 입니다. 관리자에게 연락해주세요.");
         }
 
-        String sessionId = new StandardSessionIdGenerator().generateSessionId();
-        String sessionKey = SESSION_NAME + ":" + sessionId;
-        redisTemplate.opsForValue().set(sessionKey, new MemberSession(member.getId()), 30L, TimeUnit.MINUTES);
+        String sessionId = sessionUtil.generateSession(SESSION_NAME, member.getId());
 
         return ResponseCookie
                 .from(SESSION_NAME, sessionId)

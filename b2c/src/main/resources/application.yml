@@ -4,3 +4,5 @@ spring:
     include:
       - domain
       - common
+#server:
+#  port: 8082

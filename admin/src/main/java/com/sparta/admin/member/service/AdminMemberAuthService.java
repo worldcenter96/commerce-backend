@@ -3,19 +3,15 @@ package com.sparta.admin.member.service;
 import com.sparta.admin.member.dto.request.LoginRequest;
 import com.sparta.admin.member.dto.request.SignupRequest;
 import com.sparta.admin.member.dto.response.SignupResponse;
-import com.sparta.common.dto.MemberSession;
+import com.sparta.common.utils.SessionUtil;
 import com.sparta.impostor.commerce.backend.domain.adminMember.entity.AdminMember;
 import com.sparta.impostor.commerce.backend.domain.adminMember.repository.AdminMemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.util.StandardSessionIdGenerator;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +20,7 @@ public class AdminMemberAuthService {
 
     private final AdminMemberRepository adminMemberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final RedisTemplate<String, MemberSession> redisTemplate;
+    private final SessionUtil sessionUtil;
     private static final String SESSION_NAME = "ADMIN_SESSION";
 
     public SignupResponse signup(SignupRequest request) {
@@ -55,9 +51,7 @@ public class AdminMemberAuthService {
             throw new IllegalArgumentException("패스워드가 일치하지 않습니다.");
         }
 
-        String sessionId = new StandardSessionIdGenerator().generateSessionId();
-        String sessionKey = SESSION_NAME + ":" + sessionId;
-        redisTemplate.opsForValue().set(sessionKey, new MemberSession(member.getId()), 30L, TimeUnit.MINUTES);
+        String sessionId = sessionUtil.generateSession(SESSION_NAME, member.getId());
 
         return ResponseCookie
                 .from(SESSION_NAME, sessionId)
