@@ -58,4 +58,7 @@ public class Product extends Timestamped {
         return new Product(name, description, stockQuantity, price, status, category, subCategory, member);
     }
 
+  public Product changeStatus(ProductStatus productStatus) {
+    return this;
+  }
 }
