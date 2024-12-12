@@ -4,6 +4,7 @@ import com.sparta.b2c.order.dto.request.OrderRequest;
 import com.sparta.b2c.order.dto.response.OrderResponse;
 import com.sparta.b2c.order.dto.response.PageOrderResponse;
 import com.sparta.common.dto.MemberSession;
+import com.sparta.impostor.commerce.backend.common.exception.ForbiddenAccessException;
 import com.sparta.impostor.commerce.backend.domain.b2cMember.entity.B2CMember;
 import com.sparta.impostor.commerce.backend.domain.b2cMember.repository.B2CMemberRepository;
 import com.sparta.impostor.commerce.backend.domain.order.entity.Orders;
@@ -72,5 +73,16 @@ public class OrderService {
         Page<Orders> orderPage = orderRepository.findAllByB2CMemberId(memberId, pageable);
 
         return PageOrderResponse.from(orderPage);
+    }
+
+    public OrderResponse searchOrder(long id, Long memberId) {
+        Orders orders = orderRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("해당 주문을 찾지 못했습니다."));
+
+        if(!orders.getB2CMember().getId().equals(memberId)) {
+            throw new ForbiddenAccessException("본인의 주문만 열람할 수 있습니다.");
+        }
+
+        return OrderResponse.from(orders);
     }
 }
