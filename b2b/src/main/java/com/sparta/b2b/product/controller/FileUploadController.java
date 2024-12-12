@@ -1,6 +1,25 @@
 package com.sparta.b2b.product.controller;
 
+import com.sparta.b2b.product.dto.response.ApiResponse;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
+
+@RestController("/api")
 public class FileUploadController {
 
-	public
+	// 다건 파일 업로드
+	@PostMapping("/products/images")
+	public ApiResponse uploadFile( @RequestParam("images") List<MultipartFile> files ) throws IOException {
+		
+		// 파일업로드 서비스로직 예정
+		return ApiResponse
+		.builder()
+		.build();
+	}
+
 }
