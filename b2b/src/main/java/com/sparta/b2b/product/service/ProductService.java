@@ -44,9 +44,6 @@ public class ProductService {
 
 	@Transactional(readOnly = true)
 	public ProductSearchResponse searchProduct(Long memberId, Long productId) {
-		B2BMember member = b2bMemberRepository.findById(memberId)
-			.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 멤버가 존재하지 않습니다."));
-
 		Product product = productRepository.findById(productId)
 			.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 상품이 존재하지 않습니다."));
 
