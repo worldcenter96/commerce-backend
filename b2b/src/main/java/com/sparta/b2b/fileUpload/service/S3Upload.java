@@ -1,7 +1,9 @@
-package com.sparta.b2b.product.service;
+package com.sparta.b2b.fileUpload.service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,13 +32,14 @@ public class S3Upload {
 		// multipartFile.getInputStream().available()는 파일의 크기를 반환
 		objMeta.setContentLength(multipartFile.getInputStream().available());
 
-
 		// AWS S3에 파일 업로드
 		// bucket: 업로드할 S3 버킷 이름
 		// s3FileName: S3에 저장될 파일 이름
 		// multipartFile.getInputStream(): 업로드할 파일의 입력 스트림
 		// objMeta: 파일의 메타데이터 객체 (파일 크기 및 기타 정보 포함)
-		amazonS3.putObject(bucket, s3FileName, multipartFile.getInputStream(), objMeta);
+//		amazonS3.putObject(bucket, s3FileName, multipartFile.getInputStream(), objMeta);
+		amazonS3.putObject(new PutObjectRequest(bucket, s3FileName, multipartFile.getInputStream(), objMeta)
+			.withCannedAcl(CannedAccessControlList.PublicRead));
 		String url = amazonS3.getUrl(bucket, s3FileName).toString();
 
 		return url;

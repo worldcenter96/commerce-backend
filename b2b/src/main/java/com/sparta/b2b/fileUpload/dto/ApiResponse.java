@@ -1,4 +1,4 @@
-package com.sparta.b2b.product.dto.response;
+package com.sparta.b2b.fileUpload.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,11 +16,9 @@ public class ApiResponse {
 
 	public List<ImageInfo> images;
 
-	@Getter
-	@Builder
-	@NoArgsConstructor
-	@AllArgsConstructor
-	public static class ImageInfo {
-		private String url;
+	public static ApiResponse of(List<ImageInfo> infos) {
+		return ApiResponse.builder()
+		.images(infos)
+		.build();
 	}
 }
