@@ -25,6 +25,7 @@ public class B2CMemberAuthService {
     private final B2CMemberRepository b2CMemberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final RedisTemplate<String, MemberSession> redisTemplate;
+    private static final String SESSION_NAME = "B2C_SESSION";
 
     public SignupResponse signup(SignupRequest request) {
 
@@ -55,10 +56,11 @@ public class B2CMemberAuthService {
         }
 
         String sessionId = new StandardSessionIdGenerator().generateSessionId();
-        redisTemplate.opsForValue().set(sessionId, new MemberSession(member.getId()), 30L, TimeUnit.MINUTES);
+        String sessionKey = SESSION_NAME + ":" + sessionId;
+        redisTemplate.opsForValue().set(sessionKey, new MemberSession(member.getId()), 30L, TimeUnit.MINUTES);
 
         return ResponseCookie
-                .from("SESSION", sessionId)
+                .from(SESSION_NAME, sessionId)
                 .path("/")
                 .httpOnly(true)
                 .maxAge(1800)
