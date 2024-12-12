@@ -2,6 +2,8 @@ package com.sparta.b2c.order.service;
 
 import com.sparta.b2c.order.dto.request.OrderRequest;
 import com.sparta.b2c.order.dto.response.OrderResponse;
+import com.sparta.b2c.order.dto.response.PageOrderResponse;
+import com.sparta.common.dto.MemberSession;
 import com.sparta.impostor.commerce.backend.domain.b2cMember.entity.B2CMember;
 import com.sparta.impostor.commerce.backend.domain.b2cMember.repository.B2CMemberRepository;
 import com.sparta.impostor.commerce.backend.domain.order.entity.Orders;
@@ -12,6 +14,10 @@ import com.sparta.impostor.commerce.backend.domain.product.entity.Product;
 import com.sparta.impostor.commerce.backend.domain.product.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,9 +30,9 @@ public class OrderService {
     private final B2CMemberRepository b2cMemberRepository;
 
     @Transactional
-    public OrderResponse createOrder(Long b2cMemberId, OrderRequest orderRequest) {
+    public OrderResponse createOrder(Long memberId, OrderRequest orderRequest) {
 
-        B2CMember b2CMember = b2cMemberRepository.findById(b2cMemberId)
+        B2CMember b2CMember = b2cMemberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
 
         Product product = productRepository.findById(orderRequest.productId())
@@ -55,5 +61,12 @@ public class OrderService {
         orderRepository.save(order);
         return OrderResponse.from(order);
 
+    }
+
+    public PageOrderResponse searchOrderList(int page, int size, String orderBy,String sortBy, Long memberId) {
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by(Sort.Direction.fromString(orderBy), sortBy));
+        Page<Orders> orderPage = orderRepository.findAllByMemberId(memberId, pageable);
+
+        return PageOrderResponse.from(orderPage);
     }
 }
