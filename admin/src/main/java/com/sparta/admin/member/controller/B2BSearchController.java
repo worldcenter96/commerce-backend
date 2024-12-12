@@ -2,16 +2,13 @@ package com.sparta.admin.member.controller;
 
 import com.sparta.admin.member.dto.response.B2BMemberPageResponse;
 import com.sparta.admin.member.service.B2BSearchService;
+import com.sparta.common.annotation.CheckAuth;
+import com.sparta.common.enums.Role;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.enums.B2BMemberStatus;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -30,6 +27,7 @@ public class B2BSearchController {
    * @return B2B 회원 목록
    */
 
+  @CheckAuth(role = Role.ADMIN)
   @GetMapping("/b2b-members")
   public ResponseEntity<B2BMemberPageResponse> getB2BMembers(
       @RequestParam(required = false, defaultValue = "1") int page,
@@ -53,6 +51,7 @@ public class B2BSearchController {
    * @return 특정 상태의 B2B 회원 목록
    */
 
+  @CheckAuth(role = Role.ADMIN)
   @GetMapping("/b2b-members/status/{status}")
   public ResponseEntity<B2BMemberPageResponse> getB2BMembersByStatus(
       @PathVariable String status,

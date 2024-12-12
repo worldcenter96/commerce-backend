@@ -2,6 +2,7 @@ package com.sparta.admin.member.service;
 
 import com.sparta.admin.member.dto.request.B2CStatusRequest;
 import com.sparta.admin.member.dto.response.B2CStatusResponse;
+import com.sparta.common.utils.SessionUtil;
 import com.sparta.impostor.commerce.backend.domain.b2cMember.entity.B2CMember;
 import com.sparta.impostor.commerce.backend.domain.b2cMember.enums.B2CMemberStatus;
 import com.sparta.impostor.commerce.backend.domain.b2cMember.repository.B2CMemberRepository;
@@ -15,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class B2CStatusService {
 
   private final B2CMemberRepository b2cMemberRepository;
+  private final SessionUtil sessionUtil;
+  private static final String SESSION_NAME = "B2C_SESSION";
 
   // B2C 회원 ACTIVE, INACTIVE 로 상태 전환
   public B2CStatusResponse updateB2CStatus(Long memberId, B2CStatusRequest request) {
@@ -25,6 +28,10 @@ public class B2CStatusService {
         .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
 
     B2CMember updatedMember = b2cMember.changeStatus(newStatus);
+
+    if (updatedMember.getB2cMemberStatus() == B2CMemberStatus.INACTIVE) {
+      sessionUtil.deleteSession(SESSION_NAME, updatedMember.getId());
+    }
 
     return B2CStatusResponse.from(updatedMember);
   }
