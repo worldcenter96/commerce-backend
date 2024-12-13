@@ -64,7 +64,7 @@ public class ProductService {
 
 	public ProductUpdateResponse updateProduct(Long memberId, Long productId, ProductUpdateRequest request) {
 		Product existingProduct = productRepository.findById(productId)
-			.orElseThrow(() -> new ForbiddenAccessException("해당 ID를 가진 상품이 존재하지 않습니다."));
+			.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 상품이 존재하지 않습니다."));
 
 		Product updatedProduct = Product.updateProduct(existingProduct, request.stockQuantity());
 		Product savedProduct = productRepository.save(updatedProduct);
@@ -80,10 +80,10 @@ public class ProductService {
 			throw new ForbiddenAccessException("승인된 멤버만 삭제할 수 있습니다.");
 		}
 		Product product = productRepository.findById(productId)
-			.orElseThrow(() -> new ForbiddenAccessException("해당 제품을 찾을 수 없습니다."));
+			.orElseThrow(() -> new EntityNotFoundException("해당 제품을 찾을 수 없습니다."));
 
 		if (product.getMember().getId() != member.getId()) {
-			throw new EntityNotFoundException("본인이 등록한 상품만 삭제할 수 있습니다.");
+			throw new ForbiddenAccessException("본인이 등록한 상품만 삭제할 수 있습니다.");
 		}
 		productRepository.deleteById(productId);
 	}
