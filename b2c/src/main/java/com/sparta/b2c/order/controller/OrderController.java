@@ -1,6 +1,7 @@
 package com.sparta.b2c.order.controller;
 
 import com.sparta.b2c.order.dto.request.OrderRequest;
+import com.sparta.b2c.order.dto.request.OrderStatusRequest;
 import com.sparta.b2c.order.dto.response.OrderResponse;
 import com.sparta.b2c.order.dto.response.PageOrderResponse;
 import com.sparta.b2c.order.service.OrderService;
@@ -51,4 +52,12 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK).body(orderService.searchOrder(id, memberSession.memberId()));
     }
 
+    @CheckAuth(role = Role.B2C)
+    @PatchMapping("{id}/order-status")
+    public ResponseEntity<OrderResponse> refundOrder(@PathVariable long id,
+                                                     @Valid @RequestBody OrderStatusRequest request,
+                                                     @LoginMember(role = Role.B2C) MemberSession memberSession) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.refundOrder(id, request, memberSession.memberId()));
+    }
 }

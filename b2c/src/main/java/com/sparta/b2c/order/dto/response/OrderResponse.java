@@ -11,7 +11,7 @@ public record OrderResponse(
         String name,
         int quantity,
         Long totalPrice,
-        OrderStatus status,
+        OrderStatus orderStatus,
         DeliveryStatus deliveryStatus,
         String trackingNumber,
         LocalDateTime createdAt,
