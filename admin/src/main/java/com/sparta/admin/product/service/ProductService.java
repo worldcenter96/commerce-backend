@@ -30,8 +30,9 @@ public class ProductService {
     );
 
     Page<Product> products = productRepository.searchProductsWithFilters(
-        "",
+        null,
         productRequest.status(),
+
         Category.DEFAULT,
         SubCategory.DEFAULT,
         pageable

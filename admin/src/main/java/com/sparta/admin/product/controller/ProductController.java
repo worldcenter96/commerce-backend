@@ -22,10 +22,10 @@ public class ProductController {
   @GetMapping()
   public ResponseEntity<PageProductResponse> getProducts(
       @RequestParam(required = false) ProductStatus status,
-      @RequestParam(required = false) int page,
-      @RequestParam(required = false) int size,
-      @RequestParam(required = false) String sortBy,
-      @RequestParam(required = false) String orderBy) {
+      @RequestParam(defaultValue = "1") int page,
+      @RequestParam(defaultValue = "10") int size,
+      @RequestParam(defaultValue = "name") String sortBy,
+      @RequestParam(defaultValue = "asc") String orderBy) {
 
     ProductRequest reqDto = new ProductRequest(
         status, page, size, sortBy, orderBy
