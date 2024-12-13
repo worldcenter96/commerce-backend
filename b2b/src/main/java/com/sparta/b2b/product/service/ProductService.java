@@ -1,13 +1,15 @@
 package com.sparta.b2b.product.service;
 
+import com.sparta.b2b.fileUpload.dto.ImageInfo;
 import com.sparta.b2b.product.dto.request.ProductCreateRequest;
 import com.sparta.b2b.product.dto.response.PageProductResponse;
 import com.sparta.b2b.product.dto.response.ProductCreateResponse;
 import com.sparta.b2b.product.dto.response.ProductSearchResponse;
-import com.sparta.common.dto.MemberSession;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.entity.B2BMember;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.enums.B2BMemberStatus;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.repository.B2BMemberRepository;
+import com.sparta.impostor.commerce.backend.domain.image.entity.Image;
+import com.sparta.impostor.commerce.backend.domain.image.repository.ImageRepository;
 import com.sparta.impostor.commerce.backend.domain.product.entity.Product;
 import com.sparta.impostor.commerce.backend.domain.product.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -16,11 +18,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -30,6 +32,8 @@ public class ProductService {
 
 	private final ProductRepository productRepository;
 	private final B2BMemberRepository b2bMemberRepository;
+	private final ImageRepository imageRepository;
+
 
 	public ProductCreateResponse createProduct(Long memberId, ProductCreateRequest request) {
 		B2BMember member = b2bMemberRepository.findById(memberId)
@@ -38,8 +42,23 @@ public class ProductService {
 		if (member.getB2BMemberStatus() != B2BMemberStatus.ACTIVE) {
 			throw new IllegalStateException("승인된 멤버만 상품 등록 할 수 있습니다.");
 		}
-		Product saveedProduct = productRepository.save(request.toEntity(member));
-		return ProductCreateResponse.from(saveedProduct);
+
+		Product saveedProduct = productRepository.save(request.toProductEntity(member));
+
+		List<ImageInfo> imageinfos = request.images();
+		List<Image> images = new ArrayList<>();
+
+		for (ImageInfo imageinfo : imageinfos) {
+			Image image = Image.builder()
+				.img_url(imageinfo.getUrl())
+				.product(saveedProduct).build();
+
+			images.add(image);
+		}
+
+		List<Image> savedImageList = imageRepository.saveAll(images);
+
+		return ProductCreateResponse.from(saveedProduct, savedImageList);
 	}
 
 	@Transactional(readOnly = true)
