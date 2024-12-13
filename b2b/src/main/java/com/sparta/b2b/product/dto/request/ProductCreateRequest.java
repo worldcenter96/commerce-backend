@@ -1,11 +1,13 @@
 package com.sparta.b2b.product.dto.request;
 
+import com.sparta.b2b.fileUpload.dto.ImageInfo;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.entity.B2BMember;
 import com.sparta.impostor.commerce.backend.domain.product.entity.Product;
 import com.sparta.impostor.commerce.backend.domain.product.enums.Category;
 import com.sparta.impostor.commerce.backend.domain.product.enums.ProductStatus;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
+
+import java.util.List;
 
 public record ProductCreateRequest(
 	@NotNull
@@ -30,9 +32,14 @@ public record ProductCreateRequest(
 	Category category,
 
 	@NotNull
-	Category.SubCategory subCategory
+	Category.SubCategory subCategory,
+
+	@NotNull
+	List<ImageInfo> images
+
 ) {
-	public Product toEntity(B2BMember member) {
+
+	public Product toProductEntity(B2BMember member) {
 		return Product.createProduct(
 			this.name,
 			this.description,
@@ -44,4 +51,5 @@ public record ProductCreateRequest(
 			member
 		);
 	}
+
 }

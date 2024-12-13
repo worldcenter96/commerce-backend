@@ -1,10 +1,14 @@
 package com.sparta.b2b.product.dto.response;
 
+import com.sparta.b2b.fileUpload.dto.ImageInfo;
+import com.sparta.impostor.commerce.backend.domain.image.entity.Image;
 import com.sparta.impostor.commerce.backend.domain.product.entity.Product;
 import com.sparta.impostor.commerce.backend.domain.product.enums.Category;
 import com.sparta.impostor.commerce.backend.domain.product.enums.ProductStatus;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public record ProductCreateResponse(
 	Long id,
@@ -16,10 +20,19 @@ public record ProductCreateResponse(
 	Category category,
 	Category.SubCategory subCategory,
 	LocalDateTime createdAt,
-	LocalDateTime modifiedAt
-
+	LocalDateTime modifiedAt,
+	List<ImageInfo> imageInfos
 ) {
-	public static ProductCreateResponse from(Product save) {
+	public static ProductCreateResponse from(Product save,
+											 List<Image> savedImageList) {
+
+		List<ImageInfo> imageInfos = new ArrayList<>();
+		for (Image image : savedImageList) {
+			imageInfos.add(ImageInfo.builder()
+				.url(image.getImg_url())
+				.build());
+		}
+
 		return new ProductCreateResponse(
 			save.getId(),
 			save.getName(),
@@ -30,7 +43,8 @@ public record ProductCreateResponse(
 			save.getCategory(),
 			save.getSubCategory(),
 			save.getCreatedAt(),
-			save.getModifiedAt()
+			save.getModifiedAt(),
+			imageInfos
 		);
 	}
 }

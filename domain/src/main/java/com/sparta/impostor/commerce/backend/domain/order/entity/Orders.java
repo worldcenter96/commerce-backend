@@ -57,6 +57,11 @@ public class Orders extends Timestamped {
         return this;
     }
 
+    public Orders updateOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+        return this;
+    }
+
     private Orders(String name, int quantity, Long totalPrice, OrderStatus orderStatus, DeliveryStatus deliveryStatus, String trackingNumber, Product product, B2CMember b2CMember, Long b2BMemberId) {
         this.name = name;
         this.quantity = quantity;
