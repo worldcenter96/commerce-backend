@@ -6,6 +6,8 @@ import com.sparta.b2b.product.dto.response.PageProductResponse;
 import com.sparta.b2b.product.dto.response.ProductCreateResponse;
 import com.sparta.b2b.product.dto.response.ProductSearchResponse;
 import com.sparta.b2b.product.dto.response.ProductUpdateResponse;
+import com.sparta.impostor.commerce.backend.common.exception.AuthenticationFailedException;
+import com.sparta.impostor.commerce.backend.common.exception.ForbiddenAccessException;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.entity.B2BMember;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.enums.B2BMemberStatus;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.repository.B2BMemberRepository;
@@ -37,7 +39,7 @@ public class ProductService {
 			.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 멤버가 존재하지 않습니다."));
 
 		if (member.getB2BMemberStatus() != B2BMemberStatus.ACTIVE) {
-			throw new IllegalStateException("승인된 멤버만 상품 등록 할 수 있습니다.");
+			throw new ForbiddenAccessException("승인된 멤버만 상품 등록 할 수 있습니다.");
 		}
 		Product saveedProduct = productRepository.save(request.toEntity(member));
 		return ProductCreateResponse.from(saveedProduct);
@@ -46,7 +48,7 @@ public class ProductService {
 	@Transactional(readOnly = true)
 	public ProductSearchResponse searchProduct(Long memberId, Long productId) {
 		Product product = productRepository.findById(productId)
-			.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 상품이 존재하지 않습니다."));
+			.orElseThrow(() -> new ForbiddenAccessException("해당 ID를 가진 상품이 존재하지 않습니다."));
 
 		return ProductSearchResponse.from(product);
 	}
@@ -62,7 +64,7 @@ public class ProductService {
 
 	public ProductUpdateResponse updateProduct(Long memberId, Long productId, ProductUpdateRequest request) {
 		Product existingProduct = productRepository.findById(productId)
-			.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 상품이 존재하지 않습니다."));
+			.orElseThrow(() -> new ForbiddenAccessException("해당 ID를 가진 상품이 존재하지 않습니다."));
 
 		Product updatedProduct = Product.updateProduct(existingProduct, request.stockQuantity());
 		Product savedProduct = productRepository.save(updatedProduct);
@@ -72,13 +74,13 @@ public class ProductService {
 
 	public void deleteProduct(Long memberId, Long productId) {
 		B2BMember member = b2bMemberRepository.findById(memberId)
-			.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 멤버가 존재하지 않습니다."));
+			.orElseThrow(() -> new AuthenticationFailedException("해당 ID를 가진 멤버가 존재하지 않습니다."));
 
 		if (member.getB2BMemberStatus() != B2BMemberStatus.ACTIVE) {
-			throw new IllegalStateException("승인된 멤버만 삭제할 수 있습니다.");
+			throw new ForbiddenAccessException("승인된 멤버만 삭제할 수 있습니다.");
 		}
 		Product product = productRepository.findById(productId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 제품을 찾을 수 없습니다."));
+			.orElseThrow(() -> new ForbiddenAccessException("해당 제품을 찾을 수 없습니다."));
 
 		if (product.getMember().getId() != member.getId()) {
 			throw new EntityNotFoundException("본인이 등록한 상품만 삭제할 수 있습니다.");
