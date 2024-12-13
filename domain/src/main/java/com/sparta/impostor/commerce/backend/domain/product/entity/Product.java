@@ -5,6 +5,8 @@ import com.sparta.impostor.commerce.backend.domain.b2bMember.entity.B2BMember;
 import com.sparta.impostor.commerce.backend.domain.product.enums.Category;
 import com.sparta.impostor.commerce.backend.domain.product.enums.ProductStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 @Entity
@@ -12,53 +14,60 @@ import lombok.*;
 @NoArgsConstructor
 public class Product extends Timestamped {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(nullable = false)
-    private String name;
+	@Column(nullable = false)
+	private String name;
 
-    @Column(nullable = false)
-    private String description;
+	@Column(nullable = false)
+	private String description;
 
-    @Column(nullable = false)
-    private int stockQuantity;
+	@Column(nullable = false)
+	private int stockQuantity;
 
-    @Column(nullable = false)
-    private int price;
+	@Column(nullable = false)
+	private int price;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ProductStatus status;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private ProductStatus status;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Category category;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private Category category;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Category.SubCategory subCategory;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private Category.SubCategory subCategory;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private B2BMember member;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id")
+	private B2BMember member;
 
-    private Product(String name, String description, int stockQuantity, int price, ProductStatus status, Category category, Category.SubCategory subCategory, B2BMember member) {
-        this.name = name;
-        this.description = description;
-        this.stockQuantity = stockQuantity;
-        this.price = price;
-        this.status = status;
-        this.category = category;
-        this.subCategory = subCategory;
-        this.member = member;
-    }
+	private Product(String name, String description, int stockQuantity, int price, ProductStatus status, Category category, Category.SubCategory subCategory, B2BMember member) {
+		this.name = name;
+		this.description = description;
+		this.stockQuantity = stockQuantity;
+		this.price = price;
+		this.status = status;
+		this.category = category;
+		this.subCategory = subCategory;
+		this.member = member;
+	}
 
-    public static Product createProduct (String name, String description, int stockQuantity, int price, ProductStatus status, Category category, Category.SubCategory subCategory, B2BMember member) {
-        return new Product(name, description, stockQuantity, price, status, category, subCategory, member);
-    }
+	public static Product createProduct(String name, String description, int stockQuantity, int price, ProductStatus status, Category category, Category.SubCategory subCategory, B2BMember member) {
+		return new Product(name, description, stockQuantity, price, status, category, subCategory, member);
+	}
 
-  public Product changeStatus(ProductStatus productStatus) {
-    return this;
-  }
+	public static Product updateProduct(int stockQuantity) {
+		return new Product();
+	}
+
+	public Product changeStatus(ProductStatus productStatus) {
+		return this;
+	}
 }
+
+

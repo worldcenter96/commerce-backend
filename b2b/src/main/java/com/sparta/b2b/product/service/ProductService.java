@@ -1,10 +1,15 @@
 package com.sparta.b2b.product.service;
 
 import com.sparta.b2b.product.dto.request.ProductCreateRequest;
+import com.sparta.b2b.product.dto.request.ProductUpdateRequest;
 import com.sparta.b2b.product.dto.response.PageProductResponse;
 import com.sparta.b2b.product.dto.response.ProductCreateResponse;
 import com.sparta.b2b.product.dto.response.ProductSearchResponse;
+<<<<<<< Updated upstream
 import com.sparta.common.dto.MemberSession;
+=======
+import com.sparta.b2b.product.dto.response.ProductUpdateResponse;
+>>>>>>> Stashed changes
 import com.sparta.impostor.commerce.backend.domain.b2bMember.entity.B2BMember;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.enums.B2BMemberStatus;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.repository.B2BMemberRepository;
@@ -30,6 +35,10 @@ public class ProductService {
 
 	private final ProductRepository productRepository;
 	private final B2BMemberRepository b2bMemberRepository;
+<<<<<<< Updated upstream
+=======
+	private final ImageRepository imageRepository;
+>>>>>>> Stashed changes
 
 	public ProductCreateResponse createProduct(Long memberId, ProductCreateRequest request) {
 		B2BMember member = b2bMemberRepository.findById(memberId)
@@ -57,6 +66,14 @@ public class ProductService {
 		Page<Product> productPage = productRepository.findAllByMemberId(memberId, pageable);//memberId 인덱싱 처리 성능 올리기
 
 		return PageProductResponse.from(productPage);
+	}
+
+	public ProductUpdateResponse updateProduct (Long memberId, Long productId, ProductUpdateRequest request) {
+		Product product = productRepository.findById(productId)
+			.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 상품이 존재하지 않습니다."));
+
+		Product saveedProduct = Product.updateProduct(int stockQuantity);
+		return ProductUpdateResponse.from(saveedProduct);
 	}
 
 	public void deleteProduct(Long memberId, Long productId) {
