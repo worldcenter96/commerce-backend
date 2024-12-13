@@ -14,58 +14,60 @@ import lombok.*;
 @NoArgsConstructor
 public class Product extends Timestamped {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(nullable = false)
-	private String name;
+    @Column(nullable = false)
+    private String name;
 
-	@Column(nullable = false)
-	private String description;
+    @Column(nullable = false)
+    private String description;
 
-	@Column(nullable = false)
-	private int stockQuantity;
+    @Column(nullable = false)
+    private int stockQuantity;
 
-	@Column(nullable = false)
-	private int price;
+    @Column(nullable = false)
+    private int price;
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private ProductStatus status;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ProductStatus status;
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private Category category;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Category category;
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private Category.SubCategory subCategory;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Category.SubCategory subCategory;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id")
-	private B2BMember member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private B2BMember member;
 
-	private Product(String name, String description, int stockQuantity, int price, ProductStatus status, Category category, Category.SubCategory subCategory, B2BMember member) {
-		this.name = name;
-		this.description = description;
-		this.stockQuantity = stockQuantity;
-		this.price = price;
-		this.status = status;
-		this.category = category;
-		this.subCategory = subCategory;
-		this.member = member;
-	}
+    private Product(String name, String description, int stockQuantity, int price,
+                    ProductStatus status, Category category, Category.SubCategory subCategory, B2BMember member) {
+        this.name = name;
+        this.description = description;
+        this.stockQuantity = stockQuantity;
+        this.price = price;
+        this.status = status;
+        this.category = category;
+        this.subCategory = subCategory;
+        this.member = member;
+    }
 
-	public static Product createProduct(String name, String description, int stockQuantity, int price, ProductStatus status, Category category, Category.SubCategory subCategory, B2BMember member) {
-		return new Product(name, description, stockQuantity, price, status, category, subCategory, member);
-	}
+    public static Product createProduct(String name, String description, int stockQuantity, int price,
+                                        ProductStatus status, Category category, Category.SubCategory subCategory, B2BMember member) {
+        return new Product(name, description, stockQuantity, price, status, category, subCategory,
+                member);
+    }
 
-	public Product changeStatus(ProductStatus productStatus) {
-		return this;
-	}
-
-	public static Product updateProduct(Product existingProduct, int newStockQuantity) {
+    public Product changeStatus(ProductStatus productStatus) {
+        this.status = productStatus;
+        return this;
+    }public static Product updateProduct(Product existingProduct, int newStockQuantity) {
 		return new Product(
 			existingProduct.name,
 			existingProduct.description,
