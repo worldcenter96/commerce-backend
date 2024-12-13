@@ -61,12 +61,21 @@ public class Product extends Timestamped {
 		return new Product(name, description, stockQuantity, price, status, category, subCategory, member);
 	}
 
-	public static Product updateProduct(int stockQuantity) {
-		return new Product();
-	}
-
 	public Product changeStatus(ProductStatus productStatus) {
 		return this;
+	}
+
+	public static Product updateProduct(Product existingProduct, int newStockQuantity) {
+		return new Product(
+			existingProduct.name,
+			existingProduct.description,
+			newStockQuantity,
+			existingProduct.price,
+			existingProduct.status,
+			existingProduct.category,
+			existingProduct.subCategory,
+			existingProduct.member
+		);
 	}
 }
 

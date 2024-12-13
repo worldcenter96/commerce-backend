@@ -5,14 +5,11 @@ import com.sparta.b2b.product.dto.request.ProductUpdateRequest;
 import com.sparta.b2b.product.dto.response.PageProductResponse;
 import com.sparta.b2b.product.dto.response.ProductCreateResponse;
 import com.sparta.b2b.product.dto.response.ProductSearchResponse;
-<<<<<<< Updated upstream
-import com.sparta.common.dto.MemberSession;
-=======
 import com.sparta.b2b.product.dto.response.ProductUpdateResponse;
->>>>>>> Stashed changes
 import com.sparta.impostor.commerce.backend.domain.b2bMember.entity.B2BMember;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.enums.B2BMemberStatus;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.repository.B2BMemberRepository;
+import com.sparta.impostor.commerce.backend.domain.image.repository.ImageRepository;
 import com.sparta.impostor.commerce.backend.domain.product.entity.Product;
 import com.sparta.impostor.commerce.backend.domain.product.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -21,11 +18,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
 
 
 @Service
@@ -35,10 +29,8 @@ public class ProductService {
 
 	private final ProductRepository productRepository;
 	private final B2BMemberRepository b2bMemberRepository;
-<<<<<<< Updated upstream
-=======
+
 	private final ImageRepository imageRepository;
->>>>>>> Stashed changes
 
 	public ProductCreateResponse createProduct(Long memberId, ProductCreateRequest request) {
 		B2BMember member = b2bMemberRepository.findById(memberId)
@@ -68,12 +60,14 @@ public class ProductService {
 		return PageProductResponse.from(productPage);
 	}
 
-	public ProductUpdateResponse updateProduct (Long memberId, Long productId, ProductUpdateRequest request) {
-		Product product = productRepository.findById(productId)
+	public ProductUpdateResponse updateProduct(Long memberId, Long productId, ProductUpdateRequest request) {
+		Product existingProduct = productRepository.findById(productId)
 			.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 상품이 존재하지 않습니다."));
 
-		Product saveedProduct = Product.updateProduct(int stockQuantity);
-		return ProductUpdateResponse.from(saveedProduct);
+		Product updatedProduct = Product.updateProduct(existingProduct, request.stockQuantity());
+		Product savedProduct = productRepository.save(updatedProduct);
+
+		return ProductUpdateResponse.from(savedProduct);
 	}
 
 	public void deleteProduct(Long memberId, Long productId) {
