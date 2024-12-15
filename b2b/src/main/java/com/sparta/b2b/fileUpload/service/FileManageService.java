@@ -39,7 +39,7 @@ public class FileManageService {
 	}
 
 
-	private void validateFiles(List<MultipartFile> files) {
+	public void validateFiles(List<MultipartFile> files) {
 		if (files == null || files.isEmpty()) {
 			throw new IllegalArgumentException("파일 목록이 비어있습니다.");
 		}
