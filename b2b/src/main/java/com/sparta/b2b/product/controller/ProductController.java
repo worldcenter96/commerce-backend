@@ -16,6 +16,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 
 @RestController
@@ -29,12 +32,12 @@ public class ProductController {
 	@PostMapping()
 	public ResponseEntity<ProductCreateResponse> createProduct(
 		@RequestBody @Valid ProductCreateRequest request,
-		@LoginMember(role = Role.B2B) MemberSession memberSession
-
+		@LoginMember(role = Role.B2B) MemberSession memberSession,
+		@RequestParam("images") List<MultipartFile> productImageFiles
 	) {
 		return ResponseEntity
 			.status(HttpStatus.CREATED)
-			.body(productService.createProduct(memberSession.memberId(), request));
+			.body(productService.createProduct(memberSession.memberId(), request, productImageFiles));
 	}
 
 	@CheckAuth(role = Role.B2B)

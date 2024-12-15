@@ -1,13 +1,14 @@
 package com.sparta.b2b.product.service;
 
+import com.sparta.b2b.fileUpload.dto.ImangeUploadedResponse;
 import com.sparta.b2b.fileUpload.dto.ImageInfo;
+import com.sparta.b2b.fileUpload.service.FileUploadService;
 import com.sparta.b2b.product.dto.request.ProductCreateRequest;
 import com.sparta.b2b.product.dto.request.ProductUpdateRequest;
 import com.sparta.b2b.product.dto.response.PageProductResponse;
 import com.sparta.b2b.product.dto.response.ProductCreateResponse;
 import com.sparta.b2b.product.dto.response.ProductSearchResponse;
 import com.sparta.b2b.product.dto.response.ProductUpdateResponse;
-import com.sparta.common.dto.MemberSession;
 import com.sparta.impostor.commerce.backend.common.exception.AuthenticationFailedException;
 import com.sparta.impostor.commerce.backend.common.exception.ForbiddenAccessException;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.entity.B2BMember;
@@ -23,11 +24,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,9 +40,13 @@ public class ProductService {
 	private final ProductRepository productRepository;
 	private final B2BMemberRepository b2bMemberRepository;
 	private final ImageRepository imageRepository;
+	private final FileUploadService fileUploadService;
 
 
-	public ProductCreateResponse createProduct(Long memberId, ProductCreateRequest request) {
+	public ProductCreateResponse createProduct(Long memberId, ProductCreateRequest request, List<MultipartFile> productImageFiles) {
+
+		ImangeUploadedResponse imangeUploadedResponse = fileUploadService.uploadFiles(productImageFiles);
+
 		B2BMember member = b2bMemberRepository.findById(memberId)
 			.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 멤버가 존재하지 않습니다."));
 
@@ -52,7 +56,7 @@ public class ProductService {
 
 		Product saveedProduct = productRepository.save(request.toProductEntity(member));
 
-		List<ImageInfo> imageinfos = request.images();
+		List<ImageInfo> imageinfos = imangeUploadedResponse.getImages();
 		List<Image> images = new ArrayList<>();
 
 		for (ImageInfo imageinfo : imageinfos) {

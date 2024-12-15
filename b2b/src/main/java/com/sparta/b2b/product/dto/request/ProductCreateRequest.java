@@ -32,11 +32,7 @@ public record ProductCreateRequest(
 	Category category,
 
 	@NotNull
-	Category.SubCategory subCategory,
-
-	@NotNull
-	List<ImageInfo> images
-
+	Category.SubCategory subCategory
 ) {
 
 	public Product toProductEntity(B2BMember member) {
