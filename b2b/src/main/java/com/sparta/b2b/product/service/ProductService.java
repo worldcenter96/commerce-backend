@@ -69,6 +69,7 @@ public class ProductService {
 		return ProductCreateResponse.from(saveedProduct, savedImageList);
 	}
 
+
 	@Transactional(readOnly = true)
 	public ProductSearchResponse searchProduct(Long memberId, Long productId) {
 		Product product = productRepository.findById(productId)
@@ -76,6 +77,7 @@ public class ProductService {
 
 		return ProductSearchResponse.from(product);
 	}
+
 
 	public PageProductResponse totalSearchProduct(
 		Long memberId, int page, int size, String orderBy, String sortBy
@@ -86,6 +88,7 @@ public class ProductService {
 		return PageProductResponse.from(productPage);
 	}
 
+
 	public ProductUpdateResponse updateProduct(Long memberId, Long productId, ProductUpdateRequest request) {
 		Product existingProduct = productRepository.findById(productId)
 			.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 상품이 존재하지 않습니다."));
@@ -95,6 +98,7 @@ public class ProductService {
 
 		return ProductUpdateResponse.from(savedProduct);
 	}
+
 
 	public void deleteProduct(Long memberId, Long productId) {
 		B2BMember member = b2bMemberRepository.findById(memberId)
@@ -120,5 +124,4 @@ public class ProductService {
 
 		productRepository.deleteById(productId);
 	}
-
 }

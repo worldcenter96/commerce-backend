@@ -17,8 +17,12 @@ import java.util.stream.Collectors;
 public class FileManageService {
 
 	private final S3ManageService s3ManageService;
+	private static final long MAX_FILE_SIZE = 5 * 1024 * 1024; // TODO : confg에 넣으면 좋을듯
 
 	public ImangeUploadedResponse uploadFiles(List<MultipartFile> files) {
+
+		validateFiles(files);
+
 		// 각 파일 업로드를 병렬 스트림으로 처리
 		List<ImageInfo> infos = files.parallelStream()
 			.map(file -> {
@@ -32,6 +36,33 @@ public class FileManageService {
 			.collect(Collectors.toList());
 
 		return ImangeUploadedResponse.of(infos);
+	}
+
+
+	private void validateFiles(List<MultipartFile> files) {
+		if (files == null || files.isEmpty()) {
+			throw new IllegalArgumentException("파일 목록이 비어있습니다.");
+		}
+
+		if (files.size() > 10) {
+			throw new IllegalArgumentException("최대 파일 갯수를 초과하였습니다.");
+		}
+
+		for (MultipartFile file : files) {
+			if (file == null || file.isEmpty()) {
+				throw new IllegalArgumentException("파일이 비어있거나 null입니다.");
+			}
+
+			if (file.getSize() > MAX_FILE_SIZE) {
+				throw new IllegalArgumentException(
+					String.format("파일 크기가 초과되었습니다. 파일명: %s, 크기: %.2fMB (최대 허용 크기: %.2fMB)",
+						file.getOriginalFilename(),
+						file.getSize() / (1024.0 * 1024.0),
+						MAX_FILE_SIZE / (1024.0 * 1024.0)
+					)
+				);
+			}
+		}
 	}
 
 

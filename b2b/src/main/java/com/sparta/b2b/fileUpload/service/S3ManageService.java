@@ -32,6 +32,7 @@ public class S3ManageService {
 
 		amazonS3.putObject(new PutObjectRequest(bucket, "/product-image/"+s3FileName, multipartFile.getInputStream(), objMeta)
 			.withCannedAcl(CannedAccessControlList.PublicRead));
+
 		String url = amazonS3.getUrl(bucket, s3FileName).toString();
 
 		return url;
