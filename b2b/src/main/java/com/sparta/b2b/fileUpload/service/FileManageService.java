@@ -14,16 +14,16 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class FileUploadService {
+public class FileManageService {
 
-	private final S3Upload s3Upload;
+	private final S3ManageService s3ManageService;
 
 	public ImangeUploadedResponse uploadFiles(List<MultipartFile> files) {
 		// 각 파일 업로드를 병렬 스트림으로 처리
 		List<ImageInfo> infos = files.parallelStream()
 			.map(file -> {
 				try {
-					String url = s3Upload.upload(file);
+					String url = s3ManageService.upload(file);
 					return new ImageInfo(url);
 				} catch (IOException e) {
 					throw new RuntimeException(e); // 예외를 RuntimeException으로 변환
@@ -32,5 +32,11 @@ public class FileUploadService {
 			.collect(Collectors.toList());
 
 		return ImangeUploadedResponse.of(infos);
+	}
+
+
+	// 이미지 삭제 메서드
+	public void delete(String imageUrl) {
+		s3ManageService.delete(imageUrl);
 	}
 }

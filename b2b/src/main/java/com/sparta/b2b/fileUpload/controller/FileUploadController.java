@@ -1,7 +1,7 @@
 package com.sparta.b2b.fileUpload.controller;
 
 import com.sparta.b2b.fileUpload.dto.ImangeUploadedResponse;
-import com.sparta.b2b.fileUpload.service.FileUploadService;
+import com.sparta.b2b.fileUpload.service.FileManageService;
 import com.sparta.common.annotation.CheckAuth;
 import com.sparta.common.enums.Role;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/api")
 public class FileUploadController {
 
-	private final FileUploadService fileUploadService;
+	private final FileManageService fileUploadService;
 
 	@CheckAuth(role = Role.B2B)
 	@PostMapping("/products/images")
