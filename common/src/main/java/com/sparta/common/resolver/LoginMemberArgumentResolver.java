@@ -2,7 +2,7 @@ package com.sparta.common.resolver;
 
 import com.sparta.common.annotation.LoginMember;
 import com.sparta.common.dto.MemberSession;
-import com.sparta.common.utils.SessionUtil;
+import com.sparta.common.service.SessionService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -20,7 +20,7 @@ import java.util.Map;
 public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final HttpServletRequest request;
-    private final SessionUtil sessionUtil;
+    private final SessionService sessionService;
     private final RedisTemplate<String, MemberSession> redisTemplate;
     private static final Map<String, String> SESSION_COOKIE_MAP = Map.of(
             "ADMIN", "ADMIN_SESSION",
@@ -43,7 +43,7 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
         String role = loginMember.role().toString();
         String cookieName = SESSION_COOKIE_MAP.get(role);
 
-        String sessionId = sessionUtil.getSessionIdFromCookies(request, cookieName);
+        String sessionId = sessionService.getSessionIdFromCookies(request, cookieName);
         if (sessionId != null) {
             return redisTemplate.opsForValue().get(sessionId);
         }

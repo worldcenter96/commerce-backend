@@ -3,12 +3,12 @@ package com.sparta.admin.member.service;
 import com.sparta.admin.member.dto.request.LoginRequest;
 import com.sparta.admin.member.dto.request.SignupRequest;
 import com.sparta.admin.member.dto.response.SignupResponse;
-import com.sparta.common.utils.SessionUtil;
+import com.sparta.common.service.SessionService;
 import com.sparta.impostor.commerce.backend.domain.adminMember.entity.AdminMember;
 import com.sparta.impostor.commerce.backend.domain.adminMember.repository.AdminMemberRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +20,7 @@ public class AdminMemberAuthService {
 
     private final AdminMemberRepository adminMemberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final SessionUtil sessionUtil;
+    private final SessionService sessionService;
     private static final String SESSION_NAME = "ADMIN_SESSION";
 
     public SignupResponse signup(SignupRequest request) {
@@ -39,7 +39,7 @@ public class AdminMemberAuthService {
         return SignupResponse.from(createMember);
     }
 
-    public ResponseCookie login(LoginRequest request) {
+    public Cookie login(LoginRequest request) {
 
         String email = request.email();
         String rawPassword = request.password();
@@ -51,13 +51,13 @@ public class AdminMemberAuthService {
             throw new IllegalArgumentException("패스워드가 일치하지 않습니다.");
         }
 
-        String sessionId = sessionUtil.generateSession(SESSION_NAME, member.getId());
+        String sessionId = sessionService.generateSession(SESSION_NAME, member.getId());
 
-        return ResponseCookie
-                .from(SESSION_NAME, sessionId)
-                .path("/")
-                .httpOnly(true)
-                .maxAge(1800)
-                .build();
+        Cookie cookie = new Cookie(SESSION_NAME, sessionId);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(1800);
+
+        return cookie;
     }
 }

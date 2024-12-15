@@ -1,6 +1,7 @@
 package com.sparta.common.config;
 
 import com.sparta.common.interceptor.AuthInterceptor;
+import com.sparta.common.interceptor.LoginInterceptor;
 import com.sparta.common.resolver.LoginMemberArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ import java.util.List;
 public class WebConfig implements WebMvcConfigurer {
 
     private final AuthInterceptor authInterceptor;
+    private final LoginInterceptor loginInterceptor;
     private final LoginMemberArgumentResolver loginMemberArgumentResolver;
 
     @Override
@@ -22,6 +24,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/api/**");
 
+        registry.addInterceptor(loginInterceptor)
+                .addPathPatterns("/api/**");
     }
 
     @Override

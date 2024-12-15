@@ -1,6 +1,7 @@
 package com.sparta.common.interceptor;
 
 import com.sparta.common.annotation.CheckAuth;
+import com.sparta.common.annotation.CheckLogin;
 import com.sparta.common.service.SessionService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +14,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class AuthInterceptor implements HandlerInterceptor {
+public class LoginInterceptor implements HandlerInterceptor {
 
     private final SessionService sessionService;
     private static final Map<String, String> SESSION_COOKIE_MAP = Map.of(
@@ -22,22 +23,22 @@ public class AuthInterceptor implements HandlerInterceptor {
             "B2C", "B2C_SESSION"
     );
 
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         if (handler instanceof HandlerMethod handlerMethod) {
-            CheckAuth checkAuth = handlerMethod.getMethodAnnotation(CheckAuth.class);
-            if (checkAuth != null) {
-                String role = checkAuth.role().toString();
+            CheckLogin checkLogin = handlerMethod.getMethodAnnotation(CheckLogin.class);
+            if (checkLogin != null) {
+                String role = checkLogin.role().toString();
                 String cookieName = SESSION_COOKIE_MAP.get(role);
 
-                if (cookieName == null || !sessionService.isSessionValid(request, cookieName)) {
-                    throw new IllegalArgumentException("로그인이 필요합니다.");
+                if (cookieName != null && sessionService.extendSession(request, cookieName)) {
+                    return false;
                 }
             }
         }
 
         return true;
+
     }
 }

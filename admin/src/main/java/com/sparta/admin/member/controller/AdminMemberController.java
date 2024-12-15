@@ -5,11 +5,13 @@ import com.sparta.admin.member.dto.request.LoginRequest;
 import com.sparta.admin.member.dto.request.SignupRequest;
 import com.sparta.admin.member.dto.response.SignupResponse;
 import com.sparta.admin.member.service.AdminMemberAuthService;
+import com.sparta.common.annotation.CheckLogin;
+import com.sparta.common.enums.Role;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,14 +34,15 @@ public class AdminMemberController {
 
     }
 
+    @CheckLogin(role = Role.ADMIN)
     @PostMapping("/login")
-    public ResponseEntity<ResponseCookie> login(@RequestBody @Valid LoginRequest request) {
+    public ResponseEntity<Cookie> login(@RequestBody @Valid LoginRequest request, HttpServletResponse httpResponse) {
 
-        ResponseCookie cookie = adminMemberAuthService.login(request);
+        Cookie cookie = adminMemberAuthService.login(request);
+        httpResponse.addCookie(cookie);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .build();
     }
 }
