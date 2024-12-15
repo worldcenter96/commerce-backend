@@ -48,13 +48,14 @@ public class S3ManageService {
 		}
 	}
 
-	// TODO : 검토 필요
-	// URL에서 S3 파일 경로 추출
+	// URL에서 S3 파일 경로 추출 // s3 + fileName
 	private String extractFileNameFromUrl(String imageUrl) {
-		String bucketUrl = amazonS3.getUrl(bucket, imageUrl).toString();
+		String bucketUrl = amazonS3.getUrl(bucket, "").toString();
+
 		if (!imageUrl.startsWith(bucketUrl)) {
 			log.error("유효하지 않은 파일 URL: {}", imageUrl);
 		}
+
 		return imageUrl.substring(bucketUrl.length());
 	}
 

@@ -114,8 +114,10 @@ public class ProductService {
 		// 이미지 삭제
 		List<Image> allByProduct = imageRepository.findAllByProduct(product);
 		for (Image image : allByProduct) {
-			fileManageService.delete(image.getImg_url());
+			fileManageService.delete(image.getImg_url()); // S3 에서 삭제
+			imageRepository.delete(image); // DB에서 삭제
 		}
+
 		productRepository.deleteById(productId);
 	}
 
