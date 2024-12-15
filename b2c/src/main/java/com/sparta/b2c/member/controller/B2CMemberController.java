@@ -4,11 +4,13 @@ import com.sparta.b2c.member.dto.request.LoginRequest;
 import com.sparta.b2c.member.dto.request.SignupRequest;
 import com.sparta.b2c.member.dto.response.SignupResponse;
 import com.sparta.b2c.member.service.B2CMemberAuthService;
+import com.sparta.common.annotation.CheckLogin;
+import com.sparta.common.enums.Role;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,14 +33,15 @@ public class B2CMemberController {
 
     }
 
+    @CheckLogin(role = Role.B2C)
     @PostMapping("/login")
-    public ResponseEntity<ResponseCookie> login(@RequestBody @Valid LoginRequest request) {
+    public ResponseEntity<Cookie> login(@RequestBody @Valid LoginRequest request, HttpServletResponse httpResponse) {
 
-        ResponseCookie cookie = b2CMemberAuthService.login(request);
+        Cookie cookie = b2CMemberAuthService.login(request);
+        httpResponse.addCookie(cookie);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .build();
     }
 }

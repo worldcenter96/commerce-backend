@@ -2,7 +2,7 @@ package com.sparta.admin.member.service;
 
 import com.sparta.admin.member.dto.request.B2BMemberStatusRequest;
 import com.sparta.admin.member.dto.response.B2BApprovalResponse;
-import com.sparta.common.utils.SessionUtil;
+import com.sparta.common.service.SessionService;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.entity.B2BMember;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.enums.B2BMemberStatus;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.repository.B2BMemberRepository;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class B2BApprovalService {
 
   private final B2BMemberRepository b2bMemberRepository;
-  private final SessionUtil sessionUtil;
+  private final SessionService sessionService;
   private static final String SESSION_NAME = "B2B_SESSION";
 
   // 어드민이 B2B 회원 권한 요청 승인하거나 거절할 때, ACTIVE, INACTIVE 로 설정 (기본값 PENDING)
@@ -30,7 +30,7 @@ public class B2BApprovalService {
     B2BMember updatedMember = member.changeStatus(b2bMemberStatus);
 
     if (updatedMember.getB2BMemberStatus() == B2BMemberStatus.INACTIVE) {
-      sessionUtil.deleteSession(SESSION_NAME, updatedMember.getId());
+      sessionService.deleteSession(SESSION_NAME, updatedMember.getId());
     }
 
     return B2BApprovalResponse.from(updatedMember);

@@ -3,15 +3,15 @@ package com.sparta.b2b.member.service;
 import com.sparta.b2b.member.dto.request.LoginRequest;
 import com.sparta.b2b.member.dto.request.SignupRequest;
 import com.sparta.b2b.member.dto.response.SignupResponse;
-import com.sparta.common.utils.SessionUtil;
+import com.sparta.common.service.SessionService;
 import com.sparta.impostor.commerce.backend.common.exception.AuthenticationFailedException;
 import com.sparta.impostor.commerce.backend.common.exception.ForbiddenAccessException;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.entity.B2BMember;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.enums.B2BMemberStatus;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.repository.B2BMemberRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +23,7 @@ public class B2BMemberAuthService {
 
     private final B2BMemberRepository b2BMemberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final SessionUtil sessionUtil;
+    private final SessionService sessionService;
     private static final String SESSION_NAME = "B2B_SESSION";
 
     public SignupResponse signup(SignupRequest request) {
@@ -43,7 +43,7 @@ public class B2BMemberAuthService {
 
     }
 
-    public ResponseCookie login(LoginRequest request) {
+    public Cookie login(LoginRequest request) {
 
         String email = request.email();
         String rawPassword = request.password();
@@ -59,14 +59,14 @@ public class B2BMemberAuthService {
             throw new ForbiddenAccessException("비활성화된 사용자 입니다. 관리자에게 연락해주세요.");
         }
 
-        String sessionId = sessionUtil.generateSession(SESSION_NAME, member.getId());
+        String sessionId = sessionService.generateSession(SESSION_NAME, member.getId());
 
-        return ResponseCookie
-                .from(SESSION_NAME, sessionId)
-                .path("/")
-                .httpOnly(true)
-                .maxAge(1800)
-                .build();
+        Cookie cookie = new Cookie(SESSION_NAME, sessionId);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(1800);
+
+        return cookie;
 
     }
 }
