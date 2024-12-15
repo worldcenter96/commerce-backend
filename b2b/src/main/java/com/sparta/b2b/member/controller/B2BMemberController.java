@@ -22,14 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class B2BMemberController {
 
-    private final B2BMemberAuthService b2BMemberAuthService;
+    private final B2BMemberAuthService b2bMemberAuthService;
 
     @PostMapping("/signup")
     public ResponseEntity<SignupResponse> signup(@RequestBody @Valid SignupRequest request) {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(b2BMemberAuthService.signup(request));
+                .body(b2bMemberAuthService.signup(request));
 
     }
 
@@ -38,7 +38,7 @@ public class B2BMemberController {
     @PostMapping("/login")
     public ResponseEntity<Cookie> login(@RequestBody @Valid LoginRequest request, HttpServletResponse httpResponse) {
 
-        Cookie cookie = b2BMemberAuthService.login(request);
+        Cookie cookie = b2bMemberAuthService.login(request);
         httpResponse.addCookie(cookie);
 
         return ResponseEntity
