@@ -21,6 +21,7 @@ public class FileUploadController {
 
 	private final FileManageService fileUploadService;
 
+	@Deprecated
 	@CheckAuth(role = Role.B2B)
 	@PostMapping("/products/images")
 	public ImangeUploadedResponse uploadFiles(@RequestParam("images") List<MultipartFile> files) throws IOException {//images 갯수 제한(과금우려), 용량 제한 필수로 지정해야함

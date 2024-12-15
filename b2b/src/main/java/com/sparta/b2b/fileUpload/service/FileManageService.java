@@ -2,6 +2,7 @@ package com.sparta.b2b.fileUpload.service;
 
 import com.sparta.b2b.fileUpload.dto.ImangeUploadedResponse;
 import com.sparta.b2b.fileUpload.dto.ImageInfo;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,7 @@ public class FileManageService {
 
 	public void validateFiles(List<MultipartFile> files) {
 		if (files == null || files.isEmpty()) {
-			throw new IllegalArgumentException("파일 목록이 비어있습니다.");
+			throw new EntityNotFoundException("파일 목록이 비어있습니다.");
 		}
 
 		if (files.size() > 10) {
@@ -50,7 +51,7 @@ public class FileManageService {
 
 		for (MultipartFile file : files) {
 			if (file == null || file.isEmpty()) {
-				throw new IllegalArgumentException("파일이 비어있거나 null입니다.");
+				throw new EntityNotFoundException("파일이 비어있거나 null입니다.");
 			}
 
 			if (file.getSize() > MAX_FILE_SIZE) {
