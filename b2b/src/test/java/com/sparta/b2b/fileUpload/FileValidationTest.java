@@ -2,6 +2,7 @@ package com.sparta.b2b.fileUpload;
 
 import com.sparta.b2b.fileUpload.service.FileManageService;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -21,7 +22,7 @@ public class FileValidationTest {
 		FileManageService fileManageService = new FileManageService(null);
 
 		// when
-		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+		EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
 			() -> fileManageService.validateFiles(null));
 
 		// then
@@ -32,7 +33,7 @@ public class FileValidationTest {
 	void validateFiles_shouldThrowException_whenFilesAreEmpty() {
 		FileManageService fileManageService = new FileManageService(null);
 
-		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+		EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
 			() -> fileManageService.validateFiles(Collections.emptyList()));
 
 		assertEquals("파일 목록이 비어있습니다.", exception.getMessage());
@@ -62,7 +63,7 @@ public class FileValidationTest {
 
 		List<MultipartFile> files = List.of(emptyFile);
 
-		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+		EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
 			() -> fileManageService.validateFiles(files));
 
 		assertEquals("파일이 비어있거나 null입니다.", exception.getMessage());
