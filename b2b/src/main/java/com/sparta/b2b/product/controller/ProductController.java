@@ -31,9 +31,9 @@ public class ProductController {
 	@CheckAuth(role = Role.B2B)
 	@PostMapping()
 	public ResponseEntity<ProductCreateResponse> createProduct(
-		@RequestBody @Valid ProductCreateRequest request,
+		@RequestPart(value = "requestDto") @Valid ProductCreateRequest request,
 		@LoginMember(role = Role.B2B) MemberSession memberSession,
-		@RequestParam("images") List<MultipartFile> productImageFiles
+		@RequestPart(value = "images") List<MultipartFile> productImageFiles
 	) {
 		return ResponseEntity
 			.status(HttpStatus.CREATED)
