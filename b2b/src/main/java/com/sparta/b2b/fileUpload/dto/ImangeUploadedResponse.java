@@ -12,13 +12,14 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApiResponse {
+public class ImangeUploadedResponse {// 이름수정
 
 	public List<ImageInfo> images;
 
-	public static ApiResponse of(List<ImageInfo> infos) {
-		return ApiResponse.builder()
+	public static ImangeUploadedResponse of(List<ImageInfo> infos) {
+		return ImangeUploadedResponse.builder()
 		.images(infos)
 		.build();
 	}
 }
+
