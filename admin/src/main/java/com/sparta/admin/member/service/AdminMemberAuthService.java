@@ -4,6 +4,7 @@ import com.sparta.admin.member.dto.request.LoginRequest;
 import com.sparta.admin.member.dto.request.SignupRequest;
 import com.sparta.admin.member.dto.response.SignupResponse;
 import com.sparta.common.service.SessionService;
+import com.sparta.impostor.commerce.backend.common.exception.AuthenticationFailedException;
 import com.sparta.impostor.commerce.backend.domain.adminMember.entity.AdminMember;
 import com.sparta.impostor.commerce.backend.domain.adminMember.repository.AdminMemberRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -48,7 +49,7 @@ public class AdminMemberAuthService {
                 new EntityNotFoundException("회원정보가 존재하지 않습니다."));
 
         if (!passwordEncoder.matches(rawPassword, member.getPassword())) {
-            throw new IllegalArgumentException("패스워드가 일치하지 않습니다.");
+            throw new AuthenticationFailedException("패스워드가 일치하지 않습니다.");
         }
 
         String sessionId = sessionService.generateSession(SESSION_NAME, member.getId());

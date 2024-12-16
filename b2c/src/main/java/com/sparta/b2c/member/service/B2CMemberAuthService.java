@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class B2CMemberAuthService {
 
-    private final B2CMemberRepository b2CMemberRepository;
+    private final B2CMemberRepository b2cMemberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final SessionService sessionService;
     private static final String SESSION_NAME = "B2C_SESSION";
@@ -32,12 +32,12 @@ public class B2CMemberAuthService {
         String password = passwordEncoder.encode(request.password());
         String name = request.name();
 
-        if (b2CMemberRepository.findByEmail(email).isPresent()) {
+        if (b2cMemberRepository.findByEmail(email).isPresent()) {
             throw new IllegalArgumentException("이미 가입한 회원입니다.");
         }
 
         B2CMember createMember = B2CMember.createMember(email, password, name);
-        b2CMemberRepository.save(createMember);
+        b2cMemberRepository.save(createMember);
 
         return SignupResponse.from(createMember);
     }
@@ -47,7 +47,7 @@ public class B2CMemberAuthService {
         String email = request.email();
         String rawPassword = request.password();
 
-        B2CMember member = b2CMemberRepository.findByEmail(email).orElseThrow(() ->
+        B2CMember member = b2cMemberRepository.findByEmail(email).orElseThrow(() ->
                 new EntityNotFoundException("회원정보가 존재하지 않습니다."));
 
         if (!passwordEncoder.matches(rawPassword, member.getPassword())) {
