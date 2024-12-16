@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface B2BMemberRepository extends JpaRepository<B2BMember, Long>, B2BMemberRepositoryQuery {
 
 	// B2B 회원 상태로 회원을 조회 (페이지네이션 적용)
-	Page<B2BMember> findByB2BMemberStatus(B2BMemberStatus status, Pageable pageable);
+	Page<B2BMember> findByB2bMemberStatus(B2BMemberStatus status, Pageable pageable);
 }
