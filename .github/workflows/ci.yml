@@ -23,5 +23,7 @@ jobs:
           distribution: 'temurin'
       - name: Gradle Wrapper 실행 권한 부여
         run: chmod +x ./gradlew
-      - name: Gradle Wrapper 로 빌드 + 테스트
-        run: ./gradlew build
+      - name: Run Tests with Debug Logs
+        run: ./gradlew test --info
+#      - name: Gradle Wrapper 로 빌드 + 테스트
+#        run: ./gradlew build
