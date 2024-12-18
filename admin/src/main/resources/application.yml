@@ -31,7 +31,7 @@ cloud:
     s3:
       endpoint: "http://localhost:4566"
       bucket: "local-bucket"
-      region: "korea"
+      region: "ap-northeast-2"
     credentials:
       secretKey: "secretKey"
       accessKey: "accessKey"
