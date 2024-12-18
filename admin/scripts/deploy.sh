@@ -9,9 +9,7 @@ else
     echo "No java processes found to kill."
 fi
 
-# b2c, b2b, admin 각각의 jar 파일 실행 (배포된 파일 경로를 사용)
-java -jar /opt/impostor/b2c/b2c.jar &
-java -jar /opt/impostor/b2b/b2b.jar &
-java -jar /opt/impostor/admin/admin.jar &
+# admin jar 파일 실행
+java -jar /opt/impostor/admin/admin.jar --spring.profiles.active=prod &
 
-echo "Deployment complete!"
+echo "ADMIN Deployment complete!"

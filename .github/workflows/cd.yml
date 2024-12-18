@@ -29,22 +29,58 @@ jobs:
       - name: Gradle Wrapper 로 빌드 + 테스트
         run: ./gradlew build -Dspring.profiles.active=prod # 옵션을 넣어줘야 함
 
-      - name: Zip 만들기 그리고 S3에 업로드
+      - name: b2c의 Zip 만들기 그리고 S3에 업로드
         run: |
-          zip -r ${GITHUB_SHA}.zip b2c/build/libs/*.jar b2b/build/libs/*.jar admin/build/libs/*.jar appspec.yml scripts/*.sh
-          aws s3 cp ${GITHUB_SHA}.zip s3://${AWS_S3_BUCKET}/deploy/${GITHUB_SHA}.zip --region ${AWS_DEFAULT_REGION}
-        #          zip -r b2c-${GITHUB_SHA}.zip b2c/build/libs/*.jar appspec.yml scripts/b2c/*.sh
-        #          zip -r b2b-${GITHUB_SHA}.zip b2b/build/libs/*.jar appspec.yml scripts/b2b/*.sh
-        #          zip -r admin-${GITHUB_SHA}.zip admin/build/libs/*.jar appspec.yml scripts/admin/*.sh
+          cd b2c
+          zip -r b2c-${GITHUB_SHA}.zip build/libs/b2c.jar appspec.yml scripts/*.sh
+          cd ..
+          aws s3 cp b2c-${GITHUB_SHA}.zip s3://${AWS_S3_BUCKET}/deploy/b2c-${GITHUB_SHA}.zip --region ${AWS_DEFAULT_REGION}
         shell: bash
+#          zip -r ${GITHUB_SHA}.zip b2c/build/libs/*.jar b2b/build/libs/*.jar admin/build/libs/*.jar appspec.yml scripts/*.sh
 
-      - name: CodeDeploy 배포 시작
+      - name: b2b의 만들기 그리고 S3에 업로드
+        run: |
+          cd b2b
+          zip -r b2b-${GITHUB_SHA}.zip build/libs/b2b.jar appspec.yml scripts/*.sh
+          cd ..
+          aws s3 cp b2b-${GITHUB_SHA}.zip s3://${AWS_S3_BUCKET}/deploy/b2b-${GITHUB_SHA}.zip --region ${AWS_DEFAULT_REGION}
+
+      - name: admin의 만들기 그리고 S3에 업로드
+        run: |
+          cd admin
+          zip -r admin-${GITHUB_SHA}.zip build/libs/admin.jar appspec.yml scripts/*.sh
+          cd ..
+          aws s3 cp admin-${GITHUB_SHA}.zip s3://${AWS_S3_BUCKET}/deploy/admin-${GITHUB_SHA}.zip --region ${AWS_DEFAULT_REGION}
+
+      - name: B2C CodeDeploy 배포 시작
         run: |
           aws deploy create-deployment \
           --application-name ${AWS_CODEDEPLOY_APPLICATION_NAME} \
           --deployment-group-name ${AWS_CODEDEPLOY_DEPLOYMENT_GROUP} \
-          --s3-location bucket=${AWS_S3_BUCKET},key=deploy/${GITHUB_SHA}.zip,bundleType=zip \
+          --s3-location bucket=${AWS_S3_BUCKET},key=deploy/b2c-${GITHUB_SHA}.zip,bundleType=zip \
           --region ${{ secrets.AWS_S3_REGION }}
         env:
-          AWS_CODEDEPLOY_APPLICATION_NAME: ${{ secrets.AWS_CODEDEPLOY_APPLICATION_NAME }}
-          AWS_CODEDEPLOY_DEPLOYMENT_GROUP: ${{ secrets.AWS_CODEDEPLOY_DEPLOYMENT_GROUP }}
+          AWS_CODEDEPLOY_APPLICATION_NAME: ${{ secrets.AWS_B2C_DEPLOY_APP }}
+          AWS_CODEDEPLOY_DEPLOYMENT_GROUP: ${{ secrets.AWS_B2C_DEPLOY_GROUP }}
+
+      - name: B2B CodeDeploy 배포 시작
+        run: |
+          aws deploy create-deployment \
+          --application-name ${AWS_CODEDEPLOY_APPLICATION_NAME} \
+          --deployment-group-name ${AWS_CODEDEPLOY_DEPLOYMENT_GROUP} \
+          --s3-location bucket=${AWS_S3_BUCKET},key=deploy/b2b-${GITHUB_SHA}.zip,bundleType=zip \
+          --region ${{ secrets.AWS_S3_REGION }}
+        env:
+          AWS_CODEDEPLOY_APPLICATION_NAME: ${{ secrets.AWS_B2B_DEPLOY_APP }}
+          AWS_CODEDEPLOY_DEPLOYMENT_GROUP: ${{ secrets.AWS_B2B_DEPLOY_GROUP }}
+
+      - name: ADMIN CodeDeploy 배포 시작
+        run: |
+          aws deploy create-deployment \
+          --application-name ${AWS_CODEDEPLOY_APPLICATION_NAME} \
+          --deployment-group-name ${AWS_CODEDEPLOY_DEPLOYMENT_GROUP} \
+          --s3-location bucket=${AWS_S3_BUCKET},key=deploy/admin-${GITHUB_SHA}.zip,bundleType=zip \
+          --region ${{ secrets.AWS_S3_REGION }}
+        env:
+          AWS_CODEDEPLOY_APPLICATION_NAME: ${{ secrets.AWS_ADMIN_DEPLOY_APP }}
+          AWS_CODEDEPLOY_DEPLOYMENT_GROUP: ${{ secrets.AWS_ADMIN_DEPLOY_GROUP }}
