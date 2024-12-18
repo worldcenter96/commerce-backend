@@ -11,6 +11,7 @@ import com.sparta.impostor.commerce.backend.domain.product.entity.Product;
 import com.sparta.impostor.commerce.backend.domain.product.enums.Category;
 import com.sparta.impostor.commerce.backend.domain.product.enums.ProductStatus;
 import com.sparta.impostor.commerce.backend.domain.product.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DataJpaTest
+@Transactional
 @Import(value = {JPAConfiguration.class, ProductService.class, PasswordEncoderConfig.class})
 public class ProductServiceIntegrationTest {
 
