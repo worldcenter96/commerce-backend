@@ -42,7 +42,7 @@ public class B2BSearchService {
     PageRequest pageRequest = PageRequest.of(page - 1, size, direction, sortBy, orderBy);
 
     // 상태에 맞는 B2B 회원을 조회하여 Response 로 변환
-    Page<B2BMember> b2bMemberPage = b2bMemberRepository.findByB2BMemberStatus(status, pageRequest);
+    Page<B2BMember> b2bMemberPage = b2bMemberRepository.findByB2bMemberStatus(status, pageRequest);
 
     return new B2BMemberPageResponse(b2bMemberPage);
   }
