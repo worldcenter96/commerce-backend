@@ -1,9 +1,6 @@
 name: CI 워크플로우
 
 on:
-  push:
-    branches-ignore:
-      - cicd-test
   pull_request:
     branches:
       - cicd-test
