@@ -26,11 +26,11 @@ public class S3ManageService {
 
 	public String upload(MultipartFile multipartFile) throws IOException {
 		//고유한번호 생성(램덤번호생성) 실제이름 보단 임의로 지정 될수 있도록//
-		String s3FileName = UUID.randomUUID().toString();
+		String s3FileName = "product-image/" + UUID.randomUUID().toString() + ".png";
 
 		ObjectMetadata objMeta = new ObjectMetadata();
 
-		amazonS3.putObject(new PutObjectRequest(bucket, "product-image/"+s3FileName, multipartFile.getInputStream(), objMeta)
+		amazonS3.putObject(new PutObjectRequest(bucket, s3FileName, multipartFile.getInputStream(), objMeta)
 			.withCannedAcl(CannedAccessControlList.PublicRead));
 
 		String url = amazonS3.getUrl(bucket, s3FileName).toString();
