@@ -27,7 +27,7 @@ jobs:
       - name: Gradle Wrapper 실행 권한 부여
         run: chmod +x ./gradlew
       - name: Gradle Wrapper 로 빌드 + 테스트
-        run: ./gradlew build -Dspring.profiles.active=prod # 옵션을 넣어줘야 함.
+        run: ./gradlew build -Dspring.profiles.active=prod # 옵션을 넣어줘야 함
 
       - name: Zip 만들기 그리고 S3에 업로드
         run: |
