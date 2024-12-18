@@ -103,7 +103,7 @@ public class RelatedProductRetrieveTest {
 
         // then
         // 정렬 확인
-        assertThat(resDto.contents()).hasSize(3);
+        assertThat(resDto.contents()).hasSize(10);
         assertThat(resDto.contents().get(0).id()).isEqualTo(productList.get(2).getId());
         assertThat(resDto.contents().get(1).id()).isEqualTo(productList.get(0).getId());
         assertThat(resDto.contents().get(2).id()).isEqualTo(productList.get(1).getId());
