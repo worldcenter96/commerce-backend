@@ -24,6 +24,6 @@ jobs:
       - name: Gradle Wrapper 실행 권한 부여
         run: chmod +x ./gradlew
       - name: Run Tests with Debug Logs
-        run: ./gradlew test --info
+        run: ./gradlew test --tests "RelatedProductRetrieveTest"
 #      - name: Gradle Wrapper 로 빌드 + 테스트
 #        run: ./gradlew build
