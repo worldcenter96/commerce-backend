@@ -31,8 +31,6 @@ services:
     container_name: admin-container
     ports:
       -  "8080:8080"
-#    volumes:
-#      - ./target/admin.jar:/app/admin.jar # 빌드된 JAR 파일을 컨테이너에 마운트
     command: ["java", "-jar", "/app/admin.jar"] # 외부에서 가져온 JAR 파일 실행
     networks:
       - multi-module-network
@@ -42,8 +40,8 @@ services:
     environment:
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      MYSQL_HOST: mysql-db
-      MYSQL_PORT: 3306
+#      MYSQL_HOST: mysql-db
+#      MYSQL_PORT: 3306
 
 
 
@@ -53,8 +51,6 @@ services:
     container_name: b2b-container
     ports:
       -  "8081:8081"
-#    volumes:
-#      - ./target/admin.jar:/app/b2b.jar # 빌드된 JAR 파일을 컨테이너에 마운트
     command: ["java", "-jar", "/app/b2b.jar"] # 외부에서 가져온 JAR 파일 실행
     networks:
       - multi-module-network
@@ -64,8 +60,8 @@ services:
     environment:
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      MYSQL_HOST: mysql-db
-      MYSQL_PORT: 3306
+#      MYSQL_HOST: mysql-db
+#      MYSQL_PORT: 3306
 
 
 
@@ -75,8 +71,6 @@ services:
     container_name: b2c-container
     ports:
       - "8082:8082"
-#    volumes:
-#      - ./target/admin.jar:/app/b2c.jar # 빌드된 JAR 파일을 컨테이너에 마운트
     command: [ "java", "-jar", "/app/b2c.jar" ] # 외부에서 가져온 JAR 파일 실행
     networks:
       - multi-module-network
@@ -86,5 +80,6 @@ services:
     environment:
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      MYSQL_HOST: mysql-db
-      MYSQL_PORT: 3306
+#      MYSQL_HOST: mysql-db
+#      MYSQL_PORT: 3306
+
