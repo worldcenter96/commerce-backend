@@ -1,7 +1,7 @@
 version: 0.0
 os: linux
 files:
-  - source: /b2c/build/libs/b2c.jar
+  - source: /build/libs/b2c.jar
     destination: /opt/impostor/b2c/
 hooks:
   AfterInstall:

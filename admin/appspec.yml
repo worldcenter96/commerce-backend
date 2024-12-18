@@ -1,7 +1,7 @@
 version: 0.0
 os: linux
 files:
-  - source: /admin/build/libs/admin.jar
+  - source: /build/libs/admin.jar
     destination: /opt/impostor/admin/
 hooks:
   AfterInstall:
