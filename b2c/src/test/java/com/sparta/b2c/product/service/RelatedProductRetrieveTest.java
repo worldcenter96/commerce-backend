@@ -31,7 +31,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @DataJpaTest
-@Transactional
 @Import(value = {JPAConfiguration.class, ProductService.class, PasswordEncoderConfig.class})
 public class RelatedProductRetrieveTest {
 
@@ -103,7 +102,7 @@ public class RelatedProductRetrieveTest {
 
         // then
         // 정렬 확인
-        assertThat(resDto.contents()).hasSize(10);
+        assertThat(resDto.contents().size()).isEqualTo(3);
         assertThat(resDto.contents().get(0).id()).isEqualTo(productList.get(2).getId());
         assertThat(resDto.contents().get(1).id()).isEqualTo(productList.get(0).getId());
         assertThat(resDto.contents().get(2).id()).isEqualTo(productList.get(1).getId());

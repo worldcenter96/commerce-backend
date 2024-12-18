@@ -12,10 +12,7 @@ import com.sparta.impostor.commerce.backend.domain.product.enums.Category;
 import com.sparta.impostor.commerce.backend.domain.product.enums.ProductStatus;
 import com.sparta.impostor.commerce.backend.domain.product.repository.ProductRepository;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
@@ -25,9 +22,7 @@ import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DataJpaTest
-@Transactional
 @Import(value = {JPAConfiguration.class, ProductService.class, PasswordEncoderConfig.class})
 public class ProductServiceIntegrationTest {
 
@@ -43,7 +38,7 @@ public class ProductServiceIntegrationTest {
    @Autowired
    private BCryptPasswordEncoder passwordEncoder;
 
-   @BeforeAll
+   @BeforeEach
    public void setUp() {
        // 상품을 등록하기 위한 멤버 생성
        String password = passwordEncoder.encode("password1");
