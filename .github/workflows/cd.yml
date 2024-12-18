@@ -32,7 +32,7 @@ jobs:
       - name: b2c의 Zip 만들기 그리고 S3에 업로드
         run: |
           cd b2c
-          zip -r b2c-${GITHUB_SHA}.zip build/libs/b2c.jar appspec.yml scripts/*.sh
+          zip -r ../b2c-${GITHUB_SHA}.zip build/libs/b2c.jar appspec.yml scripts/*.sh
           cd ..
           aws s3 cp b2c-${GITHUB_SHA}.zip s3://${AWS_S3_BUCKET}/deploy/b2c-${GITHUB_SHA}.zip --region ${AWS_DEFAULT_REGION}
         shell: bash
@@ -41,14 +41,14 @@ jobs:
       - name: b2b의 만들기 그리고 S3에 업로드
         run: |
           cd b2b
-          zip -r b2b-${GITHUB_SHA}.zip build/libs/b2b.jar appspec.yml scripts/*.sh
+          zip -r ../b2b-${GITHUB_SHA}.zip build/libs/b2b.jar appspec.yml scripts/*.sh
           cd ..
           aws s3 cp b2b-${GITHUB_SHA}.zip s3://${AWS_S3_BUCKET}/deploy/b2b-${GITHUB_SHA}.zip --region ${AWS_DEFAULT_REGION}
 
       - name: admin의 만들기 그리고 S3에 업로드
         run: |
           cd admin
-          zip -r admin-${GITHUB_SHA}.zip build/libs/admin.jar appspec.yml scripts/*.sh
+          zip -r ../admin-${GITHUB_SHA}.zip build/libs/admin.jar appspec.yml scripts/*.sh
           cd ..
           aws s3 cp admin-${GITHUB_SHA}.zip s3://${AWS_S3_BUCKET}/deploy/admin-${GITHUB_SHA}.zip --region ${AWS_DEFAULT_REGION}
 
