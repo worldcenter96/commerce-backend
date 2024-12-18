@@ -39,10 +39,11 @@ spring:
 cloud:
   aws:
     s3:
-      bucket: ${AWS_S3_BUCKET} # 로컬스택 에 맞게 변경
-      region: ${AWS_S3_REGION}
+      endpoint: "http://localhost:4566"
+      bucket: "local-bucket"
+      region: "korea"
     credentials:
-      secretKey: ${AWS_S3_SECRET_KEY}
-      accessKey: ${AWS_S3_ACCESS_KEY}
+      secretKey: "secretKey"
+      accessKey: "accessKey"
     stack:
       auto: false
