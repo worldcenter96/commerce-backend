@@ -11,6 +11,7 @@ fi
 
 # b2c jar 파일 실행
 nohup java -jar /opt/impostor/b2c/b2c.jar --spring.profiles.active=prod &
+disown
 
 echo "B2C Deployment complete!"
 exit 0
