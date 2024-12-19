@@ -10,6 +10,6 @@ else
 fi
 
 # admin jar 파일 실행
-nohup java -jar /opt/impostor/admin/admin.jar --spring.profiles.active=prod > /opt/impostor/admin/nohup.out 2>&1 &
+nohup java -jar /opt/impostor/admin/admin.jar --spring.profiles.active=prod > /opt/impostor/admin/application.log 2>&1 &
 
 echo "ADMIN Deployment complete!"
