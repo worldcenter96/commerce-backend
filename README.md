@@ -1,6 +1,6 @@
 # 팀9 커머스 프로젝트
 
-![coupang.jpg](img%2Fcoupang.jpg)
+![impostor_commerce_logo.webp](img%2Fimpostor_commerce_logo.webp)
 
 ## 프로젝트 목표
 
