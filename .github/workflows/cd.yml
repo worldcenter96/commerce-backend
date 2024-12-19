@@ -3,7 +3,7 @@ name: CD 워크플로우
 on:
   push:
     branches:
-      - cicd-test
+      - main
 
 
 jobs:
