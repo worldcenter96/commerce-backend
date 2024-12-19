@@ -10,6 +10,6 @@ else
 fi
 
 # b2c jar 파일 실행
-java -jar /opt/impostor/b2c/b2c.jar --spring.profiles.active=prod &
+nohub java -jar /opt/impostor/b2c/b2c.jar --spring.profiles.active=prod &
 
 echo "B2C Deployment complete!"

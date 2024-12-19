@@ -10,6 +10,6 @@ else
 fi
 
 # b2b jar 파일 실행
-java -jar /opt/impostor/b2b/b2b.jar --spring.profiles.active=prod &
+nohub java -jar /opt/impostor/b2b/b2b.jar --spring.profiles.active=prod &
 
 echo "B2B Deployment complete!"
