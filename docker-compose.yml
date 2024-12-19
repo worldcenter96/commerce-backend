@@ -1,85 +1,27 @@
 services:
   mysql-db:
     image: mysql:8.0
-    container_name: impostor
+    container_name: mysql-container
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+      MYSQL_DATABASE: impostor
     ports:
       - "3307:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-    networks:
-      - multi-module-network
-
   redis:
     image: redis:7
     container_name: redis-container
     ports:
-      - "6379:6379"
-    networks:
-      - multi-module-network
-    volumes:
-      - redis_data:/data
+      - "6380:6379"
     restart: always
-
-
-
-###### admin ######
-  admin:
-    image: admin-app:latest
-    container_name: admin-container
+  localstack:
+    container_name: localstack-container
+    image: localstack/localstack
     ports:
-      -  "8080:8080"
-    command: ["java", "-jar", "/app/admin.jar"] # 외부에서 가져온 JAR 파일 실행
-    networks:
-      - multi-module-network
-    depends_on:
-      - mysql-db
-      - redis
+      - "4566:4566"   #LocalStack 기본 포트
+      - "4571:4571"   #S3 서비스용 포트
     environment:
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-#      MYSQL_HOST: mysql-db
-#      MYSQL_PORT: 3306
-
-
-
- ###### b2b ######
-  b2b:
-    image: admin-app:latest
-    container_name: b2b-container
-    ports:
-      -  "8081:8081"
-    command: ["java", "-jar", "/app/b2b.jar"] # 외부에서 가져온 JAR 파일 실행
-    networks:
-      - multi-module-network
-    depends_on:
-      - mysql-db
-      - redis
-    environment:
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-#      MYSQL_HOST: mysql-db
-#      MYSQL_PORT: 3306
-
-
-
-###### b2c ######
-  b2c:
-    image: admin-app:latest
-    container_name: b2c-container
-    ports:
-      - "8082:8082"
-    command: [ "java", "-jar", "/app/b2c.jar" ] # 외부에서 가져온 JAR 파일 실행
-    networks:
-      - multi-module-network
-    depends_on:
-      - mysql-db
-      - redis
-    environment:
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-#      MYSQL_HOST: mysql-db
-#      MYSQL_PORT: 3306
-
+      - SERVICES=s3
+      - DEBUG=1
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./init-s3.sh:/etc/localstack/init/ready.d/init-s3.sh" # s3 Bucket 초기화 스크립트
