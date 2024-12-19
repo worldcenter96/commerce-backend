@@ -58,6 +58,7 @@ jobs:
           --application-name ${AWS_CODEDEPLOY_APPLICATION_NAME} \
           --deployment-group-name ${AWS_CODEDEPLOY_DEPLOYMENT_GROUP} \
           --s3-location bucket=${AWS_S3_BUCKET},key=deploy/b2c-${GITHUB_SHA}.zip,bundleType=zip \
+          --file-exists-behavior=OVERWRITE \
           --region ${{ secrets.AWS_S3_REGION }}
         env:
           AWS_CODEDEPLOY_APPLICATION_NAME: ${{ secrets.AWS_B2C_DEPLOY_APP }}
@@ -69,6 +70,7 @@ jobs:
           --application-name ${AWS_CODEDEPLOY_APPLICATION_NAME} \
           --deployment-group-name ${AWS_CODEDEPLOY_DEPLOYMENT_GROUP} \
           --s3-location bucket=${AWS_S3_BUCKET},key=deploy/b2b-${GITHUB_SHA}.zip,bundleType=zip \
+          --file-exists-behavior=OVERWRITE \
           --region ${{ secrets.AWS_S3_REGION }}
         env:
           AWS_CODEDEPLOY_APPLICATION_NAME: ${{ secrets.AWS_B2B_DEPLOY_APP }}
@@ -80,6 +82,7 @@ jobs:
           --application-name ${AWS_CODEDEPLOY_APPLICATION_NAME} \
           --deployment-group-name ${AWS_CODEDEPLOY_DEPLOYMENT_GROUP} \
           --s3-location bucket=${AWS_S3_BUCKET},key=deploy/admin-${GITHUB_SHA}.zip,bundleType=zip \
+          --file-exists-behavior=OVERWRITE \
           --region ${{ secrets.AWS_S3_REGION }}
         env:
           AWS_CODEDEPLOY_APPLICATION_NAME: ${{ secrets.AWS_ADMIN_DEPLOY_APP }}
