@@ -13,3 +13,4 @@ fi
 nohub java -jar /opt/impostor/b2c/b2c.jar --spring.profiles.active=prod &
 
 echo "B2C Deployment complete!"
+exit 0

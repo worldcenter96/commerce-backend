@@ -13,3 +13,4 @@ fi
 nohub java -jar /opt/impostor/admin/admin.jar --spring.profiles.active=prod &
 
 echo "ADMIN Deployment complete!"
+exit 0
