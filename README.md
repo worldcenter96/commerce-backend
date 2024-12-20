@@ -4,12 +4,19 @@
 
 ## 프로젝트 목표
 
-평소 자주 사용하는 쿠팡, 마켓컬리, 에이블리와 같은 커머스 플랫폼을 구현하면서, 해당 프로젝트에서 발생할 수 있는 트래픽 성능 개선을 주요 목표로 설정하였습니다.<br>
-트래픽 성능 개선을 위해 세 가지 세부 목표를 수립하였습니다.
+의류 커머스 플랫폼을 개발하면서 애자일한 개발 환경 구축과 보안 강화를 1차적인 목표로 설정했습니다. 이를 실현하기 위해 다음과 같은 세부 목표를 수립했습니다:
+**1. 외부 통신 차단**
+- AWS 인프라를 활용하여 백엔드, MySQL, Redis의 직접적인 외부 통신을 차단함으로써 민감 데이터 보호와 보안성을 강화합니다.
 
-1. 트래픽이 몰릴 때 발생할 수 있는 동시성 문제를 해결합니다.
-2. 데이터베이스 쿼리를 최적화하여 효율성을 높입니다.
-3. 셋째, 캐싱을 활용해 응답 속도를 개선합니다.
+**2. 데이터 암호화**
+- HTTPS 통신을 적용하여 클라이언트와 서버 간 데이터를 암호화하고, 이를 통해 데이터 유출 방지와 신뢰성을 확보합니다.
+
+**3. 자동화된 CI/CD 파이프라인 구축**
+- GitHub Actions, S3, CodeDeploy를 활용해 자동화된 CI/CD 파이프라인을 구축하여 빠른 배포와 장애 발생 시 롤백이 가능하도록 설정합니다.
+
+**4. 일관된 개발 환경 구성**
+- Docker-Compose를 활용해 개발 환경을 표준화하여, 팀원 간 일관된 개발 환경을 유지하고 협업 효율성을 향상시킵니다.
+
 
 ## 프로젝트 기간
 
@@ -82,6 +89,80 @@ docker-compose up
 ## ERD 명세서
 
 ![erd_frame.png](img%2Ferd_frame.png)
+
+## 프로젝트 구조
+```text
+admin 모듈
+  ├─member 
+  │   ├─controller
+  │   ├─dto
+  │   └─service
+  └─product
+      ├─controller
+      ├─dto
+      └─service
+  
+b2b 모듈
+  ├─member 
+  │   ├─controller
+  │   ├─dto
+  │   └─service
+  ├─order
+  │   ├─controller
+  │   ├─dto
+  │   └─service
+  └─product
+      ├─controller
+      ├─dto
+      └─service
+
+b2c 모듈
+  ├─member 
+  │   ├─controller
+  │   ├─dto
+  │   └─service
+  ├─order
+  │   ├─controller
+  │   ├─dto
+  │   └─service
+  └─product
+      ├─controller
+      ├─dto
+      └─service
+      
+ common 모듈
+  ├─annotation
+  ├─config
+  ├─dto
+  ├─enums
+  ├─interceptor
+  ├─resolver
+  └─utils
+  
+domain 모듈
+  ├─adminMember
+  │   ├─entity
+  │   └─repository
+  ├─b2cMember
+  │   ├─entity
+  │   ├─enums
+  │   └─repository
+  ├─b2bMember
+  │   ├─entity
+  │   ├─enums
+  │   └─repository
+  ├─image
+  │   ├─entity
+  │   └─repository
+  ├─order
+  │   ├─entity
+  │   ├─enums
+  │   └─repository
+  └─product
+      ├─entity
+      ├─enums
+      └─repository
+```
 
 ## 인프라 아키텍처
 
