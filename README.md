@@ -68,6 +68,8 @@ docker-compose up
 ./gradlew :b2c:bootRun
 ```
 
+4. 앱 실행이 완료되면 `scripts > impostor_commerce.postman_collection.json` 파일을 Postman에 Import하여 앱에 요청을 보낼 수 있습니다.
+
 ## 와이어프레임
 
 ### 회원가입 및 로그인
