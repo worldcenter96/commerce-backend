@@ -22,6 +22,9 @@ services:
     environment:
       - SERVICES=s3
       - DEBUG=1
+      - AWS_ACCESS_KEY_ID=accessKey
+      - AWS_SECRET_ACCESS_KEY=secretKey
+      - AWS_DEFAULT_REGION=ap-northeast-2
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "./init-s3.sh:/etc/localstack/init/ready.d/init-s3.sh" # s3 Bucket 초기화 스크립트
