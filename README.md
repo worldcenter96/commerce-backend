@@ -17,6 +17,11 @@
 **4. 일관된 개발 환경 구성**
 - Docker-Compose를 활용해 개발 환경을 표준화하여, 팀원 간 일관된 개발 환경을 유지하고 협업 효율성을 향상시킵니다.
 
+5. 멀티모듈 구조 도입
+- 프로젝트를 멀티모듈 구조로 설계하여 각 기능별로 독립적인 모듈(admin, b2b, b2c)을 구성했습니다.
+- 멀티모듈 구조는 팀원 간 병렬 작업을 용이하게 하고 특정 모듈에서 발생한 변경이 다른 모듈에 영향을 최소화 시킵니다.
+- 또한, 시스템의 확장성과 유지보수성을 확보합니다.
+
 
 ## 프로젝트 기간
 
@@ -142,14 +147,14 @@ b2c 모듈
   └─utils
   
 domain 모듈
-  ├─adminMember
+  ├─adminmember
   │   ├─entity
   │   └─repository
-  ├─b2cMember
+  ├─b2cmember
   │   ├─entity
   │   ├─enums
   │   └─repository
-  ├─b2bMember
+  ├─b2bmember
   │   ├─entity
   │   ├─enums
   │   └─repository
