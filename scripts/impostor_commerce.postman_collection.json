@@ -1,0 +1,1122 @@
+{
+	"info": {
+		"_postman_id": "b6103471-3063-4747-a6b0-ef974ad7e41c",
+		"name": "최종 프로젝트",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20160475"
+	},
+	"item": [
+		{
+			"name": "b2c",
+			"item": [
+				{
+					"name": "product",
+					"item": [
+						{
+							"name": "상품 단건 조회",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://imcommerce.shop/api/products/1",
+									"protocol": "https",
+									"host": [
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"products",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 검색",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://imcommerce.shop/api/products?keyword=상품&orderBy=ASC",
+									"protocol": "https",
+									"host": [
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"products"
+									],
+									"query": [
+										{
+											"key": "keyword",
+											"value": "상품"
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "size",
+											"value": "10",
+											"disabled": true
+										},
+										{
+											"key": "orderBy",
+											"value": "ASC"
+										},
+										{
+											"key": "sortBy",
+											"value": "price",
+											"disabled": true
+										},
+										{
+											"key": "category",
+											"value": "BOTTOM",
+											"disabled": true
+										},
+										{
+											"key": "subCategory",
+											"value": "JEAN",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "연관 상품 조회",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://imcommerce.shop/api/related-products",
+									"protocol": "https",
+									"host": [
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"related-products"
+									],
+									"query": [
+										{
+											"key": "size",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "subCategory",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "order",
+					"item": [
+						{
+							"name": "주문 등록",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"productId\": 3,\r\n  \"quantity\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://imcommerce.shop/api/orders",
+									"protocol": "https",
+									"host": [
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "주문 목록 조회",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://imcommerce.shop.shop/api/orders?page=1&size=10",
+									"protocol": "https",
+									"host": [
+										"imcommerce",
+										"shop",
+										"shop"
+									],
+									"path": [
+										"api",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sortBy",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "orderBy",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "주문 단건 조회",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://imcommerce.shop/api/orders/1",
+									"protocol": "https",
+									"host": [
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"orders",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "주문 환불",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"orderStatus\" : \"REFUND_REQUEST\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://imcommerce.shop/api/orders/1/order-status",
+									"protocol": "https",
+									"host": [
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"orders",
+										"1",
+										"order-status"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "member",
+					"item": [
+						{
+							"name": "B2C 회원가입",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"user001@email.com\",\r\n  \"password\": \"12341234\",\r\n  \"name\": \"유저001\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://imcommerce.shop/api/b2c-members/signup",
+									"protocol": "https",
+									"host": [
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"b2c-members",
+										"signup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "B2C 로그인",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"user001@email.com\",\r\n  \"password\": \"12341234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://imcommerce.shop/api/b2c-members/login",
+									"protocol": "https",
+									"host": [
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"b2c-members",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "healthz",
+					"item": [
+						{
+							"name": "helath check",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://imcommerce.shop/healthz",
+									"protocol": "https",
+									"host": [
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"healthz"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "b2b",
+			"item": [
+				{
+					"name": "product",
+					"item": [
+						{
+							"name": "상품 단건 조회",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://b2b.imcommerce.shop/api/products/1",
+									"protocol": "https",
+									"host": [
+										"b2b",
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"products",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 목록 조회",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://b2b.imcommerce.shop/api/products?page=1&size=10&orderBy=ASC&sortBy=price",
+									"protocol": "https",
+									"host": [
+										"b2b",
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"products"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "orderBy",
+											"value": "ASC"
+										},
+										{
+											"key": "sortBy",
+											"value": "price"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 등록",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "images",
+											"contentType": "image/png",
+											"type": "file",
+											"src": "impostor_team9_Infra_arch.png"
+										},
+										{
+											"key": "requestDto",
+											"value": "{\n  \"name\": \"상품1\",\n  \"description\": \"상품설명\",\n  \"stockQuantity\": 100,\n  \"price\": 10000,\n  \"category\": \"DEFAULT\",\n  \"subCategory\": \"DEFAULT\"\n}",
+											"contentType": "application/json",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://b2b.imcommerce.shop/api/products",
+									"protocol": "https",
+									"host": [
+										"b2b",
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "(deprecated)이미지 업로드",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "images",
+											"type": "file",
+											"src": "스크린샷 2024-12-13 150637.png"
+										},
+										{
+											"key": "images",
+											"type": "file",
+											"src": "스크린샷 2024-12-13 150637.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://b2b.imcommerce.shop/api/products/images",
+									"protocol": "https",
+									"host": [
+										"b2b",
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"products",
+										"images"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 삭제",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://b2b.imcommerce.shop/api/products/1",
+									"protocol": "https",
+									"host": [
+										"b2b",
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"products",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 재고 수정",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"stockQuantity\": \"33\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://b2b.imcommerce.shop/api/products/1/stock-quantity",
+									"protocol": "https",
+									"host": [
+										"b2b",
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"products",
+										"1",
+										"stock-quantity"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "order",
+					"item": [
+						{
+							"name": "주문 배송상태 변경",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"trackingNumber\": 123456789012\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://b2b.imcommerce.shop/api/orders/1/delivery-status",
+									"protocol": "https",
+									"host": [
+										"b2b",
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"orders",
+										"1",
+										"delivery-status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "주문 목록 조회",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://b2b.imcommerce.shop/api/orders?page=1&size=10",
+									"protocol": "https",
+									"host": [
+										"b2b",
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sortBy",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "orderBy",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "member",
+					"item": [
+						{
+							"name": "B2B 회원가입",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"seluser001@email.com\",\r\n  \"password\": \"12341234\",\r\n  \"name\": \"판매자001\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://b2b.imcommerce.shop/api/b2b-members/signup",
+									"protocol": "https",
+									"host": [
+										"b2b",
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"b2b-members",
+										"signup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "B2B 로그인",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"seluser001@email.com\",\r\n  \"password\": \"12341234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://b2b.imcommerce.shop/api/b2b-members/login",
+									"protocol": "https",
+									"host": [
+										"b2b",
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"b2b-members",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "healthz",
+					"item": [
+						{
+							"name": "helath check",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://b2b.imcommerce.shop/healthz",
+									"protocol": "https",
+									"host": [
+										"b2b",
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"healthz"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "product",
+					"item": [
+						{
+							"name": "상품 목록 조회",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://admin.imcommerce.shop/api/admin/products?status=PENDING&page=1&size=10&orderBy=ASC&sortBy=price",
+									"protocol": "https",
+									"host": [
+										"admin",
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"admin",
+										"products"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "PENDING"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "orderBy",
+											"value": "ASC"
+										},
+										{
+											"key": "sortBy",
+											"value": "price"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 등록 승인 및 거절",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"status\": \"ON_SALE\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://admin.imcommerce.shop/api/admin/products/approval/1",
+									"protocol": "https",
+									"host": [
+										"admin",
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"admin",
+										"products",
+										"approval",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "member",
+					"item": [
+						{
+							"name": "Admin 회원가입",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"admin001@email.com\",\r\n  \"password\": \"12341234\",\r\n  \"name\": \"관리자001\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://admin.imcommerce.shop/api/admin-members/signup",
+									"protocol": "https",
+									"host": [
+										"admin",
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"admin-members",
+										"signup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Admin 로그인",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"admin001@email.com\",\r\n  \"password\": \"12341234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://admin.imcommerce.shop/api/admin-members/login",
+									"protocol": "https",
+									"host": [
+										"admin",
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"admin-members",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "B2B 회원 권한 요청 변경",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"status\": \"ACTIVE\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://admin.imcommerce.shop/api/admin/b2b/1/approve",
+									"protocol": "https",
+									"host": [
+										"admin",
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"admin",
+										"b2b",
+										"1",
+										"approve"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "B2C 회원 상태 변경",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"status\": \"INACTIVE\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://admin.imcommerce.shop/api/admin/b2c/1/update-status",
+									"protocol": "https",
+									"host": [
+										"admin",
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"admin",
+										"b2c",
+										"1",
+										"update-status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "B2B 회원 목록 조회",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://admin.imcommerce.shop/api/admin/b2b-members?page=1&size=10&sortBy=name&orderBy=ASC",
+									"protocol": "https",
+									"host": [
+										"admin",
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"admin",
+										"b2b-members"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sortBy",
+											"value": "name"
+										},
+										{
+											"key": "orderBy",
+											"value": "ASC"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "B2C 회원 목록 조회",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://admin.imcommerce.shop/api/admin/b2c-members?page=1&size=10&sortBy=name&orderBy=ASC&status=ACTIVE",
+									"protocol": "https",
+									"host": [
+										"admin",
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"admin",
+										"b2c-members"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sortBy",
+											"value": "name"
+										},
+										{
+											"key": "orderBy",
+											"value": "ASC"
+										},
+										{
+											"key": "status",
+											"value": "ACTIVE"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "B2B 특정 상태 회원 조회",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://admin.imcommerce.shop/api/admin/b2b-members/status/INACTIVE",
+									"protocol": "https",
+									"host": [
+										"admin",
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"api",
+										"admin",
+										"b2b-members",
+										"status",
+										"INACTIVE"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "size",
+											"value": "10",
+											"disabled": true
+										},
+										{
+											"key": "sortBy",
+											"value": "name",
+											"disabled": true
+										},
+										{
+											"key": "orderBy",
+											"value": "ASC",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "healthz",
+					"item": [
+						{
+							"name": "helath check",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://admin.imcommerce.shop/healthz",
+									"protocol": "https",
+									"host": [
+										"admin",
+										"imcommerce",
+										"shop"
+									],
+									"path": [
+										"healthz"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
