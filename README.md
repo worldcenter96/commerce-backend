@@ -55,6 +55,10 @@
 <br> 
 <hr/>
 
+### 애자일 개발 프로세스 채택
+![agile_process.png](img%2Fagile_process.png)
+
+
 ## 🐳 Docker-Compose 로 실행환경 세팅하기
 1. 해당 프로젝트를 clone 한 뒤, docker-compose를 실행합니다.
 ```bash
