@@ -28,7 +28,7 @@ public class B2BSearchService {
     // 모든 B2B 회원을 조회하여 Response 로 변환
     Page<B2BMember> b2bMemberPage = b2bMemberRepository.findAll(pageRequest);
 
-    return new B2BMemberPageResponse(b2bMemberPage);
+    return new B2BMemberPageResponse(b2bMemberPage, page, size);
 
   }
 
@@ -44,7 +44,7 @@ public class B2BSearchService {
     // 상태에 맞는 B2B 회원을 조회하여 Response 로 변환
     Page<B2BMember> b2bMemberPage = b2bMemberRepository.findByB2bMemberStatus(status, pageRequest);
 
-    return new B2BMemberPageResponse(b2bMemberPage);
+    return new B2BMemberPageResponse(b2bMemberPage, page, size);
   }
 
 }
