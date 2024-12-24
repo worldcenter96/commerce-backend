@@ -16,6 +16,7 @@ import com.sparta.impostor.commerce.backend.domain.product.entity.Product;
 import com.sparta.impostor.commerce.backend.domain.product.enums.Category;
 import com.sparta.impostor.commerce.backend.domain.product.enums.ProductStatus;
 import com.sparta.impostor.commerce.backend.domain.product.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,7 +102,7 @@ public class RelatedProductRetrieveTest {
 
         // then
         // 정렬 확인
-        assertThat(resDto.contents()).hasSize(3);
+        assertThat(resDto.contents().size()).isEqualTo(3);
         assertThat(resDto.contents().get(0).id()).isEqualTo(productList.get(2).getId());
         assertThat(resDto.contents().get(1).id()).isEqualTo(productList.get(0).getId());
         assertThat(resDto.contents().get(2).id()).isEqualTo(productList.get(1).getId());

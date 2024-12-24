@@ -1,0 +1,10 @@
+version: 0.0
+os: linux
+files:
+  - source: /build/libs/b2b.jar
+    destination: /opt/impostor/b2b/
+hooks:
+  AfterInstall:
+    - location: /scripts/deploy.sh
+      runas: root
+      timeout: 600

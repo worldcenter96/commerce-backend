@@ -1,0 +1,10 @@
+version: 0.0
+os: linux
+files:
+  - source: /build/libs/admin.jar
+    destination: /opt/impostor/admin/
+hooks:
+  AfterInstall:
+    - location: /scripts/deploy.sh
+      runas: root
+      timeout: 600
