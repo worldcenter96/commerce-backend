@@ -3,6 +3,8 @@ package com.sparta.admin.product.controller;
 import com.sparta.admin.product.dto.request.ProductApprovalRequest;
 import com.sparta.admin.product.dto.response.ProductApprovalResponse;
 import com.sparta.admin.product.service.ProductApprovalService;
+import com.sparta.common.annotation.CheckAuth;
+import com.sparta.common.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ public class ProductApprovalController {
 
 
   // 상품 등록 승인 및 거절
+  @CheckAuth(role = Role.ADMIN)
   @PatchMapping("/{productId}")
   public ResponseEntity<ProductApprovalResponse> approveProduct(@PathVariable Long productId,
       @RequestBody ProductApprovalRequest request) {

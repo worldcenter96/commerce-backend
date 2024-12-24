@@ -3,6 +3,8 @@ package com.sparta.admin.product.controller;
 import com.sparta.admin.product.dto.request.ProductRequest;
 import com.sparta.admin.product.dto.response.PageProductResponse;
 import com.sparta.admin.product.service.ProductService;
+import com.sparta.common.annotation.CheckAuth;
+import com.sparta.common.enums.Role;
 import com.sparta.impostor.commerce.backend.domain.product.enums.ProductStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,7 @@ public class ProductController {
   private final ProductService productService;
 
   @GetMapping()
+  @CheckAuth(role = Role.ADMIN)
   public ResponseEntity<PageProductResponse> getProducts(
       @RequestParam(required = false) ProductStatus status,
       @RequestParam(defaultValue = "1") int page,
