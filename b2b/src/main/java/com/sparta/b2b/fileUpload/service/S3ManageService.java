@@ -25,11 +25,17 @@ public class S3ManageService {
 	private final AmazonS3 amazonS3;
 
 	public String upload(MultipartFile multipartFile) throws IOException {
-		//고유한번호 생성(램덤번호생성) 실제이름 보단 임의로 지정 될수 있도록//
-		String s3FileName = "product-image/" + UUID.randomUUID().toString() + ".png";
+		String fileName = multipartFile.getOriginalFilename();
+		String ext = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+		if (!(ext.equals("jpg") || ext.equals("jpeg") || ext.equals("png"))) {
+			throw new IllegalArgumentException("지원되지 않는 확장자입니다. jpg, jpeg, png만 업로드 가능합니다.");
+		}
+		String contentType = multipartFile.getContentType();
+		String s3FileName = "product-image/" + UUID.randomUUID() + "." + ext;
 
 		ObjectMetadata objMeta = new ObjectMetadata();
-
+		objMeta.setContentType(contentType);
+		objMeta.setContentLength(multipartFile.getSize());
 		amazonS3.putObject(new PutObjectRequest(bucket, s3FileName, multipartFile.getInputStream(), objMeta)
 			.withCannedAcl(CannedAccessControlList.PublicRead));
 
