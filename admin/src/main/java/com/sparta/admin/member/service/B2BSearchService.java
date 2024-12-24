@@ -39,7 +39,7 @@ public class B2BSearchService {
     Sort.Direction direction =
         orderBy.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
 
-    PageRequest pageRequest = PageRequest.of(page - 1, size, direction, sortBy, orderBy);
+    PageRequest pageRequest = PageRequest.of(page - 1, size, direction, sortBy);
 
     // 상태에 맞는 B2B 회원을 조회하여 Response 로 변환
     Page<B2BMember> b2bMemberPage = b2bMemberRepository.findByB2bMemberStatus(status, pageRequest);
