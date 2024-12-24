@@ -5,7 +5,6 @@ import java.util.List;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
 
-
 @Getter
 public class B2BMemberPageResponse {
 
