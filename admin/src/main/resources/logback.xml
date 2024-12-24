@@ -1,15 +1,17 @@
-<appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
-    <http>
-        <url>http://192.168.0.60:3100/loki/api/v1/push</url>
-    </http>
-    <format>
-        <label>
-            <pattern>app=admin-app,host=${HOSTNAME}</pattern>
-        </label>
-        <message class="com.github.loki4j.logback.JsonLayout"/>
-    </format>
-</appender>
+<configuration>
+    <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
+        <http>
+            <url>http://192.168.0.60:3100/loki/api/v1/push</url>
+        </http>
+        <format>
+            <label>
+                <pattern>app=admin-app,host=${HOSTNAME}</pattern>
+            </label>
+            <message class="com.github.loki4j.logback.JsonLayout"/>
+        </format>
+    </appender>
 
-<root level="INFO">
-<appender-ref ref="LOKI"/>
-</root>
+    <root level="INFO">
+        <appender-ref ref="LOKI"/>
+    </root>
+</configuration>
