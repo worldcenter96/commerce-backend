@@ -1,26 +1,21 @@
 package com.sparta.admin.member.dto.response;
 
 import com.sparta.impostor.commerce.backend.domain.b2cMember.entity.B2CMember;
-import java.util.List;
+import lombok.Getter;
 import org.springframework.data.domain.Page;
 
-public record B2CMemberPageResponse(
+import java.util.List;
 
-    List<B2CMemberResponse> contents,
-    int page,
-    int size,
-    int totalPages
-) {
+@Getter
+public class B2CMemberPageResponse {
+    private final List<B2CMemberResponse> members;
+    private final Integer totalPages;
+    private final Long totalElements;
 
-  public B2CMemberPageResponse(Page<B2CMember> pageResponse) {
-    this(
-        pageResponse.getContent().stream()
-            .map(B2CMemberResponse::from)
-            .toList(),
-        pageResponse.getPageable().getPageNumber() + 1,
-        pageResponse.getPageable().getPageSize(),
-        pageResponse.getTotalPages()
-    );
-  }
 
+    public B2CMemberPageResponse(Page<B2CMember> b2cMemberPage) {
+        this.members = b2cMemberPage.map(B2CMemberResponse::from).toList();
+        this.totalPages = b2cMemberPage.getTotalPages();
+        this.totalElements = b2cMemberPage.getTotalElements();
+    }
 }
