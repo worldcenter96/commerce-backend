@@ -29,7 +29,7 @@ public record ProductCreateResponse(
 		List<ImageInfo> imageInfos = new ArrayList<>();
 		for (Image image : savedImageList) {
 			imageInfos.add(ImageInfo.builder()
-				.url(image.getImg_url())
+				.url(image.getImgUrl())
 				.build());
 		}
 

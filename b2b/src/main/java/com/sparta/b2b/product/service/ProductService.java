@@ -59,7 +59,7 @@ public class ProductService {
 
 		for (ImageInfo imageinfo : imageinfos) {
 			Image image = Image.builder()
-				.img_url(imageinfo.getUrl())
+				.imgUrl(imageinfo.getUrl())
 				.product(saveedProduct).build();
 
 			images.add(image);
@@ -75,7 +75,16 @@ public class ProductService {
 		Product product = productRepository.findById(productId)
 			.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 상품이 존재하지 않습니다."));
 
-		return ProductSearchResponse.from(product);
+		List<Image> images = imageRepository.findByProductId(productId);
+		List<String> imageUrls = new ArrayList<>();
+		for (Image image : images) {
+			imageUrls.add(image.getImgUrl());
+		}
+		//list<image>에서 가져온 전체 이미지 리스트를 -> imageUpladedRespinse로 응답 해줘야함
+		//=> "image":[{url,이미지 이름, },{url}...]
+		//class imageInfo에서 정의한 형의으로 응답되게
+
+		return ProductSearchResponse.from2(product,imageUrls);
 	}
 
 
@@ -118,7 +127,7 @@ public class ProductService {
 		// 이미지 삭제
 		List<Image> allByProduct = imageRepository.findAllByProduct(product);
 		for (Image image : allByProduct) {
-			fileManageService.delete(image.getImg_url()); // S3 에서 삭제
+			fileManageService.delete(image.getImgUrl()); // S3 에서 삭제
 			imageRepository.delete(image); // DB에서 삭제
 		}
 

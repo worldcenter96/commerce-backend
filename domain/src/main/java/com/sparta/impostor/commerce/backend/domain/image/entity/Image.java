@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class Image extends Timestamped {
 
     @Id
-    private String img_url;
+    private String imgUrl;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
