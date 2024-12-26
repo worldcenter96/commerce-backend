@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class CommonConfig implements WebMvcConfigurer {
+public class LogConfig implements WebMvcConfigurer {
 
     // TraceIdFilter 를 필터로 등록하는 메서드
     @Bean
