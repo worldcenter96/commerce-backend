@@ -1,5 +1,6 @@
 package com.sparta.b2b.product.dto.response;
 
+import com.sparta.b2b.fileUpload.dto.ImageInfo;
 import com.sparta.impostor.commerce.backend.domain.product.entity.Product;
 import com.sparta.impostor.commerce.backend.domain.product.enums.Category;
 import com.sparta.impostor.commerce.backend.domain.product.enums.ProductStatus;
@@ -19,7 +20,7 @@ public record ProductSearchResponse(
 	Category.SubCategory subCategory,
 	LocalDateTime createdAt,
 	LocalDateTime modifiedAt,
-	List<String> imageUrls
+	List<ImageInfo> contents
 ) {
 
 	public static ProductSearchResponse from(Product save) {
@@ -38,7 +39,7 @@ public record ProductSearchResponse(
 		);
 	}
 
-	public static ProductSearchResponse from2(Product save, List<String> imageUrls) {
+	public static ProductSearchResponse from2(Product save, List<ImageInfo> imageUrls) {
 		return new ProductSearchResponse(
 			save.getId(),
 			save.getName(),

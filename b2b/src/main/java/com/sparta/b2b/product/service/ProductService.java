@@ -1,6 +1,6 @@
 package com.sparta.b2b.product.service;
 
-import com.sparta.b2b.fileUpload.dto.ImangeUploadedResponse;
+import com.sparta.b2b.fileUpload.dto.ImageUploadedResponse;
 import com.sparta.b2b.fileUpload.dto.ImageInfo;
 import com.sparta.b2b.fileUpload.service.FileManageService;
 import com.sparta.b2b.product.dto.request.ProductCreateRequest;
@@ -44,7 +44,7 @@ public class ProductService {
 
 
 	public ProductCreateResponse createProduct(Long memberId, ProductCreateRequest request, List<MultipartFile> productImageFiles) {
-		ImangeUploadedResponse imangeUploadedResponse = fileManageService.uploadFiles(productImageFiles);
+		ImageUploadedResponse imageUploadedResponse = fileManageService.uploadFiles(productImageFiles);
 
 		B2BMember member = b2bMemberRepository.findById(memberId)
 			.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 멤버가 존재하지 않습니다."));
@@ -54,7 +54,7 @@ public class ProductService {
 		}
 		Product saveedProduct = productRepository.save(request.toProductEntity(member));
 
-		List<ImageInfo> imageinfos = imangeUploadedResponse.getImages();
+		List<ImageInfo> imageinfos = imageUploadedResponse.getImages();
 		List<Image> images = new ArrayList<>();
 
 		for (ImageInfo imageinfo : imageinfos) {
@@ -76,15 +76,13 @@ public class ProductService {
 			.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 상품이 존재하지 않습니다."));
 
 		List<Image> images = imageRepository.findByProductId(productId);
-		List<String> imageUrls = new ArrayList<>();
-		for (Image image : images) {
-			imageUrls.add(image.getImgUrl());
-		}
-		//list<image>에서 가져온 전체 이미지 리스트를 -> imageUpladedRespinse로 응답 해줘야함
-		//=> "image":[{url,이미지 이름, },{url}...]
-		//class imageInfo에서 정의한 형의으로 응답되게
 
-		return ProductSearchResponse.from2(product,imageUrls);
+		List<ImageInfo> imageInfos = new ArrayList<>();
+		for (Image image : images) {
+			ImageInfo imageInfo = new ImageInfo(image.getImgUrl());
+			imageInfos.add(imageInfo);
+		}
+		return ProductSearchResponse.from2(product,imageInfos);
 	}
 
 
