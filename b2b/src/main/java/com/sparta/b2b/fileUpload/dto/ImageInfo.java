@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public  class ImageInfo {
+public class ImageInfo {
 	private String url;
 }

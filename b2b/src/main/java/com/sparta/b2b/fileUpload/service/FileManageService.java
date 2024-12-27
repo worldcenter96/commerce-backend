@@ -1,6 +1,6 @@
 package com.sparta.b2b.fileUpload.service;
 
-import com.sparta.b2b.fileUpload.dto.ImangeUploadedResponse;
+import com.sparta.b2b.fileUpload.dto.ImageUploadedResponse;
 import com.sparta.b2b.fileUpload.dto.ImageInfo;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class FileManageService {
 	private final S3ManageService s3ManageService;
 	private static final long MAX_FILE_SIZE = 5 * 1024 * 1024; // TODO : confg에 넣으면 좋을듯
 
-	public ImangeUploadedResponse uploadFiles(List<MultipartFile> files) {
+	public ImageUploadedResponse uploadFiles(List<MultipartFile> files) {
 
 		validateFiles(files);
 
@@ -36,7 +36,7 @@ public class FileManageService {
 			})
 			.collect(Collectors.toList());
 
-		return ImangeUploadedResponse.of(infos);
+		return ImageUploadedResponse.of(infos);
 	}
 
 

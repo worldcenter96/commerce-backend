@@ -1,6 +1,6 @@
 package com.sparta.b2b.product.service;
 
-import com.sparta.b2b.fileUpload.dto.ImangeUploadedResponse;
+import com.sparta.b2b.fileUpload.dto.ImageUploadedResponse;
 import com.sparta.b2b.fileUpload.dto.ImageInfo;
 import com.sparta.b2b.fileUpload.service.FileManageService;
 import com.sparta.b2b.product.dto.request.ProductCreateRequest;
@@ -44,7 +44,7 @@ public class ProductService {
 
 
 	public ProductCreateResponse createProduct(Long memberId, ProductCreateRequest request, List<MultipartFile> productImageFiles) {
-		ImangeUploadedResponse imangeUploadedResponse = fileManageService.uploadFiles(productImageFiles);
+		ImageUploadedResponse imageUploadedResponse = fileManageService.uploadFiles(productImageFiles);
 
 		B2BMember member = b2bMemberRepository.findById(memberId)
 			.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 멤버가 존재하지 않습니다."));
@@ -54,12 +54,12 @@ public class ProductService {
 		}
 		Product saveedProduct = productRepository.save(request.toProductEntity(member));
 
-		List<ImageInfo> imageinfos = imangeUploadedResponse.getImages();
+		List<ImageInfo> imageinfos = imageUploadedResponse.getImages();
 		List<Image> images = new ArrayList<>();
 
 		for (ImageInfo imageinfo : imageinfos) {
 			Image image = Image.builder()
-				.img_url(imageinfo.getUrl())
+				.imgUrl(imageinfo.getUrl())
 				.product(saveedProduct).build();
 
 			images.add(image);
@@ -75,7 +75,14 @@ public class ProductService {
 		Product product = productRepository.findById(productId)
 			.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 상품이 존재하지 않습니다."));
 
-		return ProductSearchResponse.from(product);
+		List<Image> images = imageRepository.findByProductId(productId);
+
+		List<ImageInfo> imageInfos = new ArrayList<>();
+		for (Image image : images) {
+			ImageInfo imageInfo = new ImageInfo(image.getImgUrl());
+			imageInfos.add(imageInfo);
+		}
+		return ProductSearchResponse.fromAndImages(product,imageInfos);
 	}
 
 
@@ -118,7 +125,7 @@ public class ProductService {
 		// 이미지 삭제
 		List<Image> allByProduct = imageRepository.findAllByProduct(product);
 		for (Image image : allByProduct) {
-			fileManageService.delete(image.getImg_url()); // S3 에서 삭제
+			fileManageService.delete(image.getImgUrl()); // S3 에서 삭제
 			imageRepository.delete(image); // DB에서 삭제
 		}
 
