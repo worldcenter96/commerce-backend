@@ -85,6 +85,7 @@ public class ProductService {
 		return ProductSearchResponse.fromAndImages(product,imageInfos);
 	}
 
+
 	@Transactional(readOnly = true)
 	public PageProductResponse totalSearchProduct(
 		Long memberId, int page, int size, String orderBy, String sortBy

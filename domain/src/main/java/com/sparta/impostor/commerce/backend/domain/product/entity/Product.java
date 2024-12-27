@@ -64,6 +64,7 @@ public class Product extends Timestamped {
                 member);
     }
 
+
     public Product changeStatus(ProductStatus productStatus) {
         this.status = productStatus;
         return this;
@@ -74,6 +75,7 @@ public class Product extends Timestamped {
 		existingProduct.update(newStockQuantity);
 		return existingProduct;
 	}
+
 
 	public void update(int newStockQuantity) {
 		this.stockQuantity = newStockQuantity;
