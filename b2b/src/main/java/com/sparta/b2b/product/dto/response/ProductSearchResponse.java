@@ -39,7 +39,7 @@ public record ProductSearchResponse(
 		);
 	}
 
-	public static ProductSearchResponse from2(Product save, List<ImageInfo> imageUrls) {
+	public static ProductSearchResponse fromAndImages(Product save, List<ImageInfo> imageUrls) {
 		return new ProductSearchResponse(
 			save.getId(),
 			save.getName(),
@@ -54,6 +54,4 @@ public record ProductSearchResponse(
 			imageUrls
 		);
 	}
-
-
 }

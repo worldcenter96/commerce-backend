@@ -82,7 +82,7 @@ public class ProductService {
 			ImageInfo imageInfo = new ImageInfo(image.getImgUrl());
 			imageInfos.add(imageInfo);
 		}
-		return ProductSearchResponse.from2(product,imageInfos);
+		return ProductSearchResponse.fromAndImages(product,imageInfos);
 	}
 
 
