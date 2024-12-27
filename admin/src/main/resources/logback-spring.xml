@@ -2,7 +2,7 @@
 <configuration>
 
     <!-- 로그 패턴 설정 -->
-    <property name="LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%thread] %logger{36} %msg%n"/>
+    <property name="LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [TRACE_ID: %X{traceId}] [%thread] %logger{36} %msg%n"/>
 
     <!-- ConsoleAppender 설정: 콘솔에 로그 출력 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
