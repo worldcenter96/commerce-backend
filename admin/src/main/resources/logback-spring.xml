@@ -43,6 +43,7 @@
 
     <!-- MDC 관련 로그 추가 예시 (traceId 설정) -->
     <logger name="com.sparta" level="INFO">
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="DAILY_LOG"/>
     </logger>
 
