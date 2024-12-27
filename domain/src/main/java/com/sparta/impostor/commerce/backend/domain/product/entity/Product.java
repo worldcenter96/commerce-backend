@@ -64,20 +64,21 @@ public class Product extends Timestamped {
                 member);
     }
 
+
     public Product changeStatus(ProductStatus productStatus) {
         this.status = productStatus;
         return this;
-    }public static Product updateProduct(Product existingProduct, int newStockQuantity) {
-		return new Product(
-			existingProduct.name,
-			existingProduct.description,
-			newStockQuantity,
-			existingProduct.price,
-			existingProduct.status,
-			existingProduct.category,
-			existingProduct.subCategory,
-			existingProduct.member
-		);
+    }
+
+
+	public static Product updateProduct(Product existingProduct, int newStockQuantity) {
+		existingProduct.update(newStockQuantity);
+		return existingProduct;
+	}
+
+
+	public void update(int newStockQuantity) {
+		this.stockQuantity = newStockQuantity;
 	}
 }
 
