@@ -85,7 +85,7 @@ public class ProductService {
 		return ProductSearchResponse.fromAndImages(product,imageInfos);
 	}
 
-
+	@Transactional(readOnly = true)
 	public PageProductResponse totalSearchProduct(
 		Long memberId, int page, int size, String orderBy, String sortBy
 	) {
@@ -100,8 +100,8 @@ public class ProductService {
 		Product existingProduct = productRepository.findById(productId)
 			.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 상품이 존재하지 않습니다."));
 
-		Product updatedProduct = Product.updateProduct(existingProduct, request.stockQuantity());
-		Product savedProduct = productRepository.save(updatedProduct);
+		existingProduct.update(request.stockQuantity());
+		Product savedProduct = productRepository.save(existingProduct);
 
 		return ProductUpdateResponse.from(savedProduct);
 	}
