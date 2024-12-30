@@ -3,22 +3,18 @@ package com.sparta.common.logging;
 import java.io.IOException;
 import java.util.UUID;
 
-import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.MDC;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-public class TraceIdFilter implements Filter {
-
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-    }
+public class TraceIdFilter extends OncePerRequestFilter {
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+
         String traceId = UUID.randomUUID().toString(); // traceId 생성
         MDC.put("traceId", traceId); // MDC 에 traceId 설정
 
@@ -27,8 +23,8 @@ public class TraceIdFilter implements Filter {
             chain.doFilter(request, response);
         } finally {
             // 요청 후 MDC 에서 traceId 제거
-            MDC.remove("traceId");
+            MDC.clear();
         }
-    }
 
+    }
 }

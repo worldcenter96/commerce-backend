@@ -2,7 +2,7 @@
 <configuration>
 
     <!-- 로그 패턴 설정 -->
-    <property name="LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%thread] %logger{36} %msg%n"/>
+    <property name="LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [TRACE_ID: %X{traceId}] [%thread] %logger{36} %msg%n"/>
 
     <!-- ConsoleAppender 설정: 콘솔에 로그 출력 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -19,31 +19,18 @@
         <!-- 로그 파일 롤링 정책: 하루 단위로 롤링 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>./application-%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!-- 최대 7일간의 로그를 보관 -->
             <maxHistory>7</maxHistory>
         </rollingPolicy>
 
-        <!-- 로그 형식 설정 -->
         <encoder>
             <pattern>${LOG_PATTERN}</pattern>
         </encoder>
     </appender>
 
-    <!-- Root Logger 설정 -->
+    <!-- Root Logger 설정 (애플리케이션 전체 적용) -->
     <root level="INFO">
-        <!-- 콘솔에 로그 출력 -->
         <appender-ref ref="CONSOLE"/>
-        <!-- 파일에 로그 출력 -->
         <appender-ref ref="DAILY_LOG"/>
     </root>
-
-    <!-- 특정 패키지나 클래스에서 더 상세한 로그 레벨 설정 가능 -->
-    <logger name="org.springframework" level="WARN"/>
-    <logger name="org.hibernate" level="ERROR"/>
-
-    <!-- MDC 관련 로그 추가 예시 (traceId 설정) -->
-    <logger name="com.sparta" level="INFO">
-        <appender-ref ref="DAILY_LOG"/>
-    </logger>
 
 </configuration>
