@@ -36,9 +36,5 @@ public class LoggingInterceptor implements HandlerInterceptor {
         String traceId = MDC.get("traceId");
         String requestURI = request.getRequestURI();
 
-//        // 응답 시간 로그
-//        if (traceId != null) {
-//            logger.info("[TRACE_ID: {}] Completed request: {} in {} ms", traceId, requestURI, duration);
-//        }
     }
 }
