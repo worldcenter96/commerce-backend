@@ -4,6 +4,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +16,9 @@ import java.util.UUID;
 @Component
 public class LoggingAspect {
 
-    // 포인트컷 정의
+    private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
+
+    // 포인트컷 정의: com.sparta.controller 패키지 내의 모든 메서드에 적용
     @Pointcut("execution(* com.sparta..controller..*(..))")
     public void controllerMethods() {}
 
@@ -29,28 +33,16 @@ public class LoggingAspect {
             MDC.put("traceId", traceId); // MDC 에 traceId 설정
         }
 
+        // 메서드명 및 인자 추출
         String methodName = joinPoint.getSignature().getName();
         String methodArgs = Arrays.toString(joinPoint.getArgs());
 
-        // 요청 시작 시간 기록
-        Long startTime = System.currentTimeMillis();
-
-        // 로그: 메서드 호출 전
-        if (traceId != null) {
-            System.out.println("[TRACE_ID: " + traceId + "] Executing method: " + methodName + " with args: " + methodArgs);
-        }
+        // 로그를 찍고
+        logger.info("[TRACE_ID: {}] Executing method: {}", traceId, joinPoint.getSignature().getName());
 
         // 메서드 실행
         Object result = joinPoint.proceed();
 
-        // 요청 종료 시간 기록
-        Long endTime = System.currentTimeMillis();
-        Long duration = endTime - startTime;
-
-        // 로그: 메서드 호출 후
-        if (traceId != null) {
-            System.out.println("[TRACE_ID: " + traceId + "] Method: " + methodName + "completed in " + duration + " ms");
-        }
 
         return result;
     }
