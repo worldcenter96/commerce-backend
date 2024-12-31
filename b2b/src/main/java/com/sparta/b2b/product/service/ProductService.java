@@ -19,6 +19,7 @@ import com.sparta.impostor.commerce.backend.domain.image.repository.ImageReposit
 import com.sparta.impostor.commerce.backend.domain.product.entity.Product;
 import com.sparta.impostor.commerce.backend.domain.product.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -52,7 +53,7 @@ public class ProductService {
 		if (member.getB2BMemberStatus() != B2BMemberStatus.ACTIVE) {
 			throw new ForbiddenAccessException("승인된 멤버만 상품 등록 할 수 있습니다.");
 		}
-		Product saveedProduct = productRepository.save(request.toProductEntity(member));
+		Product savedProduct = productRepository.save(request.toProductEntity(member));
 
 		List<ImageInfo> imageinfos = imageUploadedResponse.getImages();
 		List<Image> images = new ArrayList<>();
@@ -60,13 +61,35 @@ public class ProductService {
 		for (ImageInfo imageinfo : imageinfos) {
 			Image image = Image.builder()
 				.imgUrl(imageinfo.getUrl())
-				.product(saveedProduct).build();
+				.product(savedProduct).build();
 
 			images.add(image);
 		}
 		List<Image> savedImageList = imageRepository.saveAll(images);
 
-		return ProductCreateResponse.from(saveedProduct, savedImageList);
+		return ProductCreateResponse.from(savedProduct, savedImageList);
+	}
+
+
+	public ProductCreateResponse createProductV2(@Valid ProductCreateRequest request, Long memberId) {
+
+		B2BMember member = b2bMemberRepository.findById(memberId)
+			.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 멤버가 존재하지 않습니다."));
+
+		if (member.getB2BMemberStatus() != B2BMemberStatus.ACTIVE) {
+			throw new ForbiddenAccessException("승인된 멤버만 상품 등록 할 수 있습니다.");
+		}
+		Product savedProduct = productRepository.save(request.toProductEntity(member));
+
+		List<Long> imageIds = request.imageIds();
+		List<Image> images = new ArrayList<>();
+		for (Long imageId : imageIds) {
+			Image findImage = imageRepository.findById(imageId)
+				.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 image가 존재하지 않습니다."));
+			findImage.updateProduct(savedProduct);
+			images.add(findImage);
+		}
+		return ProductCreateResponse.from(savedProduct, images);
 	}
 
 
@@ -82,7 +105,7 @@ public class ProductService {
 			ImageInfo imageInfo = new ImageInfo(image.getImgUrl());
 			imageInfos.add(imageInfo);
 		}
-		return ProductSearchResponse.fromAndImages(product,imageInfos);
+		return ProductSearchResponse.fromAndImages(product, imageInfos);
 	}
 
 

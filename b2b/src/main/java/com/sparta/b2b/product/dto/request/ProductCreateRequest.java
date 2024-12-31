@@ -1,6 +1,5 @@
 package com.sparta.b2b.product.dto.request;
 
-import com.sparta.b2b.fileUpload.dto.ImageInfo;
 import com.sparta.impostor.commerce.backend.domain.b2bMember.entity.B2BMember;
 import com.sparta.impostor.commerce.backend.domain.product.entity.Product;
 import com.sparta.impostor.commerce.backend.domain.product.enums.Category;
@@ -32,8 +31,12 @@ public record ProductCreateRequest(
 	Category category,
 
 	@NotNull
-	Category.SubCategory subCategory
+	Category.SubCategory subCategory,
+
+	@NotNull
+	List<Long> imageIds
 ) {
+
 
 	public Product toProductEntity(B2BMember member) {
 		return Product.createProduct(
