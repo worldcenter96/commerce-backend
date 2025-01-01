@@ -64,7 +64,6 @@ public class FileManageService {
 			throw new IllegalStateException(ex);
 		}
 		Image image = Image.of(imageUrl);
-		// 이미지 갯수 체크하는 로직 추가 필요
 		Image savedImage = imageRepository.save(image);
 		return ImageUploadedResponseV2.from(savedImage);
 	}
