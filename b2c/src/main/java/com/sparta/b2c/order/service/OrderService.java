@@ -42,11 +42,11 @@ public class OrderService {
 
         // 상품의 수량이 주문 수량의 이상인지 검증
         int quantity = orderRequest.quantity();
-        if (quantity > product.getStockQuantity()) {
+        if (quantity > product.getStockQuantity() && product.getStockQuantity() <= 0) {
             throw new IllegalArgumentException("재고 수량이 부족합니다.");
         }
 
-        int updatedQuantity = product.getStockQuantity() - orderRequest.quantity();
+        int updatedQuantity = product.getStockQuantity() - quantity;
         product.updateQuantity(updatedQuantity);
 
         Long totalPrice = Long.valueOf(product.getPrice() * quantity);
