@@ -46,6 +46,9 @@ public class OrderService {
             throw new IllegalArgumentException("재고 수량이 부족합니다.");
         }
 
+        int updatedQuantity = product.getStockQuantity() - orderRequest.quantity();
+        product.updateQuantity(updatedQuantity);
+
         Long totalPrice = Long.valueOf(product.getPrice() * quantity);
 
         Orders order = Orders.create(
