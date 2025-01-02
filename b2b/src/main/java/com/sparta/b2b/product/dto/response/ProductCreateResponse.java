@@ -23,8 +23,8 @@ public record ProductCreateResponse(
 	LocalDateTime modifiedAt,
 	List<ImageInfo> imageInfos
 ) {
-	public static ProductCreateResponse from(Product save,
-											 List<Image> savedImageList) {
+
+	public static ProductCreateResponse from(Product save, List<Image> savedImageList) {
 
 		List<ImageInfo> imageInfos = new ArrayList<>();
 		for (Image image : savedImageList) {
@@ -47,4 +47,5 @@ public record ProductCreateResponse(
 			imageInfos
 		);
 	}
+
 }

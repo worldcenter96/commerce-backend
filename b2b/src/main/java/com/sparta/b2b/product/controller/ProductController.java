@@ -40,6 +40,19 @@ public class ProductController {
 			.body(productService.createProduct(memberSession.memberId(), request, productImageFiles));
 	}
 
+
+	@CheckAuth(role = Role.B2B)
+	@PostMapping("/v2")
+	public ResponseEntity<ProductCreateResponse> createProductV2(
+		@RequestBody @Valid ProductCreateRequest request,
+		@LoginMember(role = Role.B2B) MemberSession memberSession
+	) {
+		return ResponseEntity
+			.status(HttpStatus.CREATED)
+			.body(productService.createProductV2(request, memberSession.memberId()));
+	}
+
+
 	@CheckAuth(role = Role.B2B)
 	@GetMapping()
 	public ResponseEntity<PageProductResponse> totalSearchProduct(

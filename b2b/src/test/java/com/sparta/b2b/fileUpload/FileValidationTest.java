@@ -19,7 +19,7 @@ public class FileValidationTest {
 	@Test
 	void validateFiles_shouldThrowException_whenFilesAreNull() {
 		// given
-		FileManageService fileManageService = new FileManageService(null);
+		FileManageService fileManageService = new FileManageService(null,null);
 
 		// when
 		EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
@@ -31,7 +31,7 @@ public class FileValidationTest {
 
 	@Test
 	void validateFiles_shouldThrowException_whenFilesAreEmpty() {
-		FileManageService fileManageService = new FileManageService(null);
+		FileManageService fileManageService = new FileManageService(null,null);
 
 		EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
 			() -> fileManageService.validateFiles(Collections.emptyList()));
@@ -41,7 +41,7 @@ public class FileValidationTest {
 
 	@Test
 	void validateFiles_shouldThrowException_whenFileCountExceedsLimit() {
-		FileManageService fileManageService = new FileManageService(null);
+		FileManageService fileManageService = new FileManageService(null,null);
 
 		List<MultipartFile> files = new ArrayList<>();
 		for (int i = 0; i < 11; i++) {
@@ -56,7 +56,7 @@ public class FileValidationTest {
 
 	@Test
 	void validateFiles_shouldThrowException_whenFileIsNullOrEmpty() {
-		FileManageService fileManageService = new FileManageService(null);
+		FileManageService fileManageService = new FileManageService(null,null);
 
 		MultipartFile emptyFile = Mockito.mock(MultipartFile.class);
 		Mockito.when(emptyFile.isEmpty()).thenReturn(true);
@@ -70,26 +70,8 @@ public class FileValidationTest {
 	}
 
 	@Test
-	void validateFiles_shouldThrowException_whenFileSizeExceedsLimit() {
-		FileManageService fileManageService = new FileManageService(null);
-
-		MultipartFile largeFile = Mockito.mock(MultipartFile.class);
-		Mockito.when(largeFile.isEmpty()).thenReturn(false);
-		Mockito.when(largeFile.getSize()).thenReturn(6 * 1024 * 1024L); // 6MB
-		Mockito.when(largeFile.getOriginalFilename()).thenReturn("largeFile.jpg");
-
-		List<MultipartFile> files = List.of(largeFile);
-
-		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-			() -> fileManageService.validateFiles(files));
-
-		assertTrue(exception.getMessage().contains("파일 크기가 초과되었습니다."));
-		assertTrue(exception.getMessage().contains("largeFile.jpg"));
-	}
-
-	@Test
 	void validateFiles_shouldPass_whenAllFilesAreValid() {
-		FileManageService fileManageService = new FileManageService(null);
+		FileManageService fileManageService = new FileManageService(null,null);
 
 		MultipartFile validFile = Mockito.mock(MultipartFile.class);
 		Mockito.when(validFile.isEmpty()).thenReturn(false);

@@ -60,8 +60,8 @@ public class Product extends Timestamped {
 
     public static Product createProduct(String name, String description, int stockQuantity, int price,
                                         ProductStatus status, Category category, Category.SubCategory subCategory, B2BMember member) {
-        return new Product(name, description, stockQuantity, price, status, category, subCategory,
-                member);
+
+        return new Product(name, description, stockQuantity, price, status, category, subCategory, member);
     }
 
 
