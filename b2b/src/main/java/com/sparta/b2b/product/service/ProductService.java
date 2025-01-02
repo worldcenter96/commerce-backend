@@ -152,7 +152,6 @@ public class ProductService {
 			fileManageService.delete(image.getImgUrl()); // S3 에서 삭제
 			imageRepository.delete(image); // DB에서 삭제
 		}
-
 		productRepository.deleteById(productId);
 	}
 }
