@@ -18,6 +18,14 @@ repositories {
     mavenCentral()
 }
 
+sonar {
+    properties {
+        property "sonar.projectKey", "impostor-commerce_impostor-commerce-backend"
+        property "sonar.organization", "impostor-commerce"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
+}
+
 subprojects {
     group = 'com.sparta'
     version = '0.0.1-SNAPSHOT'
@@ -34,13 +42,6 @@ subprojects {
         mavenCentral()
     }
 
-    sonar {
-        properties {
-            property "sonar.projectKey", "impostor-commerce_impostor-commerce-backend"
-            property "sonar.organization", "impostor-commerce"
-            property "sonar.host.url", "https://sonarcloud.io"
-        }
-    }
 
     configurations {
         compileOnly {
