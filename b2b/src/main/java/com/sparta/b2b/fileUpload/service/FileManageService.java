@@ -1,5 +1,6 @@
 package com.sparta.b2b.fileUpload.service;
 
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.sparta.b2b.fileUpload.dto.ImageUploadedResponse;
 import com.sparta.b2b.fileUpload.dto.ImageInfo;
 import com.sparta.b2b.fileUpload.dto.ImageUploadedResponseV2;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -71,5 +73,16 @@ public class FileManageService {
 
 	public void delete(String imageUrl) {
 		s3ManageService.delete(imageUrl);
+	}
+
+
+	public void removeUnusedFiles() {
+		List<Image> unUsedImages = imageRepository.findAllByProductIsNull();
+		for (Image unUsedImage : unUsedImages) {
+			// S3에서 삭제
+			delete(unUsedImage.getImgUrl());
+			// DB에서 삭제
+			imageRepository.delete(unUsedImage);
+		}
 	}
 }
