@@ -64,5 +64,4 @@ public class S3ManageService {
 		}
 		return imageUrl.substring(bucketUrl.length());
 	}
-
 }
