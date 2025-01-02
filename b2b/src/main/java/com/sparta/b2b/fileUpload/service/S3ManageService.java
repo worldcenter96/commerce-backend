@@ -2,6 +2,7 @@ package com.sparta.b2b.fileUpload.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +47,7 @@ public class S3ManageService {
 
 
 	public void delete(String imageUrl) {
-		String fileName = extractFileNameFromUrl(imageUrl);
+		String fileName = imageUrl.split("/")[5];
 		try {
 			amazonS3.deleteObject(bucket, fileName);
 			log.info("S3에서 파일 삭제 완료: {}", fileName);
