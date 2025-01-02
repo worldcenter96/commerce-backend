@@ -2,14 +2,6 @@ dependencies {
 
 }
 
-sonar {
-    properties {
-        property "sonar.projectKey", "impostor-commerce_impostor-commerce-backend"
-        property "sonar.organization", "impostor-commerce"
-        property "sonar.host.url", "https://sonarcloud.io"
-    }
-}
-
 clean {
     delete file('src/main/generated')
 }
