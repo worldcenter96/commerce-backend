@@ -37,7 +37,7 @@ subprojects {
     sonar {
         properties {
             property "sonar.projectKey", "impostor-commerce_impostor-commerce-backend"
-            property "sonar.organization", "impostor-commerce9"
+            property "sonar.organization", "impostor-commerce"
             property "sonar.host.url", "https://sonarcloud.io"
         }
     }
