@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.4.0'
     id 'io.spring.dependency-management' version '1.1.6'
+    id "org.sonarqube" version "6.0.1.5171"
 }
 
 tasks.bootJar {
@@ -13,6 +14,18 @@ tasks.jar {
     enabled = true
 }
 
+repositories {
+    mavenCentral()
+}
+
+sonar {
+    properties {
+        property "sonar.projectKey", "impostor-commerce_impostor-commerce-backend"
+        property "sonar.organization", "impostor-commerce"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
+}
+
 subprojects {
     group = 'com.sparta'
     version = '0.0.1-SNAPSHOT'
@@ -22,11 +35,13 @@ subprojects {
     apply plugin: 'java-library'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.sonarqube'
 
     repositories {
         mavenLocal()
         mavenCentral()
     }
+
 
     configurations {
         compileOnly {
