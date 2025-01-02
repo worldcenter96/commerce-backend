@@ -7,6 +7,14 @@ tasks.jar {
     enabled = false
 }
 
+sonar {
+    properties {
+        property "sonar.projectKey", "impostor-commerce_impostor-commerce-backend"
+        property "sonar.organization", "impostor-commerce"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
+}
+
 dependencies {
     implementation project(':domain')
     implementation project(':common')
