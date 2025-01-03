@@ -43,16 +43,18 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
             Pageable pageable
     ) {
         BooleanBuilder whereClause = new BooleanBuilder();
+        whereClause.and(product.price.gt(0));
+        if (category != Category.DEFAULT) {
+            whereClause.and(product.category.eq(category));
+        }
+        if (subCategory != Category.SubCategory.DEFAULT) {
+            whereClause.and(product.subCategory.eq(subCategory));
+        }
         if (keyword != null && !keyword.isEmpty()) {
-            whereClause.and(product.name.containsIgnoreCase(keyword));
+            whereClause.and(product.name.contains(keyword));
         }
         if (productStatus != null) {
             whereClause.and(product.status.eq(productStatus));
-        }
-        if (category != Category.DEFAULT) {
-            whereClause.and(product.category.eq(category));
-        } else if (subCategory != Category.SubCategory.DEFAULT) {
-            whereClause.and(product.subCategory.eq(subCategory));
         }
         JPAQuery<?> baseQuery = jpaQueryFactory.from(product).where(whereClause);
 
