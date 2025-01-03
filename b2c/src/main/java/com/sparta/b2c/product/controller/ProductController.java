@@ -35,7 +35,7 @@ public class ProductController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "") String keyword,
-            @RequestParam(defaultValue = "asc") String orderBy,
+            @RequestParam(defaultValue = "ASC") String orderBy,
             @RequestParam(defaultValue = "name") String sortBy,
             @RequestParam(defaultValue = "DEFAULT") Category category,
             @RequestParam(defaultValue = "DEFAULT") Category.SubCategory subCategory
