@@ -58,7 +58,7 @@ public class S3ManageService {
 
 			log.info("3333");
 
-			amazonS3.deleteObject(bucket, fileName);
+			amazonS3.deleteObject(bucket, "/product-image/" + fileName);
 
 			log.info("444");
 			log.info("S3에서 파일 삭제 완료: {}", fileName);
