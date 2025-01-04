@@ -19,7 +19,7 @@ public class FileValidationTest {
 	@Test
 	void validateFiles_shouldThrowException_whenFilesAreNull() {
 		// given
-		FileManageService fileManageService = new FileManageService(null,null);
+		FileManageService fileManageService = new FileManageService(null,null, null);
 
 		// when
 		EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
@@ -31,7 +31,7 @@ public class FileValidationTest {
 
 	@Test
 	void validateFiles_shouldThrowException_whenFilesAreEmpty() {
-		FileManageService fileManageService = new FileManageService(null,null);
+		FileManageService fileManageService = new FileManageService(null,null, null);
 
 		EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
 			() -> fileManageService.validateFiles(Collections.emptyList()));
@@ -41,7 +41,7 @@ public class FileValidationTest {
 
 	@Test
 	void validateFiles_shouldThrowException_whenFileCountExceedsLimit() {
-		FileManageService fileManageService = new FileManageService(null,null);
+		FileManageService fileManageService = new FileManageService(null,null, null);
 
 		List<MultipartFile> files = new ArrayList<>();
 		for (int i = 0; i < 11; i++) {
@@ -56,7 +56,7 @@ public class FileValidationTest {
 
 	@Test
 	void validateFiles_shouldThrowException_whenFileIsNullOrEmpty() {
-		FileManageService fileManageService = new FileManageService(null,null);
+		FileManageService fileManageService = new FileManageService(null,null, null);
 
 		MultipartFile emptyFile = Mockito.mock(MultipartFile.class);
 		Mockito.when(emptyFile.isEmpty()).thenReturn(true);
@@ -71,7 +71,7 @@ public class FileValidationTest {
 
 	@Test
 	void validateFiles_shouldPass_whenAllFilesAreValid() {
-		FileManageService fileManageService = new FileManageService(null,null);
+		FileManageService fileManageService = new FileManageService(null,null, null);
 
 		MultipartFile validFile = Mockito.mock(MultipartFile.class);
 		Mockito.when(validFile.isEmpty()).thenReturn(false);
