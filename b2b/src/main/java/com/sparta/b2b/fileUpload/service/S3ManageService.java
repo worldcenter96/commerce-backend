@@ -28,9 +28,11 @@ public class S3ManageService {
 	public String upload(MultipartFile multipartFile) throws IOException {
 		String fileName = multipartFile.getOriginalFilename();
 		String ext = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+
 		if (!(ext.equals("jpg") || ext.equals("jpeg") || ext.equals("png"))) {
 			throw new IllegalArgumentException("지원되지 않는 확장자입니다. jpg, jpeg, png만 업로드 가능합니다.");
 		}
+
 		String contentType = multipartFile.getContentType();
 		String s3FileName = "product-image/" + UUID.randomUUID() + "." + ext;
 
@@ -58,7 +60,8 @@ public class S3ManageService {
 
 			log.info("3333");
 
-			amazonS3.deleteObject(bucket, "/product-image/" + fileName);
+			log.info("bucket : {}", bucket);
+			amazonS3.deleteObject(bucket, "product-image/" + fileName);
 
 			log.info("444");
 			log.info("S3에서 파일 삭제 완료: {}", fileName);
