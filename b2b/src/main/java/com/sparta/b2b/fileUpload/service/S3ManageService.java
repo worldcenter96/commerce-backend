@@ -46,13 +46,28 @@ public class S3ManageService {
 	}
 
 
+
 	public void delete(String imageUrl) {
-		String fileName = imageUrl.split("/")[5];
+		log.info("1111111111111111111111111");
+
+		String[] split = imageUrl.split("/");
+		String fileName = split[split.length - 1];
+
+		log.info("222222");
 		try {
+
+			log.info("3333");
+
 			amazonS3.deleteObject(bucket, fileName);
+
+			log.info("444");
 			log.info("S3에서 파일 삭제 완료: {}", fileName);
+			log.info("5555");
+
 		} catch (Exception e) {
+			log.info("6666");
 			log.error("S3에서 파일 삭제 실패: {}", fileName, e);
+			log.info("77777");
 		}
 	}
 
