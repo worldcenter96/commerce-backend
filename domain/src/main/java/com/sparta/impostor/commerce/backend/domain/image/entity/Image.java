@@ -35,6 +35,6 @@ public class Image extends Timestamped {
 
     @Override
     public String toString() {
-        return "Image [id=" + id + ", imgUrl=" + imgUrl + ", product=" + product.getId() + "]";
+        return "Image [id=" + id + ", imgUrl=" + imgUrl + ", product=" + (product != null ? product.getId(): "null") + "]";
     }
 }
