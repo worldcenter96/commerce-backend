@@ -14,7 +14,7 @@ public class FileDeleteScheduler {
 
 	private final FileManageService fileManageService;
 
-	@Scheduled(cron = "0 40 23 * * *")
+	@Scheduled(cron = "0 0 0 5 * *")
 	public void removeUnusedFiles() {
 
 		fileManageService.removeUnusedFiles();
