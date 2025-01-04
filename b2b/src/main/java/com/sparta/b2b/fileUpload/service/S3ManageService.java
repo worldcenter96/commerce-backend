@@ -58,7 +58,6 @@ public class S3ManageService {
 
 			log.info("3333");
 
-			log.info("bucket : {}", bucket);
 			amazonS3.deleteObject(bucket, "/product-image/" + fileName);
 
 			log.info("444");

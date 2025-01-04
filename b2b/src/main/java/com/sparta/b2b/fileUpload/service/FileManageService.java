@@ -91,7 +91,9 @@ public class FileManageService {
 
 	public void removeUnusedFiles() {
 		List<Image> unUsedImages = imageRepository.findAllByProductIsNull();
+		log.info("unUsedImages size : {}", unUsedImages.size());
 		for (Image unUsedImage : unUsedImages) {
+			log.info(unUsedImage.toString());
 			// S3에서 삭제
 			delete(unUsedImage.getImgUrl());
 			// DB에서 삭제
