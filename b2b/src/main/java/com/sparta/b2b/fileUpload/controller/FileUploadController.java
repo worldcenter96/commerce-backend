@@ -43,4 +43,12 @@ public class FileUploadController {
 			.status(HttpStatus.CREATED)
 			.body(fileUploadService.uploadFileV2(file, memberSession.memberId()));
 	}
+
+	//scheduler 호출
+	@CheckAuth(role = Role.B2B)
+	@GetMapping("/test")
+	public ResponseEntity<Void> test() {
+		fileUploadService.removeUnusedFiles();
+		return ResponseEntity.ok().build();
+	}
 }
