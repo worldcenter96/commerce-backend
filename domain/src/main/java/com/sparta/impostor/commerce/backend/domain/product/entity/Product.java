@@ -5,7 +5,8 @@ import com.sparta.impostor.commerce.backend.domain.b2bMember.entity.B2BMember;
 import com.sparta.impostor.commerce.backend.domain.product.enums.Category;
 import com.sparta.impostor.commerce.backend.domain.product.enums.ProductStatus;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
@@ -62,8 +63,8 @@ public class Product extends Timestamped {
         return new Product(name, description, stockQuantity, price, status, category, subCategory, member);
     }
 
-    public void updateQuantity(int updatedQuantity) {
-        this.stockQuantity = updatedQuantity;
+    public void updateQuantity(int orderQuantity) {
+        this.stockQuantity = this.stockQuantity - orderQuantity;
     }
 
 

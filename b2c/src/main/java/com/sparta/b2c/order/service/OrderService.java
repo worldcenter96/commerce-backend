@@ -4,7 +4,7 @@ import com.sparta.b2c.order.dto.request.OrderRequest;
 import com.sparta.b2c.order.dto.request.OrderStatusRequest;
 import com.sparta.b2c.order.dto.response.OrderResponse;
 import com.sparta.b2c.order.dto.response.PageOrderResponse;
-import com.sparta.common.dto.MemberSession;
+import com.sparta.common.annotation.RedissonLock;
 import com.sparta.impostor.commerce.backend.common.exception.ForbiddenAccessException;
 import com.sparta.impostor.commerce.backend.domain.b2cMember.entity.B2CMember;
 import com.sparta.impostor.commerce.backend.domain.b2cMember.repository.B2CMemberRepository;
@@ -31,7 +31,7 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final B2CMemberRepository b2cMemberRepository;
 
-    @Transactional
+    @RedissonLock(value = "#productId")
     public OrderResponse createOrder(Long memberId, OrderRequest orderRequest) {
 
         B2CMember b2CMember = b2cMemberRepository.findById(memberId)
@@ -46,8 +46,8 @@ public class OrderService {
             throw new IllegalArgumentException("재고 수량이 부족합니다.");
         }
 
-        int updatedQuantity = product.getStockQuantity() - quantity;
-        product.updateQuantity(updatedQuantity);
+        product.updateQuantity(quantity);
+        productRepository.saveAndFlush(product);
 
         Long totalPrice = Long.valueOf(product.getPrice() * quantity);
 
