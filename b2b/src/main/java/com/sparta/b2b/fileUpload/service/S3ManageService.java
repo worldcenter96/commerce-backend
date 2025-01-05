@@ -25,6 +25,10 @@ public class S3ManageService {
 	private final AmazonS3 amazonS3;
 
 	public String upload(MultipartFile multipartFile) throws IOException {
+
+		log.info("upload - bucket : {}", bucket );
+
+
 		String fileName = multipartFile.getOriginalFilename();
 		String ext = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
 
@@ -53,6 +57,7 @@ public class S3ManageService {
 	public void delete(String imageUrl) {
 
 		log.info("imageUrl : {}" , imageUrl);
+		log.info("delete - bucket : {}" , bucket);
 
 		String[] split = imageUrl.split("/");
 		String fileName = split[split.length - 1].trim();
