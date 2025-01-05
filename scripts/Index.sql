@@ -14,7 +14,7 @@ SELECT sub_category, COUNT(*) AS cnt,
        (COUNT(*) * 100.0 / (SELECT COUNT(*) FROM product)) AS percentage_of_total
 FROM product
 WHERE name like '%상품%'
-GROUP BY category;
+GROUP BY sub_category;
 
 # 상품 검색 실행계획 확인 쿼리
 explain
