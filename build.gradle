@@ -53,6 +53,8 @@ subprojects {
         // Log Json Parsing
         implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
 
+        // Redisson
+        implementation 'org.redisson:redisson-spring-boot-starter:3.39.0'
 
         // Spring Security
         implementation 'org.springframework.security:spring-security-crypto'

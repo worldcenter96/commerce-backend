@@ -81,7 +81,7 @@ class OrderServiceTest {
 
         when(b2cMemberRepository.findById(memberId)).thenReturn(Optional.of(b2cMember));
         when(productRepository.findById(orderRequest.productId())).thenReturn(Optional.of(product));
-        when(product.getStockQuantity()).thenReturn(10);
+        when(product.getStockQuantity()).thenReturn(0);
 
         assertThrows(IllegalArgumentException.class, () -> orderService.createOrder(memberId, orderRequest));
     }
