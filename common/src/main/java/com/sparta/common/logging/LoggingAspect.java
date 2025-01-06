@@ -37,12 +37,18 @@ public class LoggingAspect {
         String methodName = joinPoint.getSignature().getName();
         String methodArgs = Arrays.toString(joinPoint.getArgs());
 
-        // 로그를 찍고
-        logger.info("[TRACE_ID: {}] Executing method: {}", traceId, joinPoint.getSignature().getName());
+        // 메서드 실행 전: 시간 기록
+        long startTime = System.currentTimeMillis();
 
         // 메서드 실행
         Object result = joinPoint.proceed();
 
+        // 메서드 실행 후: 시간 계산
+        long endTime = System.currentTimeMillis();
+        long duration = endTime - startTime;
+
+        // 로그를 찍고 응답 시간 기록
+        logger.info("[TRACE_ID: {}] Executing method: {} with args: {} took {} ms", traceId, methodName, methodArgs, duration);
 
         return result;
     }
