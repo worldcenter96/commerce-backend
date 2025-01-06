@@ -48,7 +48,6 @@ public class S3ManageService {
 
 		String url = amazonS3.getUrl(bucket, s3FileName).toString();
 
-//		https://impostor-s3bucket.s3.ap-northeast-2.amazonaws.com/product-image/0a727907-8738-4bd0-ad82-f564a63fd411.jpg
 		return url;
 	}
 
@@ -56,16 +55,11 @@ public class S3ManageService {
 
 	public void delete(String imageUrl) {
 
-		log.info("imageUrl : {}" , imageUrl);
-		log.info("delete - bucket : {}" , bucket);
-
 		String[] split = imageUrl.split("/");
 		String fileName = split[split.length - 1].trim();
 
 		log.info("fileName : {}" , imageUrl);
-
 		try {
-
 			amazonS3.deleteObject(bucket, "product-image/" + fileName);
 			log.info("S3에서 파일 삭제 완료: {}", fileName);
 
