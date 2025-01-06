@@ -34,7 +34,14 @@ spring:
     redis:
       host: 127.0.0.1
       port: 6380
-
+logging:
+  level:
+    org:
+      hibernate:
+        sql: DEBUG
+        orm:
+          jdbc:
+            bind: trace
 cloud:
   aws:
     s3:
