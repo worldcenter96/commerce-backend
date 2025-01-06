@@ -95,8 +95,8 @@ public class ProductService {
 
 	@Transactional(readOnly = true)
 	public ProductSearchResponse searchProduct(Long memberId, Long productId) {
-		Product product = productRepository.findById(productId)
-			.orElseThrow(() -> new EntityNotFoundException("해당 ID를 가진 상품이 존재하지 않습니다."));
+		Product product = productRepository.findByIdAndMemberId(productId, memberId)
+			.orElseThrow(() -> new ForbiddenAccessException("본인의 상품만 조회할 수 있습니다."));
 
 		List<Image> images = imageRepository.findByProductId(productId);
 
