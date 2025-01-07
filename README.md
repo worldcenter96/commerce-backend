@@ -118,7 +118,7 @@ docker-compose up
 
 ### 관리자 사이트
 
-![wireframe_admin.jpeg](img%2Fwireframe_admin.jpeg)
+![wireframe_admin.png](img%2Fwireframe_admin.png)
 
 ## ERD 명세서
 
