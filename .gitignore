@@ -4,7 +4,6 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-**/src/main/resources/application-secret.yml
 
 ### STS ###
 .apt_generated
@@ -43,3 +42,7 @@ out/
 
 ### application.log ###
 application.log
+**/application-*.log
+
+### Spring Profile ###
+**/src/main/resources/application-secret.yml
