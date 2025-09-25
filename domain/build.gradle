@@ -1,15 +1,7 @@
-dependencies {
-
-}
-
-clean {
-    delete file('src/main/generated')
-}
-
-bootRun {
-    enabled = false
-}
-
 bootJar {
     enabled = false
+}
+
+jar {
+    enabled = true
 }

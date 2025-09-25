@@ -3,21 +3,17 @@ server:
 spring:
   config:
     activate:
-      on-profile: prod
+      on-profile: dev
+  profiles:
+    include: secret
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-  servlet:
-    multipart:
-      enabled: true
-      file-size-threshold: 0B
-      max-file-size: 5MB
-      max-request-size: 50MB
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop
     properties:
       hibernate:
         show_sql: true
@@ -29,7 +25,7 @@ spring:
   data:
     redis:
       host: ${REDIS_HOST}
-      port: 6379
+      port: 6380
 cloud:
   aws:
     s3:

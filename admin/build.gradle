@@ -1,14 +1,7 @@
-tasks.bootJar {
+bootJar {
     enabled = true
-    archiveVersion = ""
 }
 
-tasks.jar {
+jar {
     enabled = false
 }
-
-dependencies {
-    implementation project(':domain')
-    implementation project(':common')
-}
-tasks.register("prepareKotlinBuildScriptModel"){}
