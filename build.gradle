@@ -28,7 +28,6 @@ sonar {
 subprojects {
     group = 'com.sparta'
     version = '0.0.1-SNAPSHOT'
-    sourceCompatibility = '17'
 
     apply plugin: 'java'
     apply plugin: 'org.springframework.boot'
@@ -39,6 +38,11 @@ subprojects {
         mavenCentral()
     }
 
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
 
     configurations {
         compileOnly {
