@@ -43,6 +43,3 @@ out/
 ### application.log ###
 application.log
 **/application-*.log
-
-### Spring Profile ###
-**/src/main/resources/application-secret.yml
