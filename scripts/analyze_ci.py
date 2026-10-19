@@ -213,8 +213,25 @@ def analyze_with_ai(job_name, step_name, log):
         method="POST"
     )
 
-    with urllib.request.urlopen(req, timeout=60) as res:
-        result = json.load(res)
+    try:
+        with urllib.request.urlopen(req, timeout=60) as res:
+            result = json.load(res)
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8", errors="replace")
+
+        try:
+            error = json.loads(body).get("error", {})
+            error_code = error.get("code") or error.get("type")
+            error_message = error.get("message")
+        except (json.JSONDecodeError, AttributeError):
+            error_code = "unknown"
+            error_message = "오류 응답을 해석할 수 없습니다."
+        raise RuntimeError(
+            f"OpenAI API HTTP {e.code}\n"
+            f"Error Code: {error_code}\n"
+            f"Message: {error_message}"
+        ) from e
+
 
     return "\n".join(
         content.get("text", "")
