@@ -28,6 +28,16 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          
+      - name: OpenAI API Key 확인
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "::error::OPENAI_API_KEY가 설정되지 않았습니다."
+            exit 1
+          fi
+          echo "OPENAI_API_KEY가 정상적으로 전달되었습니다."
 
       - name: AI CI 실패 분석
         env:
