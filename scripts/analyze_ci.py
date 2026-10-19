@@ -14,6 +14,11 @@ OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 API = "https://api.github.com"
 MAX_LOG_CHARS = 12000
 
+token = os.getenv("GH_TOKEN")
+
+print("GH_TOKEN 설정 여부:", bool(token))
+print("REPOSITORY:", os.getenv("REPOSITORY"))
+print("RUN_ID:", os.getenv("RUN_ID"))
 
 def github_request(path):
     req = urllib.request.Request(
