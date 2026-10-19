@@ -4,6 +4,7 @@ import json
 import os
 import re
 import urllib.request
+import urllib.error
 import zipfile
 
 REPO = os.environ["REPOSITORY"]
@@ -57,10 +58,42 @@ def get_failed_jobs():
     return jobs
 
 
+# def get_job_log(job_id):
+#     raw = github_request(
+#         f"/repos/{REPO}/actions/jobs/{job_id}/logs"
+#     )
+    
 def get_job_log(job_id):
-    raw = github_request(
-        f"/repos/{REPO}/actions/jobs/{job_id}/logs"
+    url = (
+        f"https://api.github.com/repos/{REPO}"
+        f"/actions/jobs/{job_id}/logs"
     )
+
+    request = urllib.request.Request(
+        url,
+        headers={
+            "Authorization": f"Bearer {GH_TOKEN}",
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+        }
+    )
+
+    try:
+        with urllib.request.urlopen(request, timeout=30) as response:
+            print("최종 응답 URL:", response.geturl().split("?")[0])
+            print("HTTP 상태:", response.status)
+            return response.read().decode(
+                "utf-8", errors="replace"
+            )
+
+    except urllib.error.HTTPError as e:
+        print("실패한 URL:", e.geturl().split("?")[0])
+        print("HTTP 상태:", e.code)
+        print(
+            "WWW-Authenticate:",
+            e.headers.get("WWW-Authenticate", "없음")
+        )
+        raise
 
     # Job 로그는 보통 일반 텍스트로 반환된다.
     # 압축 응답에도 대응한다.
