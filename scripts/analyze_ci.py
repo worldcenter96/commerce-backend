@@ -10,12 +10,14 @@ REPOSITORY = os.environ["REPOSITORY"]
 RUN_ID = os.environ["RUN_ID"]
 API = "https://api.github.com"
 
+
+# Github API와 통신이 가능한지 확인
 def github_request(path):
     url = API + path
     headers = {
-        "Accept" : "application/vnd.github+json",
-        "X-GitHub-Api-Version" : "2022-11-28",
-        "User-Agent" : "gaonnuri"
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+        "User-Agent": "gaonnuri"
     }
 
     req = urllib.request.Request(
@@ -26,6 +28,32 @@ def github_request(path):
 
     try:
         with urllib.request.urlopen(req, timeout=30) as res:
+            return res.read()
+
+    except urllib.error.HTTPError as e:
+        print(f"Github API 요청 실패: {path}")
+        print(f"HTTP 상태 코드: {e.code}")
+        raise
+
+
+def get_job_log(job_id):
+    path = f"/repos/{GITHUB_TOKEN}/{REPOSITORY}/actions/jobs/{job_id}/logs"
+    url = API + path
+    headers = {
+        "Authorization": f"Bearer {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+        "User-Agent": "gaonnuri"
+    }
+
+    req = urllib.request.Request(
+        url,
+        headers
+    )
+
+    try:
+        with urllib.request.urlopen(req, timeout=30) as res:
+            print(f"최종 Redirect URL: {res.geturl()}", flush=True)
             return res.read()
 
     except urllib.error.HTTPError as e:
