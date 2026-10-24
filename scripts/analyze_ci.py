@@ -63,6 +63,7 @@ def get_job_log(job_id):
 
 def main():
     print("GitHub Actions 로그 다운로드 테스트 시작")
+    print("GITHUB_TOKEN:" f"{GITHUB_TOKEN}")
     # Github Actions Workflow Run에 속한 Job 목록 조회
     path = f"/repos/{REPOSITORY}/actions/runs/{RUN_ID}/jobs"
 
