@@ -33,6 +33,7 @@ def github_request(path):
     except urllib.error.HTTPError as e:
         print(f"Github API 요청 실패: {path}")
         print(f"HTTP 상태 코드: {e.code}")
+        print(f"WWW-Authenticate: {e.headers.get('WWW-Authenticate')}")
         raise
 
 
