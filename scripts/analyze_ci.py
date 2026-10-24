@@ -11,11 +11,12 @@ REPOSITORY = os.environ["REPOSITORY"]
 RUN_ID = os.environ["RUN_ID"]
 API = "https://api.github.com"
 
+
 # job_id를 얻기 위한 URL Request
 def github_request(path):
     url = API + path
     headers = {
-        "Authorization" : f"Bearer {GITHUB_TOKEN}",
+        "Authorization": f"Bearer {GITHUB_TOKEN}",
         "Accept": "application/vnd.github+json",
         "X-GitHub-Api-Version": "2022-11-28",
         "User-Agent": "gaonnuri"
@@ -23,7 +24,7 @@ def github_request(path):
 
     req = urllib.request.Request(
         url,
-        headers=headers
+        headers
     )
 
     try:
@@ -89,4 +90,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
