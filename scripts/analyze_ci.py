@@ -5,7 +5,7 @@ import urllib.error
 
 # os.environ은 운영체제에 설정된 env에 접근하고 관리할 수 있게 해주는 dictionary 형태
 # Runner에 등록된 환경변수 사용
-GITHUB_TOKEN = os.environ["GITHUB_TOKEN"]
+GH_TOKEN = os.environ["GH_TOKEN"]
 OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 REPOSITORY = os.environ["REPOSITORY"]
 RUN_ID = os.environ["RUN_ID"]
@@ -19,7 +19,7 @@ def github_request(path):
     req = urllib.request.Request(
         url,
         headers={
-            "Authorization": f"Bearer {GITHUB_TOKEN}",
+            "Authorization": f"Bearer {GH_TOKEN}",
             "Accept": "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28"
         }
@@ -44,7 +44,7 @@ def get_job_log(job_id):
     req = urllib.request.Request(
         url,
         headers={
-            "Authorization": f"Bearer {GITHUB_TOKEN}",
+            "Authorization": f"Bearer {GH_TOKEN}",
             "Accept": "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28"
         }
@@ -63,7 +63,6 @@ def get_job_log(job_id):
 
 def main():
     print("GitHub Actions 로그 다운로드 테스트 시작")
-    print("GITHUB_TOKEN:" f"{GITHUB_TOKEN}")
     # Github Actions Workflow Run에 속한 Job 목록 조회
     path = f"/repos/{REPOSITORY}/actions/runs/{RUN_ID}/jobs"
 
