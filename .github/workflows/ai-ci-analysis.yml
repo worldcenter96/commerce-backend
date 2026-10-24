@@ -40,7 +40,7 @@ jobs:
 
       - name: AI CI 실패 분석
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           REPOSITORY: ${{ github.repository }}
           RUN_ID: ${{ github.event.workflow_run.id }}
