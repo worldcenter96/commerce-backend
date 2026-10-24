@@ -15,16 +15,15 @@ API = "https://api.github.com"
 # job_id를 얻기 위한 URL Request
 def github_request(path):
     url = API + path
-    headers = {
-        "Authorization": f"Bearer {GITHUB_TOKEN}",
-        "Accept": "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28",
-        "User-Agent": "gaonnuri"
-    }
 
     req = urllib.request.Request(
         url,
-        headers
+        headers={
+            "Authorization": f"Bearer {GITHUB_TOKEN}",
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+            "User-Agent": "gaonnuri"
+        }
     )
 
     try:
@@ -41,16 +40,15 @@ def github_request(path):
 def get_job_log(job_id):
     path = f"/repos/{REPOSITORY}/actions/jobs/{job_id}/logs"
     url = API + path
-    headers = {
-        "Authorization": f"Bearer {GITHUB_TOKEN}",
-        "Accept": "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28",
-        "User-Agent": "gaonnuri"
-    }
 
     req = urllib.request.Request(
         url,
-        headers
+        headers={
+            "Authorization": f"Bearer {GITHUB_TOKEN}",
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+            "User-Agent": "gaonnuri"
+        }
     )
 
     try:
