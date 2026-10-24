@@ -21,8 +21,7 @@ def github_request(path):
         headers={
             "Authorization": f"Bearer {GITHUB_TOKEN}",
             "Accept": "application/vnd.github+json",
-            "X-GitHub-Api-Version": "2022-11-28",
-            "User-Agent": "gaonnuri"
+            "X-GitHub-Api-Version": "2022-11-28"
         }
     )
 
@@ -47,8 +46,7 @@ def get_job_log(job_id):
         headers={
             "Authorization": f"Bearer {GITHUB_TOKEN}",
             "Accept": "application/vnd.github+json",
-            "X-GitHub-Api-Version": "2022-11-28",
-            "User-Agent": "gaonnuri"
+            "X-GitHub-Api-Version": "2022-11-28"
         }
     )
 
