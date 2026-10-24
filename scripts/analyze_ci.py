@@ -1,3 +1,4 @@
+import json
 import os
 import urllib.request
 import urllib.error
@@ -10,11 +11,11 @@ REPOSITORY = os.environ["REPOSITORY"]
 RUN_ID = os.environ["RUN_ID"]
 API = "https://api.github.com"
 
-
-# Github API와 통신이 가능한지 확인
+# job_id를 얻기 위한 URL Request
 def github_request(path):
     url = API + path
     headers = {
+        "Authorization" : f"Bearer {GITHUB_TOKEN}",
         "Accept": "application/vnd.github+json",
         "X-GitHub-Api-Version": "2022-11-28",
         "User-Agent": "gaonnuri"
@@ -22,8 +23,7 @@ def github_request(path):
 
     req = urllib.request.Request(
         url,
-        headers=headers,
-        method='POST'
+        headers=headers
     )
 
     try:
@@ -36,8 +36,9 @@ def github_request(path):
         raise
 
 
+# Github Action Job log를 얻기 위한 URL Request
 def get_job_log(job_id):
-    path = f"/repos/{GITHUB_TOKEN}/{REPOSITORY}/actions/jobs/{job_id}/logs"
+    path = f"/repos/{REPOSITORY}/actions/jobs/{job_id}/logs"
     url = API + path
     headers = {
         "Authorization": f"Bearer {GITHUB_TOKEN}",
@@ -60,3 +61,32 @@ def get_job_log(job_id):
         print(f"Github API 요청 실패: {path}")
         print(f"HTTP 상태 코드: {e.code}")
         raise
+
+
+def main():
+    print("GitHub Actions 로그 다운로드 테스트 시작")
+    # Github Actions Workflow Run에 속한 Job 목록 조회
+    path = f"/repos/{REPOSITORY}/actions/runs/{RUN_ID}/jobs"
+
+    res = github_request(path)
+    jobs = json.loads(res).get("jobs", [])
+
+    if not jobs:
+        print("조회된 job이 없습니다.")
+        return
+
+    for job in jobs:
+        print(f"Job: {job['name']}, ID: {job['id']}")
+
+    job_id = jobs[0]["id"]
+
+    log_bytes = get_job_log(job_id)
+    print(f"로그 다운로드 성공: {len(log_bytes)} bytes")
+
+    with open("job_log.txt", "wb") as f:
+        f.write(log_bytes)
+
+
+if __name__ == "__main__":
+    main()
+
