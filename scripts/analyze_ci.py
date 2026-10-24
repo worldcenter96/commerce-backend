@@ -19,6 +19,22 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
         return None
 
 
+# 실제로 Authorization 헤더가 전달되는지 확인하는 방법
+class DebugRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(
+            self, req, fp, code, msg, headers, newurl):
+        redirected_req = super().redirect_request(
+            self, req, fp, code, msg, headers, newurl
+        )
+
+        if redirected_req is not None:
+            print(
+                "Redirect 요청에 Authorization 존재:",
+                redirected_req.has_header("Authorization")
+            )
+        return redirected_req
+
+
 # job_id를 얻기 위한 URL Request(Job 목록 조회)
 def github_request(path):
     url = API + path
@@ -57,7 +73,8 @@ def get_job_log(job_id):
         }
     )
 
-    opener = urllib.request.build_opener(NoRedirect)
+    # opener = urllib.request.build_opener(NoRedirect)
+    opener = urllib.request.build_opener(DebugRedirect)
     print("[1] GitHub API 로그 요청 시작", flush=True)
 
     try:
