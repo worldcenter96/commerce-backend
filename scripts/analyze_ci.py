@@ -12,7 +12,14 @@ RUN_ID = os.environ["RUN_ID"]
 API = "https://api.github.com"
 
 
-# job_id를 얻기 위한 URL Request
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(
+        self, req, fp, code, msg, headers, newurl
+    ):
+        return None
+
+
+# job_id를 얻기 위한 URL Request(Job 목록 조회)
 def github_request(path):
     url = API + path
 
@@ -50,15 +57,73 @@ def get_job_log(job_id):
         }
     )
 
+    opener = urllib.request.build_opener(NoRedirect)
+    print("[1] GitHub API 로그 요청 시작", flush=True)
+
     try:
-        with urllib.request.urlopen(req, timeout=30) as res:
-            print(f"최종 Redirect URL: {res.geturl()}", flush=True)
+        with opener.open(req, timeout=30) as res:
+            print(f"Github API 상태: {res.status}", flush=True)
             return res.read()
 
     except urllib.error.HTTPError as e:
-        print(f"Github API 요청 실패: {path}")
-        print(f"HTTP 상태 코드: {e.code}")
+        print(f"GitHub API 응답 상태: {e.code}", flush=True)
+
+        if e.code != 302:
+            print("GitHub API 요청 단계에서 실패")
+            print("응답 호스트:", urllib.parse.urlparse(e.url).hostname)
+            raise
+
+        download_url = e.headers.get("Location")
+
+        if not download_url:
+            raise RuntimeError("Redirect Location 헤더가 없습니다.")
+
+    # 임시 다운로드 URL 확인
+    parsed = urllib.parse.urlparse(download_url)
+
+    if parsed.scheme != "https" :
+        raise RuntimeError("HTTPS 다운로드 URL이 아닙니다.")
+
+    # 임시 URL로 별도 요청
+    download_request = urllib.request.Request(
+        download_url,
+        method="GET"
+    )
+
+    try:
+        with urllib.request.urlopen(
+            download_request, timeout=60
+        ) as res:
+            print(f"다운로드 HTTP 상태: {res.status}", flush=True)
+            raw = res.read()
+            print(f"다운로드 성공: {len(raw)} bytes", flush=True)
+            return raw
+
+    except urllib.error.HTTPError as e:
+        error_host = urllib.parse.urlparse(e.url).hostname
+
+        print("[4] 다운로드 실패", flush=True)
+        print(f"HTTP 상태 코드: {e.code}", flush=True)
+        print(f"오류 발생 호스트: {error_host}", flush=True)
+
+        # Azure Storage 오류 코드가 있다면 확인
+        print(
+            "Azure 오류 코드:",
+            e.headers.get("x-ms-error-code"),
+            flush=True
+        )
         raise
+
+
+    # try:
+    #     with urllib.request.urlopen(req, timeout=30) as res:
+    #         print(f"최종 Redirect URL: {res.geturl()}", flush=True)
+    #         return res.read()
+    #
+    # except urllib.error.HTTPError as e:
+    #     print(f"Github API 요청 실패: {path}")
+    #     print(f"HTTP 상태 코드: {e.code}")
+    #     raise
 
 
 def main():
