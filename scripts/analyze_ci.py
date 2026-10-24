@@ -2,6 +2,7 @@ import json
 import os
 import urllib.request
 import urllib.error
+import urllib.parse
 
 # os.environ은 운영체제에 설정된 env에 접근하고 관리할 수 있게 해주는 dictionary 형태
 # Runner에 등록된 환경변수 사용
@@ -24,7 +25,7 @@ class DebugRedirect(urllib.request.HTTPRedirectHandler):
     def redirect_request(
             self, req, fp, code, msg, headers, newurl):
         redirected_req = super().redirect_request(
-            self, req, fp, code, msg, headers, newurl
+            req, fp, code, msg, headers, newurl
         )
 
         if redirected_req is not None:
